@@ -1,0 +1,3837 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M_Vis - Elegant Chat v0.5</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --sidebar-color: #120d1a;
+            --accent-color: #9d50bb;
+            --accent-gradient: linear-gradient(135deg, #6e48aa, #9d50bb);
+            --text-main: #f0f0f0;
+            --text-dim: #8e82a0;
+            --chat-bubble-me: #2a1b3d;
+            --chat-bubble-user: #161616;
+            --font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* ===== LIGHT MODE ===== */
+        body.light-mode {
+            --text-main: #1a1a2e;
+            --text-dim: #5a5a7a;
+            --chat-bubble-me: #e8d5f8;
+            --chat-bubble-user: #f5f0ff;
+            --accent-color: #7c3aad;
+            --accent-gradient: linear-gradient(135deg, #6e48aa, #9d50bb);
+        }
+        body.light-mode,
+        body.light-mode #chat-container,
+        body.light-mode .input-area,
+        body.light-mode .quick-bar {
+            background-color: #f4eeff !important;
+        }
+        body.light-mode header {
+            background-color: #ede0ff !important;
+            border-bottom-color: #c9a8e8 !important;
+            box-shadow: 0 4px 15px rgba(110,72,170,0.15) !important;
+        }
+        body.light-mode .sidebar {
+            background-color: #f0e6ff !important;
+            border-right-color: #d0b0f0 !important;
+        }
+        body.light-mode .sidebar h2 {
+            color: #3a1a5e !important;
+        }
+        body.light-mode .menu-item {
+            background: rgba(110,72,170,0.07) !important;
+            color: #2a1a4e !important;
+        }
+        body.light-mode .menu-item:active {
+            background: rgba(110,72,170,0.2) !important;
+        }
+        body.light-mode .sub-menu-item {
+            background: rgba(110,72,170,0.1) !important;
+            border-color: rgba(110,72,170,0.2) !important;
+            color: #4a2a7a !important;
+        }
+        body.light-mode .overlay {
+            background: rgba(60,20,100,0.55) !important;
+        }
+        body.light-mode .msg-me {
+            background-color: #dcc0f8 !important;
+            border-color: #b880e8 !important;
+            color: #1a0a30 !important;
+        }
+        body.light-mode .msg-system {
+            background-color: #fff !important;
+            border-left-color: #9d50bb !important;
+            color: #1a1a2e !important;
+            box-shadow: 0 1px 6px rgba(110,72,170,0.1);
+        }
+        body.light-mode .time {
+            color: #8a6aaa !important;
+        }
+        body.light-mode #message-input {
+            background-color: #fff !important;
+            border-color: #c0a0e0 !important;
+            color: #1a1a2e !important;
+        }
+        body.light-mode #message-input::placeholder {
+            color: #a888c8 !important;
+        }
+        body.light-mode #message-input:focus {
+            border-color: #9d50bb !important;
+        }
+        body.light-mode .input-area {
+            border-top-color: #c9a8e8 !important;
+        }
+        body.light-mode .quick-bar {
+            border-top-color: #d4b8ee !important;
+            background-color: #ede0ff !important;
+        }
+        body.light-mode .quick-bar-btn {
+            background: rgba(110,72,170,0.08) !important;
+            border-color: #c8a0e0 !important;
+        }
+        body.light-mode .quick-bar-btn .qb-label {
+            color: #6a4a9a !important;
+        }
+        body.light-mode .quick-bar-btn:active,
+        body.light-mode .quick-bar-btn.qb-active {
+            background: rgba(110,72,170,0.22) !important;
+            border-color: rgba(110,72,170,0.6) !important;
+        }
+        body.light-mode .quick-bar-btn.qb-active .qb-label {
+            color: #7c3aad !important;
+        }
+        body.light-mode #absen-btn {
+            background: rgba(110,72,170,0.12) !important;
+            border-color: rgba(110,72,170,0.4) !important;
+            color: #7c3aad !important;
+        }
+        body.light-mode .modal {
+            background: #f8f0ff !important;
+            border-color: #9d50bb !important;
+        }
+        body.light-mode .modal h3,
+        body.light-mode .modal p {
+            color: #2a1a4e !important;
+        }
+        body.light-mode .modal input {
+            background: #fff !important;
+            border-color: #c0a0e0 !important;
+            color: #1a1a2e !important;
+        }
+        body.light-mode #settings-dropdown {
+            background: #f0e6ff !important;
+            border-color: #c9a8e8 !important;
+        }
+        body.light-mode .profile-card-wrap,
+        body.light-mode .cek-card {
+            background: linear-gradient(135deg, #f5eeff, #ede0ff) !important;
+            border-color: #c9a8e8 !important;
+            color: #2a1a4e !important;
+        }
+        body.light-mode .profile-name,
+        body.light-mode .cek-title {
+            color: #1a0a30 !important;
+        }
+        body.light-mode .profile-row .value {
+            color: #2a1a4e !important;
+        }
+        body.light-mode .profile-divider {
+            background: #d4b8ee !important;
+        }
+        body.light-mode #chat-container::-webkit-scrollbar-thumb {
+            background: #c0a0e0 !important;
+        }
+        body.light-mode .water-cell {
+            background: linear-gradient(135deg, #c8e8ff, #a0d0ff) !important;
+            border-color: #70b0e0 !important;
+        }
+        body.light-mode .slot-reel {
+            background: #f0e6ff !important;
+            border-color: #c0a0e0 !important;
+        }
+        body.light-mode .fruit-item {
+            background: rgba(110,72,170,0.06) !important;
+            border-color: #d0b0f0 !important;
+        }
+        body.light-mode .fruit-item.owned {
+            background: rgba(110,72,170,0.15) !important;
+        }
+        /* Light mode transition */
+        body, header, .sidebar, .msg-me, .msg-system,
+        #chat-container, .input-area, .quick-bar,
+        #message-input, .modal, #settings-dropdown,
+        .menu-item, .sub-menu-item, .quick-bar-btn {
+            transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease, box-shadow 0.35s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            font-family: var(--font-family);
+            background-color: #000000;
+            color: var(--text-main);
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background-color: #0a0a0a;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            flex-shrink: 0;
+            padding-top: calc(12px + env(safe-area-inset-top));
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn:active {
+            background: rgba(157, 80, 187, 0.2);
+        }
+
+        /* CHAT AREA - Pure Black Background */
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #000000;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #chat-container::-webkit-scrollbar { width: 3px; }
+        #chat-container::-webkit-scrollbar-track { background: transparent; }
+        #chat-container::-webkit-scrollbar-thumb { background: #3a2555; border-radius: 3px; }
+
+        .message {
+            max-width: 88%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            position: relative;
+            animation: msgSlide 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        @keyframes msgSlide {
+            from { opacity: 0; transform: translateY(15px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .msg-me {
+            align-self: flex-end;
+            background-color: var(--chat-bubble-me);
+            border: 1px solid #4a2b6d;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-system {
+            align-self: flex-start;
+            background-color: var(--chat-bubble-user);
+            border-left: 4px solid var(--accent-color);
+            border-bottom-left-radius: 4px;
+        }
+
+        .time {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            margin-top: 5px;
+            display: block;
+            text-align: right;
+        }
+
+        /* INPUT AREA */
+        .input-area {
+            background-color: #000000;
+            padding: 10px 8px;
+            padding-bottom: 10px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            border-top: 1px solid #1a1a1a;
+            flex-shrink: 0;
+        }
+
+        #message-input {
+            flex: 1;
+            min-width: 0;
+            background-color: #111111;
+            border: 1px solid #333;
+            border-radius: 22px;
+            padding: 11px 12px;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+            font-family: var(--font-family);
+            transition: border-color 0.2s;
+            max-height: 100px;
+            resize: none;
+        }
+
+        #message-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        #message-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        #send-btn {
+            background: var(--accent-gradient);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(157, 80, 187, 0.4);
+        }
+
+        #send-btn:active {
+            transform: scale(0.88);
+            opacity: 0.85;
+        }
+
+        /* ABSEN BUTTON */
+        #absen-btn {
+            background: rgba(157,80,187,0.1);
+            border: 1.5px solid rgba(157,80,187,0.35);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #c07de8;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.15s, border-color 0.2s;
+            line-height: 1;
+        }
+        #absen-btn:active {
+            background: rgba(157,80,187,0.3);
+            transform: scale(0.88);
+        }
+        #absen-btn.absen-done {
+            background: rgba(76,175,80,0.15);
+            border-color: rgba(76,175,80,0.5);
+            color: #4caf50;
+        }
+
+        /* SIDEBAR & OVERLAY */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: none;
+            z-index: 99;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0; left: -300px; width: min(280px, 80vw); height: 100%;
+            background-color: #0d0d0d;
+            z-index: 100;
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 50px 20px 30px;
+            border-right: 1px solid #222;
+            padding-top: calc(50px + env(safe-area-inset-top));
+            overflow-y: auto;
+        }
+
+        .sidebar.active { left: 0; }
+
+        .sidebar h2 {
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: white;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .menu-item {
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.03);
+            font-size: 0.95rem;
+            min-height: 44px;
+        }
+
+        .menu-item:active {
+            background: rgba(157, 80, 187, 0.25);
+            transform: scale(0.97);
+        }
+
+        /* SUB MENU CEK */
+        .sub-menu {
+            display: none;
+            padding-left: 16px;
+            margin-top: -5px;
+            margin-bottom: 8px;
+        }
+
+        .sub-menu.active {
+            display: block;
+        }
+
+        .sub-menu-item {
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(157, 80, 187, 0.08);
+            border: 1px solid rgba(157,80,187,0.15);
+            font-size: 0.88rem;
+            color: var(--text-dim);
+        }
+
+        .sub-menu-item:active {
+            background: rgba(157, 80, 187, 0.25);
+        }
+
+        /* REGISTRATION POPUP */
+        .modal {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            background: #0f0f0f;
+            padding: 25px 20px;
+            border-radius: 16px;
+            width: min(340px, 90vw);
+            z-index: 101;
+            display: none;
+            border: 1px solid var(--accent-color);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .modal.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .modal h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 16px;
+            outline: none;
+            font-size: 1rem;
+            margin-top: 12px;
+        }
+
+        .modal input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 13px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            min-height: 44px;
+        }
+
+        .modal-btn:active {
+            opacity: 0.85;
+        }
+
+        /* PROFILE CARD - Beautiful Card Style */
+        .profile-card-wrap {
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 10px;
+            font-size: 0.88rem;
+            line-height: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-card-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .profile-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(157,80,187,0.4);
+        }
+
+        .profile-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .profile-id {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .profile-divider {
+            height: 1px;
+            background: #2a2a2a;
+            margin: 10px 0;
+        }
+
+        .profile-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+        }
+
+        .profile-row .label {
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            flex: 1;
+        }
+
+        .profile-row .value {
+            color: #fff;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            background: rgba(157,80,187,0.2);
+            border: 1px solid rgba(157,80,187,0.4);
+            color: var(--accent-color);
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 0.75rem;
+        }
+
+        /* CEK RESULT CARD */
+        .cek-card {
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 10px;
+            font-size: 0.88rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cek-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .cek-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .cek-bar-wrap {
+            background: #1a1a1a;
+            border-radius: 20px;
+            height: 18px;
+            overflow: hidden;
+            margin: 6px 0 10px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .cek-bar {
+            height: 100%;
+            border-radius: 20px;
+            background: var(--accent-gradient);
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .cek-percent {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 8px 0 4px;
+        }
+
+        .cek-note {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+        }
+
+        .typing-dot {
+            width: 7px; height: 7px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            animation: typingBounce 1.2s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        /* Arrow indicator for cek submenu */
+        .cek-arrow {
+            margin-left: auto;
+            transition: transform 0.3s;
+            font-size: 0.8rem;
+        }
+        .cek-arrow.open {
+            transform: rotate(180deg);
+        }
+
+
+        /* QUICK ACTION BAR */
+        .quick-bar {
+            background-color: #080808;
+            border-top: 1px solid #1e1e1e;
+            padding: 7px 10px;
+            padding-bottom: calc(7px + env(safe-area-inset-bottom));
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .quick-bar::-webkit-scrollbar { display: none; }
+        .quick-bar-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid #222;
+            border-radius: 10px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, border-color 0.2s;
+            min-width: 60px;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quick-bar-btn:active {
+            background: rgba(157,80,187,0.25);
+            transform: scale(0.93);
+            border-color: rgba(157,80,187,0.5);
+        }
+        .quick-bar-btn .qb-icon { font-size: 1.15rem; line-height: 1; }
+        .quick-bar-btn .qb-label {
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+        .quick-bar-btn.qb-active {
+            border-color: rgba(157,80,187,0.55);
+            background: rgba(157,80,187,0.12);
+        }
+        .quick-bar-btn.qb-active .qb-label { color: var(--accent-color); }
+
+        /* D-PAD BUTTONS */
+        .dpad-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(157,80,187,0.15);
+            border: 1.5px solid rgba(157,80,187,0.4);
+            border-radius: 10px;
+            color: #c07de8;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .dpad-btn:active {
+            background: rgba(157,80,187,0.35);
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="menu-btn" id="menu-btn">☰</button>
+        <div class="logo">M_VIS</div>
+        <button class="menu-btn" id="settings-btn" title="Pengaturan" style="font-size:1.2rem;">۝</button>
+    </header>
+
+    <!-- SETTINGS DROPDOWN -->
+    <div id="settings-dropdown" style="
+        display:none;position:fixed;top:calc(56px + env(safe-area-inset-top));right:10px;
+        background:#111;border:1px solid #333;border-radius:12px;z-index:200;
+        min-width:190px;box-shadow:0 8px 30px rgba(0,0,0,0.7);overflow:hidden;
+    ">
+        <div id="settings-lightmode-btn" style="
+            padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+            font-size:0.9rem;color:#e0c8ff;transition:background 0.2s;border-bottom:1px solid #222;
+        ">
+            <span style="display:flex;align-items:center;gap:10px;"><span id="lightmode-icon">☀️</span> <span id="lightmode-label">Mode Terang</span></span>
+            <span id="lightmode-toggle" style="
+                width:38px;height:20px;border-radius:10px;background:#333;position:relative;
+                transition:background 0.3s;display:inline-block;flex-shrink:0;
+            ">
+                <span id="lightmode-knob" style="
+                    position:absolute;top:2px;left:2px;width:16px;height:16px;
+                    border-radius:50%;background:#888;transition:left 0.3s,background 0.3s;
+                    display:block;
+                "></span>
+            </span>
+        </div>
+        <div id="settings-hapus-btn" style="
+            padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:10px;
+            font-size:0.9rem;color:#f44336;transition:background 0.2s;
+        ">
+            <span>🗑️</span> Hapus Data
+        </div>
+    </div>
+
+    <div id="chat-container"></div>
+
+    <div class="input-area">
+        <button id="absen-btn" title="Absen Harian">☐</button>
+        <input type="text" id="message-input" placeholder="Tulis pesan..." autocomplete="off" inputmode="text">
+        <button id="send-btn">➣</button>
+    </div>
+
+    <!-- QUICK ACTION BAR -->
+    <div class="quick-bar" id="quick-bar">
+        <!-- Populated dynamically by JS -->
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <ul style="list-style:none">
+            <li class="menu-item" id="menu-games"><span>🎮</span> Games <span class="cek-arrow" id="games-arrow">▼</span></li>
+            <li>
+                <div class="sub-menu" id="sub-menu-games">
+                    <div class="sub-menu-item" id="menu-ttt"><span>❌⭕</span> Tic-tac-toe</div>
+                    <div class="sub-menu-item" id="menu-snake"><span>🐍</span> Ular</div>
+                    <div class="sub-menu-item" id="menu-slot"><span>🎰</span> Slot</div>
+                    <div class="sub-menu-item" id="menu-fishing"><span>🎣</span> Memancing</div>
+                    <div class="sub-menu-item" id="menu-tebakkata"><span>🔤</span> Tebak Kata</div>
+                    <div class="sub-menu-item" id="menu-tebakbuah"><span>🍎</span> Tebak Buah</div>
+                    <div class="sub-menu-item" id="menu-tebakbuahbom"><span>💣</span> Tebak Buah (Bom)</div>
+                    <div class="sub-menu-item" id="menu-tebakbendera"><span>🏳️</span> Tebak Bendera</div>
+                    <div class="sub-menu-item" id="menu-tebakmakanan"><span>🍜</span> Tebak Makanan</div>
+                    <div class="sub-menu-item" id="menu-tebaklagu"><span>🎵</span> Tebak Lagu</div>
+                </div>
+            </li>
+            <li class="menu-item" id="menu-reg"><span>📝</span> Registrasi Nama</li>
+            <li class="menu-item" id="menu-cek">
+                <span>🔍</span> Cek
+                <span class="cek-arrow" id="cek-arrow">▼</span>
+            </li>
+            <li>
+                <div class="sub-menu" id="sub-menu-cek">
+                    <div class="sub-menu-item" id="menu-cek-ganteng"><span>😎</span> Cek Ganteng</div>
+                    <div class="sub-menu-item" id="menu-cek-cantik"><span>💅</span> Cek Cantik</div>
+                    <div class="sub-menu-item" id="menu-cek-pintar"><span>🧠</span> Cek Pintar</div>
+                </div>
+            </li>
+            <li class="menu-item" id="menu-profil"><span>👤</span> Profil</li>
+            <li class="menu-item" id="menu-toko"><span>🛍️</span> Toko <span class="cek-arrow" id="toko-arrow">▼</span></li>
+            <li>
+                <div class="sub-menu" id="sub-menu-toko">
+                    <div class="sub-menu-item" id="menu-toko-buah"><span>🍎</span> Toko Buah</div>
+                    <div class="sub-menu-item" id="menu-toko-umpan"><span>🪱</span> Toko Umpan</div>
+                </div>
+            </li>
+            <li class="menu-item" id="menu-inventory"><span>🎒</span> Inventory</li>
+            <li class="menu-item" id="menu-download"><span>⬇️</span> Download</li>
+        </ul>
+    </div>
+
+    <div class="modal" id="regModal">
+        <h3>📝 Registrasi Nama</h3>
+        <p style="font-size: 0.78rem; color: #888;">Max 15 karakter, tanpa simbol/emoji.</p>
+        <input type="text" id="reg-name" placeholder="Masukkan nama..." maxlength="15" autocomplete="off">
+        <button class="modal-btn" id="reg-submit-btn">Daftar</button>
+    </div>
+
+    <!-- TIC TAC TOE MODAL -->
+    <div class="modal" id="tttModal" style="width:min(360px,95vw);max-height:90vh;overflow-y:auto;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:1rem;">❌⭕ Tic-tac-toe</h3>
+            <button onclick="closeTTT()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div id="ttt-status" style="text-align:center;font-size:0.85rem;color:#9d50bb;margin-bottom:10px;font-weight:600;">Giliran kamu (✕)</div>
+        <div id="ttt-board" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;"></div>
+        <div style="display:flex;gap:8px;">
+            <button class="modal-btn" onclick="resetTTT()" style="font-size:0.85rem;padding:10px;">🔄 Ulang</button>
+        </div>
+        <div id="ttt-score" style="text-align:center;font-size:0.78rem;color:#666;margin-top:10px;"></div>
+    </div>
+
+    <!-- SNAKE GAME MODAL -->
+    <div class="modal" id="snakeModal" style="width:min(380px,97vw);max-height:97vh;overflow:hidden;padding:16px 14px 14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <h3 style="font-size:1rem;">🐍 Ular</h3>
+            <button onclick="closeSnake()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div style="font-size:0.82rem;color:#9d50bb;font-weight:700;">💵 Rp<span id="snake-earned">0</span></div>
+            <div id="snake-status" style="font-size:0.8rem;color:#666;font-weight:600;text-align:center;"></div>
+            <div style="font-size:0.82rem;color:#50bb9d;font-weight:700;">🍎 <span id="snake-count">0</span></div>
+        </div>
+        <canvas id="snakeCanvas" style="display:block;margin:0 auto;border-radius:10px;border:1.5px solid #2a2a2a;background:#0a0a0a;touch-action:none;"></canvas>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:12px;">
+            <button class="dpad-btn" id="dpad-up">▲</button>
+            <div style="display:flex;gap:4px;">
+                <button class="dpad-btn" id="dpad-left">◀</button>
+                <div style="width:44px;height:44px;"></div>
+                <button class="dpad-btn" id="dpad-right">▶</button>
+            </div>
+            <button class="dpad-btn" id="dpad-down">▼</button>
+        </div>
+    </div>
+
+    <!-- SLOT MACHINE MODAL -->
+    <div class="modal" id="slotModal" style="width:min(340px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">🎰 Mesin Slot</h3>
+            <button onclick="closeSlot()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:14px;">
+            <div style="font-size:0.8rem;color:#666;margin-bottom:6px;">Saldo kamu</div>
+            <div id="slot-balance" style="font-size:1.3rem;font-weight:800;color:#9d50bb;">Rp0</div>
+        </div>
+        <div id="slot-reels" style="display:flex;justify-content:center;gap:10px;margin-bottom:16px;">
+            <div class="slot-reel" id="reel-0">🍋</div>
+            <div class="slot-reel" id="reel-1">🍋</div>
+            <div class="slot-reel" id="reel-2">🍋</div>
+        </div>
+        <div id="slot-result" style="text-align:center;min-height:28px;font-size:0.9rem;font-weight:700;margin-bottom:14px;color:#9d50bb;"></div>
+        <div style="margin-bottom:12px;">
+            <label style="font-size:0.8rem;color:#888;display:block;margin-bottom:6px;">Taruhan (min. Rp5.000)</label>
+            <input type="number" id="slot-bet" placeholder="Rp5.000" min="5000" step="1000"
+                style="width:100%;padding:11px 14px;background:#111;border:1px solid #333;border-radius:10px;color:white;font-size:1rem;outline:none;font-family:inherit;">
+        </div>
+        <button class="modal-btn" id="slot-spin-btn" onclick="spinSlot()" style="font-size:1rem;">🎰 Putar</button>
+    </div>
+
+    <!-- TOKO BUAH MODAL -->
+    <div class="modal" id="fruitShopModal" style="width:min(340px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">🍎 Toko Buah</h3>
+            <button onclick="closeFruitShop()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:14px;">
+            <div style="font-size:0.78rem;color:#666;margin-bottom:4px;">Saldo kamu</div>
+            <div id="fruit-balance" style="font-size:1.2rem;font-weight:800;color:#9d50bb;">Rp0</div>
+        </div>
+        <p style="font-size:0.78rem;color:#888;margin-bottom:14px;text-align:center;">Upgrade makanan ular untuk menambah pendapatan per makan.</p>
+        <div id="fruit-shop-items" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+
+    <!-- FISHING GAME MODAL -->
+    <div class="modal" id="fishingModal" style="width:min(340px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">🎣 Memancing</h3>
+            <button onclick="closeFishing()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;">
+            <div id="fishing-balance" style="font-size:1.1rem;font-weight:800;color:#9d50bb;">Rp0</div>
+            <div id="fishing-attempts" style="font-size:0.78rem;color:#666;margin-top:4px;">Umpan: -</div>
+        </div>
+        <div id="fishing-status" style="text-align:center;font-size:0.85rem;color:#888;margin-bottom:12px;min-height:24px;"></div>
+        <!-- Water grid -->
+        <div id="fishing-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;"></div>
+        <!-- Caught fish display -->
+        <div id="fishing-catch-area" style="display:none;text-align:center;padding:14px;background:rgba(157,80,187,0.1);border:1px solid rgba(157,80,187,0.3);border-radius:12px;margin-bottom:14px;">
+            <div id="fishing-catch-emoji" style="font-size:2.5rem;margin-bottom:6px;"></div>
+            <div id="fishing-catch-name" style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px;"></div>
+            <div id="fishing-catch-price" style="font-size:0.85rem;color:#9d50bb;margin-bottom:12px;"></div>
+            <div style="display:flex;gap:8px;justify-content:center;">
+                <button id="fishing-save-btn" onclick="saveFishToInventory()" style="
+                    background:rgba(157,80,187,0.2);border:1px solid rgba(157,80,187,0.5);border-radius:10px;
+                    color:#c07de8;font-weight:bold;font-size:0.85rem;padding:10px 16px;cursor:pointer;
+                ">💾 Simpan</button>
+                <button id="fishing-sell-btn" onclick="sellFish()" style="
+                    background:linear-gradient(135deg,#6e48aa,#9d50bb);border:none;border-radius:10px;
+                    color:white;font-weight:bold;font-size:0.85rem;padding:10px 16px;cursor:pointer;
+                ">💰 Jual Ikan</button>
+            </div>
+        </div>
+        <div style="font-size:0.72rem;color:#555;text-align:center;">Beli umpan di Toko > Toko Umpan untuk memancing</div>
+    </div>
+
+    <!-- INVENTORY MODAL -->
+    <div class="modal" id="inventoryModal" style="width:min(360px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">🎒 Inventory</h3>
+            <button onclick="closeInventory()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div id="inventory-content" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+
+    <!-- TOKO UMPAN MODAL -->
+    <div class="modal" id="baitShopModal" style="width:min(340px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">🪱 Toko Umpan</h3>
+            <button onclick="closeBaitShop()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:14px;">
+            <div style="font-size:0.78rem;color:#666;margin-bottom:4px;">Saldo kamu</div>
+            <div id="bait-balance" style="font-size:1.2rem;font-weight:800;color:#9d50bb;">Rp0</div>
+        </div>
+        <p style="font-size:0.78rem;color:#888;margin-bottom:14px;text-align:center;">Beli umpan untuk memancing ikan!</p>
+        <div id="bait-shop-items" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <div style="margin-top:14px;padding:10px;background:rgba(157,80,187,0.08);border-radius:10px;border:1px solid rgba(157,80,187,0.2);">
+            <div style="font-size:0.78rem;color:#888;text-align:center;">Umpan kamu sekarang</div>
+            <div id="bait-current-stock" style="text-align:center;margin-top:6px;font-size:0.9rem;color:#c07de8;font-weight:700;"></div>
+        </div>
+    </div>
+
+    <!-- TEBAK BUAH BOM MODAL -->
+    <div class="modal" id="tebakBuahBomModal" style="width:min(360px,95vw);max-height:92vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:1rem;">🍎💣 Tebak Buah</h3>
+            <button onclick="closeTebakBuahBom()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;">
+            <div style="font-size:0.78rem;color:#666;margin-bottom:4px;">Saldo kamu</div>
+            <div id="tbb-balance" style="font-size:1.2rem;font-weight:800;color:#9d50bb;">Rp0</div>
+        </div>
+        <p style="font-size:0.8rem;color:#888;text-align:center;margin-bottom:6px;">Pilih petak yang berisi buah! Hindari <b style="color:#f44336;">💣 Bom</b>.<br><span style="font-size:0.75rem;color:#666;">1 buah = <b style="color:#9d50bb;">+Rp500 & +15XP</b> · 1 bom = game over!</span></p>
+        <div id="tbb-status" style="text-align:center;font-size:0.85rem;font-weight:700;color:#9d50bb;min-height:24px;margin-bottom:10px;"></div>
+        <div id="tbb-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;"></div>
+        <div id="tbb-result-area" style="display:none;text-align:center;margin-bottom:12px;padding:12px;border-radius:12px;border:1px solid rgba(157,80,187,0.3);background:rgba(157,80,187,0.08);">
+            <div id="tbb-result-emoji" style="font-size:2rem;margin-bottom:6px;"></div>
+            <div id="tbb-result-text" style="font-size:0.9rem;font-weight:700;color:#fff;"></div>
+            <div id="tbb-result-sub" style="font-size:0.78rem;color:#888;margin-top:4px;"></div>
+        </div>
+        <button class="modal-btn" id="tbb-play-btn" onclick="startTebakBuahBom()" style="font-size:0.95rem;">🍎 Main Lagi</button>
+    </div>
+
+    <style>
+        .tbb-cell {
+            background: linear-gradient(135deg, #1a0f2e, #2a1b3d);
+            border: 2px solid #4a2b6d;
+            border-radius: 14px;
+            font-size: 2rem;
+            height: 76px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            position: relative;
+        }
+        .tbb-cell:active { transform: scale(0.92); background: rgba(157,80,187,0.3); }
+        .tbb-cell.revealed-fruit {
+            background: linear-gradient(135deg, #1a3a1a, #2a5a2a);
+            border-color: #4caf50;
+            cursor: default;
+            pointer-events: none;
+        }
+        .tbb-cell.revealed-bomb {
+            background: linear-gradient(135deg, #3a0a0a, #5a1a1a);
+            border-color: #f44336;
+            cursor: default;
+            pointer-events: none;
+            animation: bombShake 0.4s ease;
+        }
+        .tbb-cell.disabled {
+            opacity: 0.45; cursor: default; pointer-events: none;
+        }
+        @keyframes bombShake {
+            0%,100% { transform: translateX(0); }
+            20% { transform: translateX(-6px) rotate(-3deg); }
+            40% { transform: translateX(6px) rotate(3deg); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        .tbb-cell.pulse-win {
+            animation: tbbPulseWin 0.5s ease;
+        }
+        @keyframes tbbPulseWin {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); border-color: #4caf50; box-shadow: 0 0 14px rgba(76,175,80,0.5); }
+            100% { transform: scale(1); }
+        }
+    </style>
+
+    <style>
+        .water-cell {
+            background: linear-gradient(135deg, #0a2a4a, #0d3a5a);
+            border: 2px solid #1a5a8a;
+            border-radius: 12px;
+            font-size: 2rem;
+            height: 72px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .water-cell:active { transform: scale(0.92); background: rgba(157,80,187,0.25); }
+        .water-cell.used { opacity: 0.35; cursor: default; pointer-events: none; }
+        .water-cell.ripple { animation: rippleAnim 0.4s ease; }
+        @keyframes rippleAnim {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); border-color: rgba(157,80,187,0.8); }
+            100% { transform: scale(1); }
+        }
+        .slot-reel {
+            width: 72px; height: 72px;
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem;
+            transition: transform 0.1s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+        .slot-reel.spinning {
+            animation: reelSpin 0.12s linear infinite;
+        }
+        @keyframes reelSpin {
+            0% { transform: scaleY(1); }
+            50% { transform: scaleY(0.85); }
+            100% { transform: scaleY(1); }
+        }
+        .fruit-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 12px 14px;
+            gap: 10px;
+        }
+        .fruit-item.owned {
+            border-color: rgba(157,80,187,0.4);
+            background: rgba(157,80,187,0.08);
+        }
+        .fruit-buy-btn {
+            background: var(--accent-gradient);
+            border: none; border-radius: 8px;
+            color: white; font-weight: 700; font-size: 0.82rem;
+            padding: 8px 14px; cursor: pointer; white-space: nowrap;
+            min-height: 36px;
+        }
+        .fruit-buy-btn:disabled {
+            background: #2a2a2a; color: #555; cursor: default;
+        }
+    </style>
+
+    <script>
+        // ===========================
+        // TIC TAC TOE GAME
+        // ===========================
+        let tttBoard = Array(9).fill('');
+        let tttPlayerTurn = true;
+        let tttGameOver = false;
+        let tttWins = 0, tttLosses = 0, tttDraws = 0;
+        let gamesOpen = false;
+
+        const winLines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+        function openTTT() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('tttModal').classList.add('active');
+            renderTTT();
+        }
+
+        function closeTTT() {
+            document.getElementById('tttModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function resetTTT() {
+            tttBoard = Array(9).fill('');
+            tttPlayerTurn = true;
+            tttGameOver = false;
+            document.getElementById('ttt-status').textContent = 'Giliran kamu (✕)';
+            document.getElementById('ttt-status').style.color = '#9d50bb';
+            renderTTT();
+        }
+
+        function renderTTT() {
+            const board = document.getElementById('ttt-board');
+            board.innerHTML = '';
+            tttBoard.forEach((cell, i) => {
+                const btn = document.createElement('button');
+                btn.textContent = cell;
+                btn.style.cssText = `
+                    background:${cell === 'X' ? 'rgba(157,80,187,0.2)' : cell === 'O' ? 'rgba(80,187,157,0.15)' : '#111'};
+                    border:2px solid ${cell ? (cell==='X'?'#9d50bb':'#50bb9d') : '#333'};
+                    border-radius:12px;aspect-ratio:1;font-size:2rem;color:${cell==='X'?'#c07de8':'#50bb9d'};
+                    cursor:${(!cell && !tttGameOver) ? 'pointer':'default'};
+                    transition:all 0.15s;font-weight:900;min-height:70px;
+                `;
+                if (!cell && !tttGameOver) {
+                    btn.addEventListener('click', () => tttMove(i));
+                    btn.addEventListener('mouseover', () => btn.style.background = 'rgba(157,80,187,0.12)');
+                    btn.addEventListener('mouseout', () => btn.style.background = '#111');
+                }
+                board.appendChild(btn);
+            });
+            updateTTTScore();
+        }
+
+        function updateTTTScore() {
+            document.getElementById('ttt-score').textContent = `✕ Menang: ${tttWins} | 🤝 Seri: ${tttDraws} | ⭕ Kalah: ${tttLosses}`;
+        }
+
+        function checkWinner(b) {
+            for (let [a,c,d] of winLines) {
+                if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+            }
+            return b.every(c=>c) ? 'draw' : null;
+        }
+
+        function tttMove(i) {
+            if (!tttPlayerTurn || tttGameOver || tttBoard[i]) return;
+            tttBoard[i] = 'X';
+            tttPlayerTurn = false;
+            renderTTT();
+
+            const w = checkWinner(tttBoard);
+            if (w) {
+                handleTTTEnd(w);
+                return;
+            }
+
+            document.getElementById('ttt-status').textContent = 'Bot sedang berpikir...';
+            document.getElementById('ttt-status').style.color = '#666';
+
+            setTimeout(() => {
+                botMove();
+                renderTTT();
+                const w2 = checkWinner(tttBoard);
+                if (w2) {
+                    handleTTTEnd(w2);
+                } else {
+                    tttPlayerTurn = true;
+                    document.getElementById('ttt-status').textContent = 'Giliran kamu (✕)';
+                    document.getElementById('ttt-status').style.color = '#9d50bb';
+                }
+            }, 600);
+        }
+
+        function botMove() {
+            // Bot mode: kadang optimal, kadang random (sedang)
+            const rand = Math.random();
+
+            // 60% optimal (minimax), 40% semi-random
+            if (rand < 0.6) {
+                const best = minimax(tttBoard, 'O', 0);
+                tttBoard[best.idx] = 'O';
+            } else {
+                // Try to win or block, else random
+                const move = findWinOrBlock('O') ?? findWinOrBlock('X') ?? randomMove();
+                tttBoard[move] = 'O';
+            }
+        }
+
+        function findWinOrBlock(mark) {
+            for (let [a,b,c] of winLines) {
+                const line = [tttBoard[a], tttBoard[b], tttBoard[c]];
+                if (line.filter(x=>x===mark).length === 2 && line.includes('')) {
+                    const idx = [a,b,c][line.indexOf('')];
+                    return idx;
+                }
+            }
+            return null;
+        }
+
+        function randomMove() {
+            const empty = tttBoard.map((v,i)=>v?-1:i).filter(i=>i>=0);
+            return empty[Math.floor(Math.random()*empty.length)];
+        }
+
+        function minimax(board, mark, depth) {
+            const result = checkWinner(board);
+            if (result === 'O') return {score: 10 - depth};
+            if (result === 'X') return {score: depth - 10};
+            if (result === 'draw') return {score: 0};
+
+            const moves = board.map((v,i)=>v?-1:i).filter(i=>i>=0);
+            let best = mark==='O' ? {score:-Infinity,idx:-1} : {score:Infinity,idx:-1};
+
+            for (let i of moves) {
+                board[i] = mark;
+                const s = minimax(board, mark==='O'?'X':'O', depth+1).score;
+                board[i] = '';
+                if (mark==='O' ? s > best.score : s < best.score) best = {score:s, idx:i};
+            }
+            return best;
+        }
+
+        function handleTTTEnd(result) {
+            tttGameOver = true;
+            const status = document.getElementById('ttt-status');
+            if (result === 'X') {
+                tttWins++;
+                status.textContent = '🎉 Kamu Menang!';
+                status.style.color = '#4caf50';
+                // Tambah saldo & XP
+                userData.balance += 500;
+                saveData();
+                if (typeof addXP === 'function') addXP(80, 'Menang TTT');
+                // Notif di chat
+                setTimeout(() => {
+                    addMessage(`💵 <b>+Rp500</b> & ⚡ <b>+80 XP</b> ditambahkan karena menang Tic-tac-toe! Saldo: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`, 'system');
+                }, 800);
+                playSound('receive');
+            } else if (result === 'O') {
+                tttLosses++;
+                status.textContent = '😢 Bot Menang! Coba lagi!';
+                status.style.color = '#f44336';
+            } else {
+                tttDraws++;
+                status.textContent = '🤝 Seri!';
+                status.style.color = '#ff9800';
+            }
+            renderTTT();
+        }
+    </script>
+
+    <script>
+        // ===========================
+        // WEB AUDIO SOUND ENGINE
+        // ===========================
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) audioCtx = new AudioCtx();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            try {
+                const ctx = getAudioCtx();
+                const now = ctx.currentTime;
+
+                if (type === 'btn') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, now);
+                    osc.frequency.exponentialRampToValueAtTime(660, now + 0.06);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+
+                } else if (type === 'send') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(700, now);
+                    osc.frequency.exponentialRampToValueAtTime(300, now + 0.18);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+
+                } else if (type === 'receive') {
+                    [0, 0.1].forEach((delay, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.type = 'sine';
+                        osc.frequency.value = i === 0 ? 520 : 660;
+                        gain.gain.setValueAtTime(0.12, now + delay);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.12);
+                        osc.start(now + delay);
+                        osc.stop(now + delay + 0.15);
+                    });
+                }
+            } catch(e) {}
+        }
+
+        document.addEventListener('touchstart', getAudioCtx, { once: true });
+        document.addEventListener('mousedown', getAudioCtx, { once: true });
+
+        // ===========================
+        // STATE & STORAGE (IndexedDB)
+        // ===========================
+
+        // ---- IndexedDB Setup ----
+        const DB_NAME = 'mvis_db';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'kv_store';
+        let _db = null;
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                if (_db) { resolve(_db); return; }
+                const req = indexedDB.open(DB_NAME, DB_VERSION);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                req.onsuccess = (e) => { _db = e.target.result; resolve(_db); };
+                req.onerror = (e) => reject(e);
+            });
+        }
+
+        function idbGet(key) {
+            return openDB().then(db => new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const req = tx.objectStore(STORE_NAME).get(key);
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = (e) => reject(e);
+            }));
+        }
+
+        function idbSet(key, value) {
+            return openDB().then(db => new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const req = tx.objectStore(STORE_NAME).put(value, key);
+                req.onsuccess = () => resolve();
+                req.onerror = (e) => reject(e);
+            }));
+        }
+
+        // ---- Migrate from localStorage to IndexedDB (one-time) ----
+        async function migrateFromLocalStorage() {
+            const keys = ['mvis_data', 'mvis_recent_actions', 'mvis_absen_date'];
+            for (const k of keys) {
+                const val = localStorage.getItem(k);
+                if (val !== null) {
+                    const existing = await idbGet(k);
+                    if (existing === undefined) {
+                        // Parse JSON if applicable
+                        let stored = val;
+                        try { stored = JSON.parse(val); } catch(e) { stored = val; }
+                        await idbSet(k, stored);
+                    }
+                    localStorage.removeItem(k);
+                }
+            }
+        }
+
+        // ---- userData with defaults ----
+        let userData = {
+            name: null,
+            id: 'MV-' + Math.floor(1000 + Math.random() * 9000),
+            balance: 0,
+            level: 1,
+            xp: 0,
+            snakeFood: '🍎',
+            snakeFoodBonus: 50,
+            purchasedFruits: [],
+            inventory: [],
+            bait: { grasshopper: 0, worm: 0 }
+        };
+
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+
+        function saveData() {
+            idbSet('mvis_data', userData).catch(e => console.error('saveData error:', e));
+        }
+
+        // ---- Init: load all data from IndexedDB then start app ----
+        async function initAppData() {
+            await migrateFromLocalStorage();
+
+            const saved = await idbGet('mvis_data');
+            if (saved) {
+                userData = saved;
+            }
+            // Backward compat
+            if (!userData.snakeFood) userData.snakeFood = '🍎';
+            if (!userData.snakeFoodBonus) userData.snakeFoodBonus = 50;
+            if (!userData.purchasedFruits) userData.purchasedFruits = [];
+            if (!userData.inventory) userData.inventory = [];
+            if (!userData.bait) userData.bait = { grasshopper: 0, worm: 0 };
+
+            // Boot app after data is ready
+            bootApp();
+        }
+
+        // ===========================
+        // CHAT FUNCTIONS
+        // ===========================
+        function addMessage(text, type = 'me') {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message msg-${type}`;
+            msgDiv.innerHTML = `${text}<span class="time">${timeStr}</span>`;
+
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            if (type === 'system') playSound('receive');
+        }
+
+        function showTypingIndicator() {
+            const indicator = document.createElement('div');
+            indicator.className = 'message msg-system typing-indicator';
+            indicator.id = 'typing-indicator';
+            indicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            chatContainer.appendChild(indicator);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (text === "") return;
+
+            playSound('send');
+            addMessage(text, 'me');
+            messageInput.value = "";
+
+            // Check if Tebak Kata game is active first
+            if (typeof tebakKataActive !== 'undefined' && tebakKataActive) {
+                checkTebakKata(text);
+                return;
+            }
+            if (typeof tebakMakananActive !== 'undefined' && tebakMakananActive) {
+                checkTebakGeneric('makanan', text);
+                return;
+            }
+            if (typeof tebakLaguActive !== 'undefined' && tebakLaguActive) {
+                checkTebakGeneric('lagu', text);
+                return;
+            }
+            if (typeof tebakBuahActive !== 'undefined' && tebakBuahActive) {
+                checkTebakGeneric('buah', text);
+                return;
+            }
+            if (typeof tebakBenderaActive !== 'undefined' && tebakBenderaActive) {
+                checkTebakGeneric('bendera', text);
+                return;
+            }
+
+            const cmd = text.toLowerCase();
+            if (cmd === ".me") {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    showBotProfile();
+                }, 700);
+            } else if (cmd === "registrasi") {
+                setTimeout(openRegModal, 400);
+            } else if (cmd === "tebak kata" || cmd === "tebakkata") {
+                setTimeout(() => startTebakKata(), 400);
+            } else {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`Perintah tidak dikenali. Ketik <b>.me</b> untuk profil atau <b>registrasi</b> untuk daftar.`, 'system');
+                }, 800);
+            }
+        }
+
+        function showBotProfile() {
+            if (!userData.name) {
+                addMessage("Silahkan registrasi terlebih dahulu untuk melihat profil.", "system");
+                return;
+            }
+            const xpPct = Math.min(100, Math.round((userData.xp / (userData.level * 100)) * 100));
+            const profileHTML = `
+                <b>「 USER PROFILE 」</b>
+                <div class="profile-card-wrap">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-name">${userData.name}</div>
+                    <div class="profile-id">🆔 ${userData.id}</div>
+                    <div class="profile-divider"></div>
+                    <div class="profile-row">
+                        <span class="label">💵 Saldo</span>
+                        <span class="value">Rp${userData.balance.toLocaleString('id-ID')}</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="label">📊 Level</span>
+                        <span class="value"><span class="profile-badge">Lv.${userData.level}</span></span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="label">⚡ XP</span>
+                        <span class="value">${userData.xp} XP</span>
+                    </div>
+                </div>
+            `;
+            addMessage(profileHTML, 'system');
+        }
+
+        // ===========================
+        // CEK FUNCTIONS
+        // ===========================
+        function getEmoji(pct) {
+            if (pct >= 90) return '🔥';
+            if (pct >= 75) return '⭐';
+            if (pct >= 50) return '😊';
+            if (pct >= 30) return '🙂';
+            return '😐';
+        }
+
+        // Bank kalimat CEK — dipilih acak berdasarkan seed
+        const cekNotes = {
+            ganteng: {
+                tier4: [
+                    'Duh, ganteng banget! Semua orang nengok kamu!',
+                    'Cakep level dewa, auto jadi pusat perhatian!',
+                    'Wah, tampang sultan! Susah dicari tandingannya!',
+                    'Ganteng banget, kalau masuk TV pasti langsung viral!',
+                    'Auto di-DM orang! Ketampanan kamu di atas rata-rata!'
+                ],
+                tier3: [
+                    'Ganteng poll, auto dapat perhatian di mana-mana!',
+                    'Ketampanan kamu solid, banyak yang diam-diam suka!',
+                    'Tampang oke, aura kamu positif banget!',
+                    'Lumayan cakep, tinggal sedikit usaha lagi jadi top!',
+                    'Ganteng iya, tapi kalau senyum lebih ganteng lagi!'
+                ],
+                tier2: [
+                    'Lumayan ganteng, terus jaga penampilan ya!',
+                    'Potensi ganteng ada, tinggal dimaksimalkan!',
+                    'Ganteng di atas rata-rata, keep it up!',
+                    'Penampilanmu oke, yang penting pede!',
+                    'Cukup ganteng, tinggal tambahin karisma!'
+                ],
+                tier1: [
+                    'Masih ada potensi ganteng yang belum tergali nih!',
+                    'Gantengnya masih tersembunyi, saatnya shine!',
+                    'Percaya diri dulu, itu bikin tambah ganteng!',
+                    'Proses jadi ganteng itu butuh waktu, santai aja!',
+                    'Belum maksimal, tapi inner charm kamu ada!'
+                ],
+                tier0: [
+                    'Yang penting hati ganteng, bro!',
+                    'Ganteng di luar itu bonus, ganteng di hati yang utama!',
+                    'Jangan patah semangat, inner beauty itu nyata!',
+                    'Penampilan bisa diupgrade, semangat terus!',
+                    'Kepribadian baik > tampang, kamu udah di jalur yang benar!'
+                ]
+            },
+            cantik: {
+                tier4: [
+                    'MasyaAllah, cantiknya tiada duanya!',
+                    'Kecantikanmu bersinar banget, bak bintang!',
+                    'Cantik luar dalam, kamu beda dari yang lain!',
+                    'Glowing maksimal! Kecantikanmu bikin iri semua orang!',
+                    'Auto jadi pusat perhatian! Cantikmu terlalu nyata!'
+                ],
+                tier3: [
+                    'Cantik banget, bikin kagum siapa yang lihat!',
+                    'Aura cantikmu keluar banget, keep glowing!',
+                    'Cantik dan memesona, kombinasi sempurna!',
+                    'Pesona kamu kuat banget, banyak yang terpesona!',
+                    'Kecantikanmu natural dan tulus, terus jaga!'
+                ],
+                tier2: [
+                    'Lumayan cantik, percaya diri aja!',
+                    'Cantik oke, tinggal tambahin senyum manis!',
+                    'Kecantikanmu solid, yang penting pede!',
+                    'Manis dan anggun, terus poles penampilan!',
+                    'Cantiknya udah oke, dikit lagi sempurna!'
+                ],
+                tier1: [
+                    'Kecantikan itu ada di hatimu, percaya deh!',
+                    'Cantik butuh proses, kamu di jalur yang benar!',
+                    'Potensi cantikmu besar, tinggal dimaksimalkan!',
+                    'Belum maksimal, tapi aura baikmu terasa!',
+                    'Self-love dulu, kecantikan akan terpancar sendiri!'
+                ],
+                tier0: [
+                    'Inner beauty tetap yang utama!',
+                    'Cantik luar bisa diupgrade, tapi cantik hati yang abadi!',
+                    'Setiap orang punya kecantikannya sendiri, termasuk kamu!',
+                    'Jangan bandingkan diri, kamu unik dan berharga!',
+                    'Kepribadian indahmu adalah kecantikan sesungguhnya!'
+                ]
+            },
+            pintar: {
+                tier4: [
+                    'Jenius! IQ kamu off the charts!',
+                    'Otak encer banget! Kamu harusnya jadi ilmuwan!',
+                    'Brilliant! Masalah rumit pun mudah bagimu!',
+                    'Level kecerdasan kamu luar biasa, terus berkarya!',
+                    'Auto jadi referensi teman-teman karena paling pintar!'
+                ],
+                tier3: [
+                    'Pintar banget, solusi ada di mana-mana buat kamu!',
+                    'Otak tajam, kamu cepat paham hal baru!',
+                    'Kecerdasan kamu di atas rata-rata, salut!',
+                    'Belajar cepat, adaptif, dan kreatif — paket lengkap!',
+                    'Kamu pintar dan analitik, kombinasi yang langka!'
+                ],
+                tier2: [
+                    'Lumayan pintar, terus semangat belajar!',
+                    'Cukup cerdas, tinggal konsisten aja!',
+                    'Potensi intelektual kamu bagus, terus diasah!',
+                    'Pintar di bidang tertentu, fokusin itu!',
+                    'Otakmu oke, tinggal tambahin rajin baca!'
+                ],
+                tier1: [
+                    'Masih banyak ruang untuk berkembang, semangat!',
+                    'Kecerdasan itu dilatih, kamu bisa lebih baik!',
+                    'Proses belajar itu panjang, kamu ada di jalur yang benar!',
+                    'Belum maksimal, tapi potensi ada, terus gali!',
+                    'Rajin baca dan berlatih, otakmu pasti makin tajam!'
+                ],
+                tier0: [
+                    'Pintar itu bisa dilatih. Semangat terus!',
+                    'Jangan menyerah, kecerdasan berkembang dengan usaha!',
+                    'Mulai dari hal kecil, lama-lama jadi pintar!',
+                    'Pertanyaan yang bagus adalah tanda otak yang aktif!',
+                    'Kamu lebih pintar dari yang kamu kira, percayalah!'
+                ]
+            }
+        };
+
+        function getNote(type, pct) {
+            // Pilih tier berdasarkan persentase
+            let tier;
+            if (pct >= 90) tier = 'tier4';
+            else if (pct >= 75) tier = 'tier3';
+            else if (pct >= 50) tier = 'tier2';
+            else if (pct >= 30) tier = 'tier1';
+            else tier = 'tier0';
+
+            const pool = cekNotes[type][tier];
+            // Pilih acak berdasarkan seed (nama + jam + menit)
+            const now2 = new Date();
+            let seed2 = 0;
+            for (let c of (userData.name + type + tier + now2.getMinutes())) seed2 += c.charCodeAt(0);
+            return pool[seed2 % pool.length];
+        }
+
+        function doCek(type) {
+            playSound('btn');
+            closeAll();
+
+            if (!userData.name) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage("Silahkan registrasi terlebih dahulu sebelum cek.", "system");
+                }, 600);
+                return;
+            }
+
+            const label = type === 'ganteng' ? 'Ganteng' : type === 'cantik' ? 'Cantik' : 'Pintar';
+            const emoji = type === 'ganteng' ? '😎' : type === 'cantik' ? '💅' : '🧠';
+
+            // Seed based on name + type + current hour (changes every 1 hour)
+            const now2 = new Date();
+            const hourKey = now2.getFullYear() + '' + now2.getMonth() + '' + now2.getDate() + '' + now2.getHours();
+            let seed = 0;
+            for (let c of (userData.name + type + hourKey)) seed += c.charCodeAt(0);
+            const pct = ((seed * 137 + 42) % 71) + 25; // 25-95
+
+            const note = getNote(type, pct);
+            const emo = getEmoji(pct);
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message msg-system';
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+            msgDiv.innerHTML = `
+                <b>「 CEK ${label.toUpperCase()} 」</b>
+                <div class="cek-card">
+                    <div class="cek-title">${emoji} ${userData.name}</div>
+                    <div class="cek-bar-wrap">
+                        <div class="cek-bar" id="cek-bar-anim" style="width:0%"></div>
+                    </div>
+                    <div class="cek-percent" id="cek-pct-anim">0%</div>
+                    <div class="cek-note">${emo} ${note}</div>
+                </div>
+                <span class="time">${timeStr}</span>
+            `;
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                chatContainer.appendChild(msgDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                playSound('receive');
+
+                // Animate bar
+                setTimeout(() => {
+                    const bar = msgDiv.querySelector('#cek-bar-anim');
+                    const pctEl = msgDiv.querySelector('#cek-pct-anim');
+                    if (bar) bar.style.width = pct + '%';
+                    if (pctEl) {
+                        let cur = 0;
+                        const step = setInterval(() => {
+                            cur += 2;
+                            if (cur >= pct) { cur = pct; clearInterval(step); }
+                            pctEl.textContent = cur + '%';
+                        }, 20);
+                    }
+                }, 100);
+            }, 900);
+        }
+
+        // ===========================
+        // XP & LEVEL SYSTEM
+        // ===========================
+        function addXP(amount, reason) {
+            userData.xp += amount;
+            const xpNeeded = userData.level * 100;
+            let leveledUp = false;
+            while (userData.xp >= userData.level * 100) {
+                userData.xp -= userData.level * 100;
+                userData.level++;
+                leveledUp = true;
+            }
+            saveData();
+            if (leveledUp) {
+                setTimeout(() => {
+                    addMessage('🎊 <b>LEVEL UP!</b> Kamu sekarang <b>Level ' + userData.level + '</b>! Tetap semangat!', 'system');
+                }, 1000);
+            }
+        }
+
+        // ===========================
+        // MENU / SIDEBAR
+        // ===========================
+        let cekOpen = false;
+        let tokoOpen = false;
+
+        function toggleMenu() {
+            playSound('btn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('active');
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+            if (!sidebar.classList.contains('active')) {
+                // Reset cek submenu when closing sidebar
+                cekOpen = false;
+                gamesOpen = false;
+                tokoOpen = false;
+                document.getElementById('sub-menu-cek').classList.remove('active');
+                document.getElementById('cek-arrow').classList.remove('open');
+                document.getElementById('sub-menu-games').classList.remove('active');
+                document.getElementById('games-arrow').classList.remove('open');
+                document.getElementById('sub-menu-toko').classList.remove('active');
+                document.getElementById('toko-arrow').classList.remove('open');
+            }
+        }
+
+        function closeAll() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('regModal').classList.remove('active');
+            document.getElementById('tttModal').classList.remove('active');
+            document.getElementById('snakeModal').classList.remove('active');
+            document.getElementById('slotModal').classList.remove('active');
+            document.getElementById('fruitShopModal').classList.remove('active');
+            document.getElementById('fishingModal').classList.remove('active');
+            document.getElementById('inventoryModal').classList.remove('active');
+            document.getElementById('baitShopModal').classList.remove('active');
+            if (typeof stopSnake === 'function') stopSnake();
+            document.getElementById('overlay').style.display = 'none';
+            cekOpen = false;
+            gamesOpen = false;
+            tokoOpen = false;
+            document.getElementById('sub-menu-cek').classList.remove('active');
+            document.getElementById('cek-arrow').classList.remove('open');
+            document.getElementById('sub-menu-games').classList.remove('active');
+            document.getElementById('games-arrow').classList.remove('open');
+            document.getElementById('sub-menu-toko').classList.remove('active');
+            document.getElementById('toko-arrow').classList.remove('open');
+        }
+
+        function openRegModal() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('regModal').classList.add('active');
+            setTimeout(() => document.getElementById('reg-name').focus(), 300);
+        }
+
+        function handleRegistration() {
+            playSound('btn');
+            const rawName = document.getElementById('reg-name').value.trim();
+            const cleanName = rawName.replace(/[^a-zA-Z0-9 ]/g, "");
+
+            if (cleanName.length > 0 && cleanName.length <= 15) {
+                userData.name = cleanName;
+                saveData();
+                closeAll();
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`✅ Berhasil! Kamu sudah registrasi atas nama <b>${userData.name}</b>.`, 'system');
+                }, 600);
+            } else {
+                addMessage("❌ Nama tidak valid! Gunakan 1-15 karakter (huruf & angka saja).", 'system');
+                closeAll();
+            }
+        }
+
+        function menuAction(title) {
+            playSound('btn');
+            closeAll();
+            if (title === 'Profil') {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    showBotProfile();
+                }, 500);
+            } else if (title === 'Reg') {
+                setTimeout(openRegModal, 200);
+            } else {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`🚧 Fitur <b>${title}</b> akan segera hadir!`, 'system');
+                }, 600);
+            }
+        }
+
+        // ===========================
+        // EVENT LISTENERS
+        // ===========================
+        document.getElementById('menu-btn').addEventListener('click', toggleMenu);
+        document.getElementById('overlay').addEventListener('click', closeAll);
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        document.getElementById('absen-btn').addEventListener('click', doAbsen);
+        document.getElementById('reg-submit-btn').addEventListener('click', handleRegistration);
+
+        document.getElementById('menu-games').addEventListener('click', () => {
+            playSound('btn');
+            gamesOpen = !gamesOpen;
+            const sub = document.getElementById('sub-menu-games');
+            const arrow = document.getElementById('games-arrow');
+            if (gamesOpen) {
+                sub.classList.add('active');
+                arrow.classList.add('open');
+            } else {
+                sub.classList.remove('active');
+                arrow.classList.remove('open');
+            }
+        });
+        document.getElementById('menu-ttt').addEventListener('click', () => { openTTT(); trackQuickAction('ttt','❌⭕','TTT'); });
+        document.getElementById('menu-snake').addEventListener('click', () => { openSnake(); trackQuickAction('snake','🐍','Ular'); });
+        document.getElementById('menu-slot').addEventListener('click', () => { openSlot(); trackQuickAction('slot','🎰','Slot'); });
+        document.getElementById('menu-reg').addEventListener('click', () => { openRegModal(); trackQuickAction('reg','📝','Registrasi'); });
+        document.getElementById('menu-tebakkata').addEventListener('click', () => { closeAll(); startTebakKata(); trackQuickAction('tebakkata','🔤','Tebak Kata'); });
+        document.getElementById('menu-tebakmakanan').addEventListener('click', () => { closeAll(); startTebakMakanan(); trackQuickAction('tebakmakanan','🍜','Tebak Makanan'); });
+        document.getElementById('menu-tebaklagu').addEventListener('click', () => { closeAll(); startTebakLagu(); trackQuickAction('tebaklagu','🎵','Tebak Lagu'); });
+        document.getElementById('menu-tebakbuah').addEventListener('click', () => { closeAll(); startTebakBuah(); trackQuickAction('tebakbuah','🍎','Tebak Buah'); });
+        document.getElementById('menu-tebakbuahbom').addEventListener('click', () => { openTebakBuahBom(); trackQuickAction('tebakbuahbom','💣','Tebak Buah Bom'); });
+        document.getElementById('menu-tebakbendera').addEventListener('click', () => { closeAll(); startTebakBendera(); trackQuickAction('tebakbendera','🏳️','Tebak Bendera'); });
+
+        // CEK toggle submenu
+        document.getElementById('menu-cek').addEventListener('click', () => {
+            playSound('btn');
+            cekOpen = !cekOpen;
+            const sub = document.getElementById('sub-menu-cek');
+            const arrow = document.getElementById('cek-arrow');
+            if (cekOpen) {
+                sub.classList.add('active');
+                arrow.classList.add('open');
+            } else {
+                sub.classList.remove('active');
+                arrow.classList.remove('open');
+            }
+        });
+
+        document.getElementById('menu-cek-ganteng').addEventListener('click', () => { doCek('ganteng'); trackQuickAction('cek-ganteng','😎','Cek Ganteng'); });
+        document.getElementById('menu-cek-cantik').addEventListener('click', () => { doCek('cantik'); trackQuickAction('cek-cantik','💅','Cek Cantik'); });
+        document.getElementById('menu-cek-pintar').addEventListener('click', () => { doCek('pintar'); trackQuickAction('cek-pintar','🧠','Cek Pintar'); });
+
+        document.getElementById('menu-profil').addEventListener('click', () => { menuAction('Profil'); trackQuickAction('profil','👤','Profil'); });
+        
+        document.getElementById('menu-toko').addEventListener('click', () => {
+            playSound('btn');
+            tokoOpen = !tokoOpen;
+            const sub = document.getElementById('sub-menu-toko');
+            const arrow = document.getElementById('toko-arrow');
+            if (tokoOpen) {
+                sub.classList.add('active');
+                arrow.classList.add('open');
+            } else {
+                sub.classList.remove('active');
+                arrow.classList.remove('open');
+            }
+        });
+        document.getElementById('menu-toko-buah').addEventListener('click', () => { openFruitShop(); trackQuickAction('toko-buah','🍎','Toko Buah'); });
+        document.getElementById('menu-toko-umpan').addEventListener('click', () => { openBaitShop(); trackQuickAction('toko-umpan','🪱','Toko Umpan'); });
+        document.getElementById('menu-inventory').addEventListener('click', () => { openInventory(); trackQuickAction('inventory','🎒','Inventory'); });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
+
+        // ===========================
+        // QUICK ACTION BAR SYSTEM
+        // ===========================
+        // Default actions shown initially
+        const QB_DEFAULTS = [
+            { id: 'ttt',        icon: '❌⭕', label: 'TTT',        action: () => { openTTT(); } },
+            { id: 'snake',      icon: '🐍',  label: 'Ular',       action: () => { openSnake(); } },
+            { id: 'profil',     icon: '👤',  label: 'Profil',     action: () => { menuAction('Profil'); } },
+            { id: 'cek-ganteng',icon: '😎',  label: 'Ganteng',    action: () => { doCek('ganteng'); } }
+        ];
+
+        // Load recent actions from IndexedDB (max 4)
+        // Returns a Promise — internal callers are updated to handle async
+        function loadRecentActions() {
+            return idbGet('mvis_recent_actions').then(v => v || []).catch(() => []);
+        }
+
+        function saveRecentActions(arr) {
+            idbSet('mvis_recent_actions', arr).catch(e => console.error('saveRecentActions error:', e));
+        }
+
+        // Map of all known actions
+        const ALL_ACTIONS = {
+            'ttt':         { icon: '❌⭕', label: 'TTT',          action: () => openTTT() },
+            'snake':       { icon: '🐍',  label: 'Ular',         action: () => openSnake() },
+            'slot':        { icon: '🎰',  label: 'Slot',         action: () => openSlot() },
+            'profil':      { icon: '👤',  label: 'Profil',       action: () => menuAction('Profil') },
+            'reg':         { icon: '📝',  label: 'Registrasi',   action: () => openRegModal() },
+            'cek-ganteng': { icon: '😎',  label: 'Ganteng',      action: () => doCek('ganteng') },
+            'cek-cantik':  { icon: '💅',  label: 'Cantik',       action: () => doCek('cantik') },
+            'cek-pintar':  { icon: '🧠',  label: 'Pintar',       action: () => doCek('pintar') },
+            'toko':        { icon: '🛍️',  label: 'Toko',         action: () => {} },
+            'toko-buah':   { icon: '🍎',  label: 'Toko Buah',    action: () => openFruitShop() },
+            'toko-umpan':  { icon: '🪱',  label: 'Toko Umpan',   action: () => openBaitShop() },
+            'inventory':   { icon: '🎒',  label: 'Inventory',    action: () => openInventory() },
+            'tebakmakanan':{ icon: '🍜',  label: 'Tebak Makanan',action: () => startTebakMakanan() },
+            'tebaklagu':   { icon: '🎵',  label: 'Tebak Lagu',   action: () => startTebakLagu() },
+            'tebakbuah':   { icon: '🍎',  label: 'Tebak Buah',   action: () => startTebakBuah() },
+            'tebakbuahbom':{ icon: '💣',  label: 'Tebak Buah Bom',action: () => openTebakBuahBom() },
+            'tebakbendera':{ icon: '🏳️', label: 'Tebak Bendera',action: () => startTebakBendera() }
+        };
+
+        async function trackQuickAction(id, icon, label) {
+            let recent = await loadRecentActions();
+            // Remove if already exists
+            recent = recent.filter(a => a.id !== id);
+            // Prepend
+            recent.unshift({ id, icon, label });
+            // Keep only last 4
+            if (recent.length > 4) recent = recent.slice(0, 4);
+            saveRecentActions(recent);
+            renderQuickBar();
+        }
+
+        async function renderQuickBar() {
+            const bar = document.getElementById('quick-bar');
+            if (!bar) return;
+            bar.innerHTML = '';
+
+            let recent = await loadRecentActions();
+            // If less than 4, fill with defaults
+            const defaults = QB_DEFAULTS.map(d => d.id);
+            for (const def of QB_DEFAULTS) {
+                if (recent.length >= 4) break;
+                if (!recent.find(r => r.id === def.id)) {
+                    recent.push({ id: def.id, icon: def.icon, label: def.label });
+                }
+            }
+            recent.slice(0, 4).forEach(item => {
+                const act = ALL_ACTIONS[item.id];
+                if (!act) return;
+                const btn = document.createElement('button');
+                btn.className = 'quick-bar-btn';
+                btn.innerHTML = '<span class="qb-icon">' + item.icon + '</span><span class="qb-label">' + item.label + '</span>';
+                btn.addEventListener('click', () => {
+                    playSound('btn');
+                    // Highlight briefly
+                    document.querySelectorAll('.quick-bar-btn').forEach(b => b.classList.remove('qb-active'));
+                    btn.classList.add('qb-active');
+                    setTimeout(() => btn.classList.remove('qb-active'), 400);
+                    act.action();
+                });
+                bar.appendChild(btn);
+            });
+        }
+
+        // ===========================
+        // ABSEN HARIAN
+        // ===========================
+        async function doAbsen() {
+            playSound('btn');
+            const todayKey = new Date().toDateString();
+            const lastAbsen = await idbGet('mvis_absen_date');
+
+            if (lastAbsen === todayKey) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage('⏳ Kamu sudah absen hari ini! Coba lagi besok ya.', 'system');
+                }, 400);
+                return;
+            }
+
+            // Probabilities: Rp250 = 60%, Rp500 = 30%, Rp1500 = 10%
+            const roll = Math.random();
+            let hadiah;
+            if (roll < 0.60) {
+                hadiah = 250;
+            } else if (roll < 0.90) {
+                hadiah = 500;
+            } else {
+                hadiah = 1500;
+            }
+
+            await idbSet('mvis_absen_date', todayKey);
+            userData.balance += hadiah;
+            addXP(10, 'Absen harian');
+            saveData();
+
+            // Update tombol tampilan
+            const btn = document.getElementById('absen-btn');
+            btn.textContent = '☑';
+            btn.classList.add('absen-done');
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                const jarang = hadiah === 1500 ? ' 🎊 <b>JACKPOT LANGKA!</b>' : '';
+                addMessage(
+                    '📋 Pemain berhasil absen dan mendapatkan hadiah <b>💵 +Rp' + hadiah.toLocaleString('id-ID') + '</b>!' + jarang +
+                    '<br><span style="font-size:0.8rem;color:#888;">Saldo sekarang: Rp' + userData.balance.toLocaleString('id-ID') + ' · Absen reset besok</span>',
+                    'system'
+                );
+            }, 500);
+        }
+
+        async function initAbsenState() {
+            const todayKey = new Date().toDateString();
+            const lastAbsen = await idbGet('mvis_absen_date');
+            if (lastAbsen === todayKey) {
+                const btn = document.getElementById('absen-btn');
+                if (btn) {
+                    btn.textContent = '☑';
+                    btn.classList.add('absen-done');
+                }
+            }
+        }
+
+        // ===========================
+        // INIT
+        // ===========================
+        function bootApp() {
+            if (userData.name) {
+                addMessage(`Selamat datang kembali, <b>${userData.name}</b>! 👋`, 'system');
+            } else {
+                addMessage("Selamat datang di <b>M_Vis</b>! 🌟<br>Ketik <b>registrasi</b> atau buka menu untuk mendaftar.", 'system');
+            }
+            renderQuickBar();
+            initAbsenState();
+        }
+
+        window.addEventListener('load', () => {
+            initAppData().catch(e => {
+                console.error('initAppData error:', e);
+                // Fallback: boot with default userData
+                bootApp();
+            });
+        });
+    </script>
+
+    <script>
+        // ===========================
+        // SNAKE GAME
+        // ===========================
+        let snakeLoop = null;
+        let snakeState = null;
+
+        const CELL = 18;
+        const COLS = 16;
+        const ROWS = 16;
+
+        function initSnakeState() {
+            return {
+                snake: [{x:8,y:8},{x:7,y:8},{x:6,y:8}],
+                dir: {x:1, y:0},
+                nextDir: {x:1, y:0},
+                food: null,
+                earned: 0,
+                foodCount: 0,
+                gameOver: false
+            };
+        }
+
+        function placeFood(state) {
+            const occupied = new Set(state.snake.map(s => s.x+','+s.y));
+            let pos;
+            do {
+                pos = {x: Math.floor(Math.random()*COLS), y: Math.floor(Math.random()*ROWS)};
+            } while (occupied.has(pos.x+','+pos.y));
+            state.food = pos;
+        }
+
+        function snakeDir(dx, dy) {
+            if (!snakeState || snakeState.gameOver) return;
+            // Prevent reversing
+            if (snakeState.dir.x !== 0 && dx !== 0) return;
+            if (snakeState.dir.y !== 0 && dy !== 0) return;
+            snakeState.nextDir = {x: dx, y: dy};
+        }
+
+        function snakeTick() {
+            const s = snakeState;
+            if (!s || s.gameOver) return;
+
+            s.dir = s.nextDir;
+            const head = {x: s.snake[0].x + s.dir.x, y: s.snake[0].y + s.dir.y};
+
+            // Wall collision
+            if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+                endSnakeGame();
+                return;
+            }
+            // Self collision
+            if (s.snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+                endSnakeGame();
+                return;
+            }
+
+            s.snake.unshift(head);
+
+            // Eat food
+            if (head.x === s.food.x && head.y === s.food.y) {
+                const bonus = userData.snakeFoodBonus || 50;
+                s.earned += bonus;
+                s.foodCount++;
+                placeFood(s);
+                playSnakeEatSound();
+                // Add to user balance & XP
+                userData.balance += bonus;
+                addXP(10, 'Snake makan');
+                saveData();
+                document.getElementById('snake-earned').textContent = s.earned.toLocaleString('id-ID');
+                document.getElementById('snake-count').textContent = s.foodCount;
+            } else {
+                s.snake.pop();
+            }
+
+            drawSnake();
+        }
+
+        function endSnakeGame() {
+            snakeState.gameOver = true;
+            stopSnakeLoop();
+            drawSnake();
+            document.getElementById('snake-status').textContent = '💥 Nabrak! Mengulang...';
+            document.getElementById('snake-status').style.color = '#f44336';
+            // Notify chat if earned something
+            if (snakeState.earned > 0) {
+                setTimeout(() => {
+                    addMessage('🐍 Sesi Ular selesai! Kamu mendapat <b>💵 Rp' + snakeState.earned.toLocaleString('id-ID') + '</b>. Saldo sekarang: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+                }, 500);
+            }
+            // Auto restart
+            setTimeout(() => {
+                if (document.getElementById('snakeModal').classList.contains('active')) {
+                    startSnakeGame();
+                }
+            }, 1500);
+        }
+
+        function startSnakeGame() {
+            stopSnakeLoop();
+            snakeState = initSnakeState();
+            placeFood(snakeState);
+            document.getElementById('snake-earned').textContent = '0';
+            document.getElementById('snake-count').textContent = '0';
+            document.getElementById('snake-status').textContent = 'Go! 🐍';
+            document.getElementById('snake-status').style.color = '#9d50bb';
+            drawSnake();
+            snakeLoop = setInterval(snakeTick, 160);
+        }
+
+        function stopSnakeLoop() {
+            if (snakeLoop) { clearInterval(snakeLoop); snakeLoop = null; }
+        }
+
+        function stopSnake() {
+            stopSnakeLoop();
+            snakeState = null;
+        }
+
+        function drawSnake() {
+            const canvas = document.getElementById('snakeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const s = snakeState;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!s) return;
+
+            // Draw grid (subtle)
+            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= COLS; i++) {
+                ctx.beginPath(); ctx.moveTo(i*CELL,0); ctx.lineTo(i*CELL,ROWS*CELL); ctx.stroke();
+            }
+            for (let j = 0; j <= ROWS; j++) {
+                ctx.beginPath(); ctx.moveTo(0,j*CELL); ctx.lineTo(COLS*CELL,j*CELL); ctx.stroke();
+            }
+
+            // Draw food
+            if (s.food) {
+                const foodEmoji = userData.snakeFood || '🍎';
+                ctx.font = (CELL-2)+'px serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(foodEmoji, s.food.x*CELL + CELL/2, s.food.y*CELL + CELL/2);
+            }
+
+            // Draw snake
+            s.snake.forEach((seg, idx) => {
+                const isHead = idx === 0;
+                const alpha = isHead ? 1 : Math.max(0.4, 1 - idx * 0.04);
+                ctx.fillStyle = isHead ? '#9d50bb' : ('rgba(110,72,170,' + alpha + ')');
+                const pad = isHead ? 1 : 2;
+                const r = isHead ? 5 : 4;
+                const x = seg.x*CELL + pad;
+                const y = seg.y*CELL + pad;
+                const w = CELL - pad*2;
+                ctx.beginPath();
+                ctx.roundRect(x, y, w, w, r);
+                ctx.fill();
+            });
+
+            // Game over overlay
+            if (s.gameOver) {
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = '#f44336';
+                ctx.font = 'bold 20px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('💥 GAME OVER', canvas.width/2, canvas.height/2);
+            }
+        }
+
+        function playSnakeEatSound() {
+            try {
+                const ctx = getAudioCtx();
+                const now = ctx.currentTime;
+                [0, 0.08, 0.16].forEach((delay, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.type = 'sine';
+                    const freqs = [523, 659, 784];
+                    osc.frequency.setValueAtTime(freqs[i], now + delay);
+                    gain.gain.setValueAtTime(0.15, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.1);
+                    osc.start(now + delay);
+                    osc.stop(now + delay + 0.12);
+                });
+            } catch(e) {}
+        }
+
+        function openSnake() {
+            playSound('btn');
+            closeAll();
+            const canvas = document.getElementById('snakeCanvas');
+            canvas.width = COLS * CELL;
+            canvas.height = ROWS * CELL;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('snakeModal').classList.add('active');
+            startSnakeGame();
+            setupSnakeControls();
+        }
+
+        function closeSnake() {
+            document.getElementById('snakeModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+            const earnedNow = snakeState ? snakeState.earned : 0;
+            stopSnake();
+            if (earnedNow > 0) {
+                addMessage('🐍 Game Ular ditutup. Total dapat: <b>💵 Rp' + earnedNow.toLocaleString('id-ID') + '</b>. Saldo: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+            }
+        }
+
+        let snakeControlsSetup = false;
+        function setupSnakeControls() {
+            if (snakeControlsSetup) return;
+            snakeControlsSetup = true;
+
+            document.getElementById('dpad-up').addEventListener('click', () => snakeDir(0,-1));
+            document.getElementById('dpad-down').addEventListener('click', () => snakeDir(0,1));
+            document.getElementById('dpad-left').addEventListener('click', () => snakeDir(-1,0));
+            document.getElementById('dpad-right').addEventListener('click', () => snakeDir(1,0));
+
+            // Keyboard support
+            document.addEventListener('keydown', (e) => {
+                if (!document.getElementById('snakeModal').classList.contains('active')) return;
+                if (e.key === 'ArrowUp') snakeDir(0,-1);
+                else if (e.key === 'ArrowDown') snakeDir(0,1);
+                else if (e.key === 'ArrowLeft') snakeDir(-1,0);
+                else if (e.key === 'ArrowRight') snakeDir(1,0);
+            });
+
+            // Swipe support on canvas
+            const canvas = document.getElementById('snakeCanvas');
+            let touchStartX, touchStartY;
+            canvas.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, {passive:true});
+            canvas.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                const dy = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    snakeDir(dx > 0 ? 1 : -1, 0);
+                } else {
+                    snakeDir(0, dy > 0 ? 1 : -1);
+                }
+            }, {passive:true});
+        }
+    </script>
+
+    <script>
+        // ===========================
+        // SLOT MACHINE GAME
+        // ===========================
+        const SLOT_SYMBOLS = ['🍋','🍊','🍇','🍒','💎','⭐','🔔','7️⃣'];
+        let slotSpinning = false;
+
+        function openSlot() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('slotModal').classList.add('active');
+            updateSlotBalance();
+            document.getElementById('slot-result').textContent = '';
+            ['reel-0','reel-1','reel-2'].forEach(id => {
+                document.getElementById(id).textContent = SLOT_SYMBOLS[Math.floor(Math.random()*SLOT_SYMBOLS.length)];
+            });
+        }
+
+        function closeSlot() {
+            document.getElementById('slotModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function updateSlotBalance() {
+            const el = document.getElementById('slot-balance');
+            if (el) el.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+        }
+
+        function playSlotSpinSound() {
+            try {
+                const ctx = getAudioCtx();
+                const now = ctx.currentTime;
+                // Mechanical spin buzz
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(90, now + 1.4);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.linearRampToValueAtTime(0.02, now + 1.4);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+                osc.start(now); osc.stop(now + 1.5);
+                // Tick sounds
+                [0, 0.18, 0.36, 0.55, 0.75, 0.96, 1.18].forEach(t => {
+                    try {
+                        const ctx3 = getAudioCtx();
+                        const n = ctx3.currentTime + t;
+                        const o2 = ctx3.createOscillator();
+                        const g2 = ctx3.createGain();
+                        o2.connect(g2); g2.connect(ctx3.destination);
+                        o2.type = 'square'; o2.frequency.value = 800;
+                        g2.gain.setValueAtTime(0.07, n);
+                        g2.gain.exponentialRampToValueAtTime(0.001, n + 0.04);
+                        o2.start(n); o2.stop(n + 0.04);
+                    } catch(e) {}
+                });
+            } catch(e) {}
+        }
+
+        function spinSlot() {
+            if (slotSpinning) return;
+            const betInput = document.getElementById('slot-bet');
+            const bet = parseInt(betInput.value);
+
+            if (!bet || bet < 5000) {
+                document.getElementById('slot-result').style.color = '#f44336';
+                document.getElementById('slot-result').textContent = '❌ Minimal taruhan Rp5.000!';
+                return;
+            }
+            if (bet > userData.balance) {
+                document.getElementById('slot-result').style.color = '#f44336';
+                document.getElementById('slot-result').textContent = '❌ Saldo tidak cukup!';
+                return;
+            }
+
+            slotSpinning = true;
+            document.getElementById('slot-spin-btn').disabled = true;
+            document.getElementById('slot-result').textContent = '🎰 Memutar...';
+            document.getElementById('slot-result').style.color = '#888';
+
+            playSlotSpinSound();
+
+            // Deduct bet
+            userData.balance -= bet;
+            saveData();
+            updateSlotBalance();
+
+            // Spin animation
+            const reels = ['reel-0','reel-1','reel-2'];
+            reels.forEach(id => document.getElementById(id).classList.add('spinning'));
+
+            let intervals = reels.map((id, i) => {
+                return setInterval(() => {
+                    document.getElementById(id).textContent = SLOT_SYMBOLS[Math.floor(Math.random()*SLOT_SYMBOLS.length)];
+                }, 80);
+            });
+
+            // Stop reels one by one
+            const finalSymbols = [];
+            reels.forEach((id, i) => {
+                setTimeout(() => {
+                    clearInterval(intervals[i]);
+                    document.getElementById(id).classList.remove('spinning');
+                    const sym = SLOT_SYMBOLS[Math.floor(Math.random()*SLOT_SYMBOLS.length)];
+                    document.getElementById(id).textContent = sym;
+                    finalSymbols[i] = sym;
+
+                    if (i === 2) {
+                        // All stopped, check result
+                        setTimeout(() => resolveSlot(bet, finalSymbols), 300);
+                    }
+                }, 600 + i * 400);
+            });
+        }
+
+        function resolveSlot(bet, symbols) {
+            const resultEl = document.getElementById('slot-result');
+            let winMultiplier = 0;
+            let resultMsg = '';
+
+            const [a, b, c] = symbols;
+
+            if (a === b && b === c) {
+                // All 3 match — jackpot 100%
+                winMultiplier = 1.0;
+                resultMsg = '🎉 JACKPOT! +100%';
+            } else if (a === b || b === c || a === c) {
+                // 2 match — pick random prize
+                const roll = Math.random();
+                if (roll < 0.33) { winMultiplier = 0.25; resultMsg = '✨ Menang +25%!'; }
+                else if (roll < 0.66) { winMultiplier = 0.50; resultMsg = '🔥 Menang +50%!'; }
+                else { winMultiplier = 0.75; resultMsg = '⚡ Menang +75%!'; }
+            } else {
+                winMultiplier = 0;
+                resultMsg = '😢 Tidak ada kombinasi. Saldo hangus!';
+            }
+
+            if (winMultiplier > 0) {
+                const winAmount = Math.floor(bet * winMultiplier);
+                const returnAmount = bet + winAmount;
+                userData.balance += returnAmount;
+                addXP(20, 'Menang slot');
+                saveData();
+                updateSlotBalance();
+                resultEl.style.color = '#4caf50';
+                resultEl.textContent = resultMsg + ' +Rp' + winAmount.toLocaleString('id-ID');
+                playSound('receive');
+                setTimeout(() => {
+                    addMessage('🎰 Slot: <b>' + resultMsg + '</b> Menang <b>Rp' + winAmount.toLocaleString('id-ID') + '</b>! Saldo: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+                }, 500);
+            } else {
+                resultEl.style.color = '#f44336';
+                resultEl.textContent = resultMsg;
+                playSound('send');
+                setTimeout(() => {
+                    addMessage('🎰 Slot: <b>Kalah!</b> Taruhan Rp' + bet.toLocaleString('id-ID') + ' hangus. Saldo: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+                }, 500);
+            }
+
+            slotSpinning = false;
+            document.getElementById('slot-spin-btn').disabled = false;
+        }
+
+        // ===========================
+        // TOKO BUAH (FRUIT SHOP)
+        // ===========================
+        const FRUIT_CATALOG = [
+            { id: 'orange', emoji: '🍊', label: 'Jeruk', bonus: 75, baseBonus: 50, price: 5500, desc: '+Rp75 per makan' },
+            { id: 'strawberry', emoji: '🍓', label: 'Stroberi', bonus: 100, baseBonus: 50, price: 7500, desc: '+Rp100 per makan' },
+            { id: 'cherry', emoji: '🍒', label: 'Ceri', bonus: 150, baseBonus: 50, price: 10000, desc: '+Rp150 per makan' }
+        ];
+
+        function openFruitShop() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('fruitShopModal').classList.add('active');
+            renderFruitShop();
+        }
+
+        function closeFruitShop() {
+            document.getElementById('fruitShopModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function renderFruitShop() {
+            const balEl = document.getElementById('fruit-balance');
+            if (balEl) balEl.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+
+            const container = document.getElementById('fruit-shop-items');
+            container.innerHTML = '';
+
+            FRUIT_CATALOG.forEach(fruit => {
+                const owned = userData.purchasedFruits.includes(fruit.id);
+                const isActive = userData.snakeFood === fruit.emoji;
+                const item = document.createElement('div');
+                item.className = 'fruit-item' + (owned ? ' owned' : '');
+                item.innerHTML = `
+                    <div style="font-size:1.8rem;flex-shrink:0;">${fruit.emoji}</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:0.9rem;color:#fff;">${fruit.label}</div>
+                        <div style="font-size:0.75rem;color:#9d50bb;margin-top:2px;">${fruit.desc}</div>
+                        <div style="font-size:0.72rem;color:#666;margin-top:2px;">Rp${fruit.price.toLocaleString('id-ID')}</div>
+                    </div>
+                    <div style="text-align:right;flex-shrink:0;">
+                        ${owned
+                            ? `<div style="font-size:0.75rem;color:#4caf50;font-weight:700;">${isActive ? '✅ Aktif' : '✔️ Dimiliki'}</div>`
+                            : `<button class="fruit-buy-btn" onclick="buyFruit('${fruit.id}')">Beli</button>`
+                        }
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function buyFruit(fruitId) {
+            const fruit = FRUIT_CATALOG.find(f => f.id === fruitId);
+            if (!fruit) return;
+
+            if (userData.purchasedFruits.includes(fruitId)) {
+                return; // Already owned
+            }
+            if (userData.balance < fruit.price) {
+                addMessage('❌ Saldo tidak cukup untuk membeli <b>' + fruit.emoji + ' ' + fruit.label + '</b>! Butuh Rp' + fruit.price.toLocaleString('id-ID') + '.', 'system');
+                closeFruitShop();
+                return;
+            }
+
+            userData.balance -= fruit.price;
+            userData.purchasedFruits.push(fruitId);
+            userData.snakeFood = fruit.emoji;
+            userData.snakeFoodBonus = fruit.bonus;
+            saveData();
+
+            playSound('receive');
+            renderFruitShop();
+
+            setTimeout(() => {
+                addMessage('🍎 Kamu membeli <b>' + fruit.emoji + ' ' + fruit.label + '</b>! Makanan ular berubah menjadi ' + fruit.emoji + ' dan pendapatan per makan sekarang <b>Rp' + fruit.bonus.toLocaleString('id-ID') + '</b>. Saldo: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+            }, 300);
+        }
+    </script>
+    <script>
+        // ===========================
+        // SETTINGS MENU (۝ button)
+        // ===========================
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsDropdown = document.getElementById('settings-dropdown');
+
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSound('btn');
+            const isVisible = settingsDropdown.style.display === 'block';
+            settingsDropdown.style.display = isVisible ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', () => {
+            settingsDropdown.style.display = 'none';
+        });
+
+        settingsDropdown.addEventListener('click', (e) => e.stopPropagation());
+
+        document.getElementById('settings-hapus-btn').addEventListener('click', () => {
+            settingsDropdown.style.display = 'none';
+            playSound('btn');
+            const confirmed = confirm('Apakah kamu ingin hapus semua data games dan memulai semua dari awal?');
+            if (confirmed) {
+                openDB().then(db => {
+                    const tx = db.transaction(STORE_NAME, 'readwrite');
+                    tx.objectStore(STORE_NAME).clear();
+                    tx.oncomplete = () => {
+                        addMessage('🗑️ Semua data telah dihapus. Halaman akan dimuat ulang...', 'system');
+                        setTimeout(() => location.reload(), 1500);
+                    };
+                }).catch(() => {
+                    addMessage('🗑️ Semua data telah dihapus. Halaman akan dimuat ulang...', 'system');
+                    setTimeout(() => location.reload(), 1500);
+                });
+            }
+        });
+
+        // ===========================
+        // LIGHT MODE TOGGLE
+        // ===========================
+        let isLightMode = false;
+
+        // Load light mode preference from IndexedDB
+        idbGet('mvis_light_mode').then(val => {
+            isLightMode = (val === '1');
+            applyLightMode(isLightMode);
+        }).catch(() => applyLightMode(false));
+
+        function applyLightMode(on) {
+            const body = document.body;
+            const toggle = document.getElementById('lightmode-toggle');
+            const knob   = document.getElementById('lightmode-knob');
+            const icon   = document.getElementById('lightmode-icon');
+            const label  = document.getElementById('lightmode-label');
+            const dropdown = document.getElementById('settings-dropdown');
+
+            if (on) {
+                body.classList.add('light-mode');
+                if (toggle) { toggle.style.background = '#9d50bb'; }
+                if (knob)   { knob.style.left = '20px'; knob.style.background = '#fff'; }
+                if (icon)   { icon.textContent = '🌙'; }
+                if (label)  { label.textContent = 'Mode Gelap'; }
+                if (dropdown) { dropdown.style.background = '#f0e6ff'; dropdown.style.borderColor = '#c9a8e8'; }
+            } else {
+                body.classList.remove('light-mode');
+                if (toggle) { toggle.style.background = '#333'; }
+                if (knob)   { knob.style.left = '2px'; knob.style.background = '#888'; }
+                if (icon)   { icon.textContent = '☀️'; }
+                if (label)  { label.textContent = 'Mode Terang'; }
+                if (dropdown) { dropdown.style.background = '#111'; dropdown.style.borderColor = '#333'; }
+            }
+        }
+
+        document.getElementById('settings-lightmode-btn').addEventListener('click', () => {
+            isLightMode = !isLightMode;
+            idbSet('mvis_light_mode', isLightMode ? '1' : '0');
+            applyLightMode(isLightMode);
+            playSound('btn');
+            const modeLabel = isLightMode ? 'Mode Terang' : 'Mode Gelap';
+            addMessage(`${isLightMode ? '☀️' : '🌙'} <b>${modeLabel}</b> diaktifkan!`, 'system');
+        });
+
+        // ===========================
+        // DOWNLOAD MENU
+        // ===========================
+        document.getElementById('menu-download').addEventListener('click', () => {
+            playSound('btn');
+            closeAll();
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage('⬇️ <b>Fitur Download</b> akan segera hadir! Pantau terus pembaruan M_Vis. 🚀', 'system');
+            }, 600);
+        });
+
+        // ===========================
+        // FISHING GAME (Memancing)
+        // ===========================
+        const FISH_TYPES = [
+            { emoji: '🐟', name: 'Ikan Kecil',   price: 4000,  chance: 0.25 },
+            { emoji: '🐠', name: 'Ikan Nemo',     price: 7500,  chance: 0.12 },
+            { emoji: '🐡', name: 'Ikan Kembung',  price: 10000, chance: 0.08 },
+            { emoji: '🦀', name: 'Kepiting',      price: 20000, chance: 0.06 },
+            { emoji: '🦑', name: 'Cumi-cumi',     price: 24000, chance: 0.05 }
+        ];
+        let caughtFish = null;
+
+        const BAIT_TYPES = {
+            grasshopper: { emoji: '🦗', name: 'Belalang', uses: 5,  price: 10000 },
+            worm:        { emoji: '🪱', name: 'Cacing',   uses: 12, price: 25000 }
+        };
+
+        function getFishingData() {
+            return idbGet('mvis_fishing').then(v => v || { count: 0, resetAt: 0 }).catch(() => ({ count: 0, resetAt: 0 }));
+        }
+
+        function saveFishingData(data) {
+            idbSet('mvis_fishing', data).catch(e => console.error('saveFishingData error:', e));
+        }
+
+        function getTotalBait() {
+            return (userData.bait.grasshopper || 0) + (userData.bait.worm || 0);
+        }
+
+        function useBait() {
+            // Use worm first (more efficient), then grasshopper
+            if (userData.bait.worm > 0) {
+                userData.bait.worm--;
+            } else if (userData.bait.grasshopper > 0) {
+                userData.bait.grasshopper--;
+            }
+            saveData();
+        }
+
+        function getBaitDisplay() {
+            const parts = [];
+            if (userData.bait.grasshopper > 0) parts.push('🦗×' + userData.bait.grasshopper);
+            if (userData.bait.worm > 0) parts.push('🪱×' + userData.bait.worm);
+            return parts.length ? parts.join('  ') : 'Tidak ada umpan';
+        }
+
+        function openFishing() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('fishingModal').classList.add('active');
+            caughtFish = null;
+            renderFishingModal();
+        }
+
+        function closeFishing() {
+            document.getElementById('fishingModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+            caughtFish = null;
+        }
+
+        function renderFishingModal() {
+            const balEl = document.getElementById('fishing-balance');
+            if (balEl) balEl.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+
+            const attemptsEl = document.getElementById('fishing-attempts');
+            if (attemptsEl) attemptsEl.textContent = `Umpan: ${getBaitDisplay()}`;
+
+            const totalBait = getTotalBait();
+
+            // Status
+            const statusEl = document.getElementById('fishing-status');
+            if (statusEl) {
+                if (caughtFish) {
+                    statusEl.textContent = '🎉 Kamu mendapat ikan! Jual atau simpan dulu.';
+                    statusEl.style.color = '#4caf50';
+                } else if (totalBait <= 0) {
+                    statusEl.textContent = '🪱 Umpan habis! Beli di Toko > Toko Umpan.';
+                    statusEl.style.color = '#f44336';
+                } else {
+                    statusEl.textContent = 'Pilih emoji air untuk memancing! 🎣';
+                    statusEl.style.color = '#888';
+                }
+            }
+
+            // Render grid
+            const grid = document.getElementById('fishing-grid');
+            if (grid) {
+                grid.innerHTML = '';
+                const canFish = totalBait > 0 && !caughtFish;
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'water-cell' + (!canFish ? ' used' : '');
+                    cell.textContent = '💦';
+                    if (canFish) {
+                        cell.addEventListener('click', () => doFish(cell));
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+
+            // Catch area
+            const catchArea = document.getElementById('fishing-catch-area');
+            if (catchArea) catchArea.style.display = caughtFish ? 'block' : 'none';
+        }
+
+        function playFishingCastSound() {
+            try {
+                const ctx = getAudioCtx();
+                const now = ctx.currentTime;
+                // "whoosh" cast sound
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.4);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                osc.start(now); osc.stop(now + 0.45);
+                // water plop
+                setTimeout(() => {
+                    try {
+                        const ctx2 = getAudioCtx();
+                        const n = ctx2.currentTime;
+                        const buf = ctx2.createBuffer(1, ctx2.sampleRate * 0.1, ctx2.sampleRate);
+                        const data = buf.getChannelData(0);
+                        for (let i = 0; i < data.length; i++) data[i] = (Math.random()*2-1) * Math.exp(-i/500);
+                        const src = ctx2.createBufferSource();
+                        src.buffer = buf;
+                        const g = ctx2.createGain();
+                        g.gain.setValueAtTime(0.2, n);
+                        g.gain.exponentialRampToValueAtTime(0.001, n + 0.15);
+                        src.connect(g); g.connect(ctx2.destination);
+                        src.start(n);
+                    } catch(e) {}
+                }, 350);
+            } catch(e) {}
+        }
+
+        function playFishCaughtSound() {
+            try {
+                const ctx = getAudioCtx();
+                const now = ctx.currentTime;
+                [0, 0.1, 0.2, 0.32].forEach((delay, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.type = 'sine';
+                    const freqs = [440, 550, 660, 880];
+                    osc.frequency.setValueAtTime(freqs[i], now + delay);
+                    gain.gain.setValueAtTime(0.15, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.12);
+                    osc.start(now + delay); osc.stop(now + delay + 0.14);
+                });
+            } catch(e) {}
+        }
+
+        function doFish(cell) {
+            if (getTotalBait() <= 0 || caughtFish) {
+                renderFishingModal();
+                return;
+            }
+
+            // Ripple anim
+            cell.classList.add('ripple');
+            setTimeout(() => cell.classList.remove('ripple'), 400);
+
+            playFishingCastSound();
+
+            // Use one bait
+            useBait();
+
+            // Disable all cells while animating
+            document.querySelectorAll('.water-cell').forEach(c => c.classList.add('used'));
+
+            // Harder: total catch chance = 70% of original; roll decides
+            // total chance from FISH_TYPES = 0.25+0.12+0.06+0.08+0.05 = 0.56 → ~40% fail
+            const roll = Math.random();
+            let fish = null;
+            let cumulative = 0;
+            for (const f of FISH_TYPES) {
+                cumulative += f.chance;
+                if (roll < cumulative) { fish = f; break; }
+            }
+
+            setTimeout(() => {
+                if (fish) {
+                    caughtFish = fish;
+                    cell.textContent = fish.emoji;
+                    cell.style.background = 'rgba(157,80,187,0.3)';
+                    cell.style.borderColor = '#9d50bb';
+                    cell.classList.remove('used');
+
+                    document.getElementById('fishing-catch-emoji').textContent = fish.emoji;
+                    document.getElementById('fishing-catch-name').textContent = fish.name;
+                    document.getElementById('fishing-catch-price').textContent = 'Harga jual: Rp' + fish.price.toLocaleString('id-ID');
+                    document.getElementById('fishing-catch-area').style.display = 'block';
+
+                    playFishCaughtSound();
+                    const statusEl = document.getElementById('fishing-status');
+                    if (statusEl) { statusEl.textContent = `🎉 Berhasil! Kamu mendapat ${fish.emoji} ${fish.name}!`; statusEl.style.color = '#4caf50'; }
+                    const attEl = document.getElementById('fishing-attempts');
+                    if (attEl) attEl.textContent = `Umpan: ${getBaitDisplay()}`;
+                } else {
+                    // Miss
+                    cell.textContent = '🌊';
+                    playSound('send');
+
+                    const statusEl = document.getElementById('fishing-status');
+                    const attEl = document.getElementById('fishing-attempts');
+                    const remaining = getTotalBait();
+                    if (statusEl) { statusEl.textContent = `😢 Tidak ada ikan! Umpan tersisa: ${remaining}`; statusEl.style.color = '#f44336'; }
+                    if (attEl) attEl.textContent = `Umpan: ${getBaitDisplay()}`;
+
+                    if (remaining > 0) {
+                        setTimeout(() => {
+                            document.querySelectorAll('.water-cell').forEach(c => {
+                                c.classList.remove('used');
+                                c.textContent = '💦';
+                                c.style.background = '';
+                                c.style.borderColor = '';
+                            });
+                            document.querySelectorAll('.water-cell').forEach(c => {
+                                const newCell = c.cloneNode(true);
+                                newCell.addEventListener('click', () => doFish(newCell));
+                                c.parentNode.replaceChild(newCell, c);
+                            });
+                            if (statusEl) { statusEl.textContent = 'Pilih emoji air untuk memancing! 🎣'; statusEl.style.color = '#888'; }
+                        }, 900);
+                    } else {
+                        if (statusEl) { statusEl.textContent = '🪱 Umpan habis! Beli di Toko > Toko Umpan.'; statusEl.style.color = '#f44336'; }
+                    }
+                }
+            }, 600);
+        }
+
+        function sellFish() {
+            if (!caughtFish) return;
+            playSound('receive');
+            userData.balance += caughtFish.price;
+            addXP(15, 'Jual ikan');
+            saveData();
+
+            const fishName = caughtFish.name;
+            const fishEmoji = caughtFish.emoji;
+            const fishPrice = caughtFish.price;
+            caughtFish = null;
+
+            addMessage(`🎣 Kamu menjual <b>${fishEmoji} ${fishName}</b> seharga <b>Rp${fishPrice.toLocaleString('id-ID')}</b>! Saldo: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`, 'system');
+
+            renderFishingModal();
+            const balEl = document.getElementById('fishing-balance');
+            if (balEl) balEl.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+        }
+
+        function saveFishToInventory() {
+            if (!caughtFish) return;
+            playSound('btn');
+            const fishName = caughtFish.name;
+            const fishEmoji = caughtFish.emoji;
+            const fishPrice = caughtFish.price;
+
+            // Add to inventory
+            const existing = userData.inventory.find(i => i.id === fishEmoji);
+            if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+            } else {
+                userData.inventory.push({ id: fishEmoji, emoji: fishEmoji, name: fishName, price: fishPrice, qty: 1, type: 'fish' });
+            }
+            addXP(5, 'Simpan ikan');
+            saveData();
+
+            addMessage(`💾 <b>${fishEmoji} ${fishName}</b> disimpan ke Inventory!`, 'system');
+            caughtFish = null;
+            renderFishingModal();
+        }
+
+        document.getElementById('menu-fishing').addEventListener('click', () => {
+            openFishing();
+            trackQuickAction('fishing', '🎣', 'Memancing');
+        });
+
+        // Register fishing in ALL_ACTIONS
+        ALL_ACTIONS['fishing'] = { icon: '🎣', label: 'Memancing', action: () => openFishing() };
+
+        ALL_ACTIONS['tebakkata'] = { icon: '🔤', label: 'Tebak Kata', action: () => startTebakKata() };
+
+        // ===========================
+        // BAIT SHOP (Toko Umpan)
+        // ===========================
+        function openBaitShop() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('baitShopModal').classList.add('active');
+            renderBaitShop();
+        }
+
+        function closeBaitShop() {
+            document.getElementById('baitShopModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function renderBaitShop() {
+            const balEl = document.getElementById('bait-balance');
+            if (balEl) balEl.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+
+            const stockEl = document.getElementById('bait-current-stock');
+            if (stockEl) stockEl.textContent = getBaitDisplay();
+
+            const container = document.getElementById('bait-shop-items');
+            container.innerHTML = '';
+
+            Object.entries(BAIT_TYPES).forEach(([key, bait]) => {
+                const currentQty = userData.bait[key] || 0;
+                const item = document.createElement('div');
+                item.className = 'fruit-item';
+                item.innerHTML = `
+                    <div style="font-size:1.8rem;flex-shrink:0;">${bait.emoji}</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:0.9rem;color:#fff;">${bait.name}</div>
+                        <div style="font-size:0.75rem;color:#9d50bb;margin-top:2px;">${bait.uses} kali memancing</div>
+                        <div style="font-size:0.72rem;color:#666;margin-top:2px;">Stok: <b style="color:#c07de8">${currentQty}</b> umpan</div>
+                    </div>
+                    <div style="text-align:right;flex-shrink:0;">
+                        <div style="font-size:0.72rem;color:#888;margin-bottom:4px;">Rp${bait.price.toLocaleString('id-ID')}</div>
+                        <button class="fruit-buy-btn" onclick="buyBait('${key}')">Beli</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function buyBait(key) {
+            const bait = BAIT_TYPES[key];
+            if (!bait) return;
+            if (userData.balance < bait.price) {
+                addMessage(`❌ Saldo tidak cukup untuk membeli ${bait.emoji} ${bait.name}! Butuh Rp${bait.price.toLocaleString('id-ID')}.`, 'system');
+                closeBaitShop();
+                return;
+            }
+            userData.balance -= bait.price;
+            userData.bait[key] = (userData.bait[key] || 0) + bait.uses;
+            saveData();
+            playSound('receive');
+            renderBaitShop();
+            setTimeout(() => {
+                addMessage(`🪱 Kamu membeli <b>${bait.emoji} ${bait.name}</b> (${bait.uses} kali)! Stok umpan: <b>${getBaitDisplay()}</b>. Saldo: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`, 'system');
+            }, 300);
+        }
+
+        // ===========================
+        // INVENTORY SYSTEM
+        // ===========================
+        function openInventory() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('inventoryModal').classList.add('active');
+            renderInventory();
+        }
+
+        function closeInventory() {
+            document.getElementById('inventoryModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function renderInventory() {
+            const container = document.getElementById('inventory-content');
+            container.innerHTML = '';
+
+            // Bait section
+            const baitSection = document.createElement('div');
+            baitSection.innerHTML = `<div style="font-size:0.75rem;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Umpan</div>`;
+            let hasBait = false;
+            Object.entries(BAIT_TYPES).forEach(([key, bait]) => {
+                const qty = userData.bait[key] || 0;
+                if (qty > 0) {
+                    hasBait = true;
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:10px;margin-bottom:6px;';
+                    row.innerHTML = `
+                        <span style="font-size:1.6rem;">${bait.emoji}</span>
+                        <div style="flex:1;">
+                            <div style="font-size:0.88rem;font-weight:700;color:#fff;">${bait.name}</div>
+                            <div style="font-size:0.72rem;color:#9d50bb;">${bait.uses} kali per beli</div>
+                        </div>
+                        <div style="background:rgba(157,80,187,0.2);border:1px solid rgba(157,80,187,0.4);border-radius:8px;padding:4px 10px;font-size:0.88rem;font-weight:700;color:#c07de8;">×${qty}</div>
+                    `;
+                    baitSection.appendChild(row);
+                }
+            });
+            if (!hasBait) {
+                baitSection.innerHTML += `<div style="text-align:center;color:#555;font-size:0.82rem;padding:10px;">Tidak ada umpan</div>`;
+            }
+            container.appendChild(baitSection);
+
+            // Fish section
+            const fishItems = userData.inventory.filter(i => i.type === 'fish');
+            const fishSection = document.createElement('div');
+            fishSection.style.marginTop = '14px';
+            fishSection.innerHTML = `<div style="font-size:0.75rem;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Ikan (${fishItems.reduce((a,i)=>a+(i.qty||1),0)} ekor)</div>`;
+
+            if (fishItems.length === 0) {
+                fishSection.innerHTML += `<div style="text-align:center;color:#555;font-size:0.82rem;padding:10px;">Belum ada ikan tersimpan</div>`;
+            } else {
+                fishItems.forEach(item => {
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid #222;border-radius:10px;margin-bottom:6px;';
+                    row.innerHTML = `
+                        <span style="font-size:1.6rem;">${item.emoji}</span>
+                        <div style="flex:1;">
+                            <div style="font-size:0.88rem;font-weight:700;color:#fff;">${item.name}</div>
+                            <div style="font-size:0.72rem;color:#9d50bb;">Rp${item.price.toLocaleString('id-ID')}/ekor</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                            <div style="background:rgba(157,80,187,0.2);border:1px solid rgba(157,80,187,0.4);border-radius:8px;padding:4px 10px;font-size:0.88rem;font-weight:700;color:#c07de8;">×${item.qty||1}</div>
+                            <button onclick="sellFishFromInventory('${item.id}')" style="background:linear-gradient(135deg,#6e48aa,#9d50bb);border:none;border-radius:6px;color:white;font-size:0.72rem;font-weight:700;padding:4px 8px;cursor:pointer;">💰 Jual Semua</button>
+                        </div>
+                    `;
+                    fishSection.appendChild(row);
+                });
+            }
+            container.appendChild(fishSection);
+
+            // Empty state
+            if (fishItems.length === 0 && !hasBait) {
+                container.innerHTML = `<div style="text-align:center;padding:30px 20px;">
+                    <div style="font-size:3rem;margin-bottom:12px;">🎒</div>
+                    <div style="color:#555;font-size:0.88rem;">Inventory kosong.<br>Beli umpan dan mulai memancing!</div>
+                </div>`;
+            }
+        }
+
+        function sellFishFromInventory(fishId) {
+            const idx = userData.inventory.findIndex(i => i.id === fishId && i.type === 'fish');
+            if (idx === -1) return;
+            const item = userData.inventory[idx];
+            const total = item.price * (item.qty || 1);
+            userData.balance += total;
+            addXP(15 * (item.qty || 1), 'Jual ikan inventory');
+            userData.inventory.splice(idx, 1);
+            saveData();
+            playSound('receive');
+            addMessage(`🎣 Kamu menjual semua <b>${item.emoji} ${item.name}</b> (×${item.qty||1}) seharga <b>Rp${total.toLocaleString('id-ID')}</b>! Saldo: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`, 'system');
+            renderInventory();
+        }
+    </script>
+
+    <script>
+        // ===========================
+        // TEBAK KATA GAME
+        // ===========================
+        const TEBAK_KATA_LIST = [
+            { soal: "Saya punya kepala tapi tidak punya leher, punya badan tapi tidak punya kaki. Apa aku?", jawaban: ["baju", "kemeja", "kaos"] },
+            { soal: "Semakin aku diisi, semakin ringan aku terasa. Apa aku?", jawaban: ["balon"] },
+            { soal: "Aku selalu datang tapi tidak pernah sampai. Apa aku?", jawaban: ["besok", "hari esok", "esok"] },
+            { soal: "Aku bisa terbang tanpa sayap, mengalir tanpa air, tapi tidak bisa dipegang. Apa aku?", jawaban: ["waktu"] },
+            { soal: "Aku semakin besar, semakin jauh aku terlihat. Apa aku?", jawaban: ["jarak"] },
+            { soal: "Aku tidak bisa disentuh, tapi bisa menggerakkan daun dan rambut. Apa aku?", jawaban: ["angin"] },
+            { soal: "Aku berbicara tanpa mulut dan mendengar tanpa telinga. Apa aku?", jawaban: ["gema", "echo"] },
+            { soal: "Semakin cepat kamu lari, semakin aku mengikutimu. Apa aku?", jawaban: ["bayangan"] },
+            { soal: "Aku lahir besar, semakin tua semakin kecil. Apa aku?", jawaban: ["sabun", "lilin", "pensil"] },
+            { soal: "Aku punya gigi tapi tidak bisa makan. Apa aku?", jawaban: ["sisir", "gergaji"] },
+            { soal: "Semakin banyak yang kamu ambil, semakin besar aku. Apa aku?", jawaban: ["lubang"] },
+            { soal: "Aku bisa dilihat di malam hari, hilang di siang hari. Apa aku?", jawaban: ["bintang", "bulan"] },
+            { soal: "Aku punya mulut tapi tidak bisa makan, punya tepi tapi bukan pedang. Apa aku?", jawaban: ["sungai"] },
+            { soal: "Aku jatuh di musim gugur tapi tidak pernah terluka. Apa aku?", jawaban: ["daun"] },
+            { soal: "Aku bisa mengisi ruangan tanpa mengambil tempat. Apa aku?", jawaban: ["cahaya", "suara", "musik"] },
+            { soal: "Aku tidak hidup tapi bisa tumbuh, tidak punya mulut tapi bisa menelan segalanya. Apa aku?", jawaban: ["api"] },
+            { soal: "Aku selalu ada di depanmu tapi tidak bisa dilihat. Apa aku?", jawaban: ["masa depan", "depan"] },
+            { soal: "Aku bisa berlari tapi tidak punya kaki, punya mulut tapi tidak bisa bicara. Apa aku?", jawaban: ["sungai", "air"] },
+            { soal: "Aku ada di setiap orang tapi tidak bisa dipinjam. Apa aku?", jawaban: ["nama"] },
+            { soal: "Aku datang sekali dalam semenit, dua kali dalam sebentar, tapi tidak ada dalam setahun. Apa aku?", jawaban: ["huruf m", "m"] },
+            { soal: "Aku bisa masuk ke dalam air tapi tidak pernah basah. Apa aku?", jawaban: ["cahaya", "sinar", "bayangan"] },
+            { soal: "Aku bisa dibagi ke semua orang tapi tetap penuh. Apa aku?", jawaban: ["ilmu", "pengetahuan", "cinta"] },
+            { soal: "Aku hidup jika kamu memegangku, mati jika kamu melepaskanku. Apa aku?", jawaban: ["napas", "nafas"] },
+            { soal: "Aku lebih ringan dari sehelai bulu angsa, tapi orang terkuat di dunia pun tidak bisa memegangku lama. Apa aku?", jawaban: ["napas", "nafas"] },
+            { soal: "Aku ada di dalam semua buku tapi bukan huruf, dan ada di semua kata tapi bukan suara. Apa aku?", jawaban: ["halaman", "makna"] },
+            { soal: "Aku punya kepala dan ekor tapi tidak punya tubuh. Apa aku?", jawaban: ["koin", "uang koin"] },
+            { soal: "Aku punya wajah dan jarum, tapi bukan dokter. Apa aku?", jawaban: ["jam", "arloji"] },
+            { soal: "Aku terbuat dari air tapi jika kamu memasukkan air ke dalamku, aku hancur. Apa aku?", jawaban: ["es", "batu es"] },
+            { soal: "Aku selalu ada di antara langit dan bumi, tapi tidak bisa disentuh. Apa aku?", jawaban: ["cakrawala", "horizon"] },
+            { soal: "Aku dilempar ketika diperlukan, diambil kembali ketika tidak dipakai. Apa aku?", jawaban: ["jangkar", "tali jangkar"] }
+        ];
+
+        let tebakKataActive = false;
+        let tebakKataIndex = 0;
+        let tebakKataQueue = [];
+        let tebakKataScore = 0;
+
+        function shuffleTebakArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function startTebakKata() {
+            if (tebakKataActive) {
+                addMessage('🔤 Game Tebak Kata sedang berlangsung! Jawab soalnya dulu ya.', 'system');
+                return;
+            }
+            tebakKataActive = true;
+            tebakKataScore = 0;
+            tebakKataQueue = shuffleTebakArray(TEBAK_KATA_LIST);
+            tebakKataIndex = 0;
+
+            addMessage(`🔤 <b>GAME TEBAK KATA DIMULAI!</b><br>
+<span style="font-size:0.8rem;color:#9d50bb;">Benar = Rp2.500 & 75XP <b>atau</b> Rp1.500 & 50XP (acak)</span><br>
+<span style="font-size:0.78rem;color:#666;">Ketik <b>skip</b> untuk lewati soal · <b>selesai</b> untuk berhenti</span>`, 'system');
+            setTimeout(() => askTebakKata(), 700);
+        }
+
+        function askTebakKata() {
+            if (tebakKataIndex >= tebakKataQueue.length) {
+                endTebakKata(true);
+                return;
+            }
+            const soal = tebakKataQueue[tebakKataIndex];
+            const no = tebakKataIndex + 1;
+            addMessage(`🔤 <b>Soal ${no}/30</b><br><span style="color:#e0c8ff;">${soal.soal}</span>`, 'system');
+        }
+
+        function checkTebakKata(input) {
+            if (!tebakKataActive) return false;
+            const txt = input.trim().toLowerCase();
+
+            if (txt === 'selesai') {
+                endTebakKata(false);
+                return true;
+            }
+
+            if (txt === 'skip') {
+                const soal = tebakKataQueue[tebakKataIndex];
+                const jwb = soal.jawaban[0];
+                addMessage(`⏩ Dilewati. Jawaban: <b>${jwb}</b>`, 'system');
+                tebakKataIndex++;
+                if (tebakKataIndex >= tebakKataQueue.length) {
+                    setTimeout(() => endTebakKata(true), 400);
+                } else {
+                    setTimeout(() => askTebakKata(), 600);
+                }
+                return true;
+            }
+
+            const soal = tebakKataQueue[tebakKataIndex];
+            const jawabanList = soal.jawaban.map(j => j.toLowerCase());
+            const benar = jawabanList.some(j => {
+                const tNorm = txt.replace(/[^a-z0-9\s]/g,'');
+                const jNorm = j.replace(/[^a-z0-9\s]/g,'');
+                return tNorm.includes(jNorm) || jNorm.includes(tNorm);
+            });
+
+            if (benar) {
+                const roll = Math.random();
+                const uang = roll < 0.5 ? 2500 : 1500;
+                const xp   = roll < 0.5 ? 75   : 50;
+
+                userData.balance += uang;
+                addXP(xp, 'Tebak Kata benar');
+                saveData();
+                tebakKataScore++;
+                playSound('receive');
+
+                addMessage(`✅ <b>BENAR!</b> +<b>Rp${uang.toLocaleString('id-ID')}</b> & +<b>${xp} XP</b> 🎉<br><span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`, 'system');
+                tebakKataIndex++;
+                if (tebakKataIndex >= tebakKataQueue.length) {
+                    setTimeout(() => endTebakKata(true), 700);
+                } else {
+                    setTimeout(() => askTebakKata(), 800);
+                }
+            } else {
+                playSound('send');
+                addMessage(`❌ <b>Salah!</b> Coba lagi atau ketik <b>skip</b> untuk lewati.`, 'system');
+            }
+
+            return true;
+        }
+
+        function endTebakKata(selesaiSemua) {
+            tebakKataActive = false;
+            const msg = selesaiSemua
+                ? `🏁 <b>Game Tebak Kata Selesai!</b><br>Jawaban benar: <b>${tebakKataScore}/30 soal</b><br>Saldo sekarang: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`
+                : `🛑 <b>Game Tebak Kata Dihentikan.</b><br>Total benar: <b>${tebakKataScore} soal</b><br>Saldo sekarang: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`;
+            addMessage(msg, 'system');
+        }
+    </script>
+
+    <script>
+        // ===========================
+        // GENERIC TEBAK GAME ENGINE
+        // ===========================
+        // State untuk 4 game baru
+        let tebakMakananActive = false;
+        let tebakLaguActive = false;
+        let tebakBuahActive = false;
+        let tebakBenderaActive = false;
+
+        let tebakGameState = {
+            makanan: { index: 0, queue: [], score: 0 },
+            lagu:    { index: 0, queue: [], score: 0 },
+            buah:    { index: 0, queue: [], score: 0 },
+            bendera: { index: 0, queue: [], score: 0 }
+        };
+
+        // ===========================
+        // TEBAK MAKANAN - 30 Soal
+        // ===========================
+        const TEBAK_MAKANAN_LIST = [
+            { soal: "🍜 Makanan berkuah ini terbuat dari mie, kaldu ayam, dan sering ditambah telor serta ayam suwir. Namanya terkenal di Jawa. Apa makanan ini?", jawaban: ["soto ayam", "soto"] },
+            { soal: "🍱 Makanan tradisional Jawa yang dibungkus daun pisang, berisi nasi, tempe, tahu, dan sayuran. Biasa dimakan saat sarapan. Apa ini?", jawaban: ["nasi gudeg", "gudeg"] },
+            { soal: "🌶️ Makanan ini berasal dari Padang, dibuat dari daging sapi yang dimasak dengan santan dan bumbu rempah hingga kering. Apa makanan ini?", jawaban: ["rendang"] },
+            { soal: "🥜 Makanan gorengan berbahan tempe yang dilapisi tepung berbumbu, sering dimakan sebagai cemilan atau lauk. Apa ini?", jawaban: ["tempe mendoan", "mendoan"] },
+            { soal: "🍢 Makanan khas Jawa yang terbuat dari nasi yang dipadatkan dan biasa dimakan dengan lauk seperti kering tempe atau ayam goreng. Apa ini?", jawaban: ["nasi kucing", "nasi kucing angkringan"] },
+            { soal: "🥣 Bubur khas Indonesia yang gurih, biasanya dimakan dengan cakwe, kacang, dan bawang goreng. Apa ini?", jawaban: ["bubur ayam"] },
+            { soal: "🍖 Makanan khas Sulawesi Selatan yang terbuat dari daging babi atau sapi yang dimasak dengan rempah. Sering disajikan saat pesta. Apa ini?", jawaban: ["coto makassar", "coto"] },
+            { soal: "🥘 Makanan khas Betawi berupa sop daging sapi dengan kuah santan kental berwarna kuning. Apa ini?", jawaban: ["soto betawi"] },
+            { soal: "🍲 Sayuran yang dimasak dengan santan dan bumbu rempah, berwarna kuning kecoklatan, khas dari Yogyakarta. Apa ini?", jawaban: ["gudeg"] },
+            { soal: "🌿 Makanan terbuat dari daun singkong yang ditumbuk, dicampur santan dan bumbu, khas Minangkabau. Apa ini?", jawaban: ["gulai daun singkong", "gulai singkong"] },
+            { soal: "🍛 Nasi yang dimasak dengan santan kelapa sehingga gurih dan harum, biasa disajikan dalam acara spesial. Apa ini?", jawaban: ["nasi uduk"] },
+            { soal: "🥗 Makanan khas Jawa berupa irisan lontong, tahu, tempe, dan tauge yang disiram saus kacang. Apa ini?", jawaban: ["gado-gado"] },
+            { soal: "🍳 Makanan gorengan dari tahu yang diisi dengan campuran sayuran dan diberi saus kacang. Apa ini?", jawaban: ["tahu isi", "batagor"] },
+            { soal: "🦐 Makanan khas Sunda berupa pepes ikan atau udang yang dibungkus daun pisang lalu dikukus atau dibakar. Apa ini?", jawaban: ["pepes"] },
+            { soal: "🥩 Sate dengan bumbu kacang yang khas dan gurih, berasal dari Jawa. Apa jenis sate yang paling terkenal?", jawaban: ["sate madura", "sate"] },
+            { soal: "🍜 Mi kuning yang digoreng dengan bumbu kecap, sayuran, dan daging, populer di seluruh Indonesia. Apa ini?", jawaban: ["mie goreng"] },
+            { soal: "🫕 Sup khas Manado yang terbuat dari ikan cakalang atau tuna dengan bumbu pedas. Apa ini?", jawaban: ["ikan kuah kuning", "kuah kuning"] },
+            { soal: "🧁 Kue tradisional Indonesia yang terbuat dari tepung beras dan gula aren, berwarna hijau dari daun pandan. Apa ini?", jawaban: ["klepon"] },
+            { soal: "🍡 Jajanan pasar berbentuk bulat dari singkong dengan isian gula merah, digoreng hingga garing. Apa ini?", jawaban: ["getuk goreng", "getuk"] },
+            { soal: "🥐 Makanan dari beras ketan yang dimasak dengan santan, biasa dimakan dengan lauk abon atau serundeng. Apa ini?", jawaban: ["nasi lemak", "lemang"] },
+            { soal: "🌊 Makanan khas pesisir Indonesia berupa ikan yang dibakar dengan bumbu rempah. Apa ini?", jawaban: ["ikan bakar"] },
+            { soal: "🍳 Telur yang dimasak dengan cara dihancurkan dan dicampur bumbu rempah, khas dari Padang. Apa ini?", jawaban: ["telur balado"] },
+            { soal: "🍝 Mi tipis yang dimasak dengan kuah kaldu bening dan ditambah daging serta sayuran. Apa ini?", jawaban: ["bakso"] },
+            { soal: "🥣 Makanan khas Lombok berupa nasi yang disiram kuah ayam pedas dengan bumbu rempah khas. Apa ini?", jawaban: ["ayam taliwang", "nasi ayam taliwang"] },
+            { soal: "🌿 Makanan dari Sumatera berupa ikan yang dimasak dengan asam kandis dan bumbu rempah. Apa ini?", jawaban: ["pindang ikan", "pindang"] },
+            { soal: "🍢 Olahan dari tahu yang dihancurkan, dicampur bumbu, lalu digoreng berbentuk bulat atau pipih. Apa ini?", jawaban: ["tahu bulat", "perkedel tahu"] },
+            { soal: "🥘 Makanan khas Jawa berupa sup dengan berbagai isian seperti ayam, kentang, wortel, dan buncis dalam kuah bening. Apa ini?", jawaban: ["sop ayam", "sup ayam"] },
+            { soal: "🍲 Tumisan dari jantung pisang dengan bumbu rempah khas, sering disebut pengganti daging. Apa ini?", jawaban: ["tumis jantung pisang", "jantung pisang"] },
+            { soal: "🥞 Kue tradisional yang terbuat dari tepung beras, kelapa parut, dan gula, dikukus dalam cetakan berbentuk bunga. Apa ini?", jawaban: ["putu ayu", "kue putu"] },
+            { soal: "🍖 Makanan khas Kalimantan berupa daging yang diasap atau dibakar dengan bumbu tradisional Dayak. Apa ini?", jawaban: ["daging asap", "iwak pakasam"] }
+        ];
+
+        // ===========================
+        // TEBAK LAGU - 30 Soal
+        // ===========================
+        const TEBAK_LAGU_LIST = [
+            { soal: "🎵 'Kasih tak sampai, kau pergi tinggalkan aku...' Judul lagunya adalah?", jawaban: ["kasih tak sampai", "padi"] },
+            { soal: "🎵 'Bukan cinta biasa, cinta yang tiada dua...' Lagu ini dinyanyikan Siti Nurhaliza. Judulnya?", jawaban: ["bukan cinta biasa"] },
+            { soal: "🎵 'Tentang kita, tentang dua hati, saling berbagi...' Penyanyi populer Indonesia tahun 2000an. Judul lagu?", jawaban: ["tentang kita"] },
+            { soal: "🎵 'Separuh nafasku, kau pergi tinggalkan aku...' Band asal Yogyakarta menyanyikan ini. Judul?", jawaban: ["separuh nafasku", "d'masiv"] },
+            { soal: "🎵 'Selamat ulang tahun, panjang umurnya, panjang umurnya...' Siapa penyanyi lagu ini?", jawaban: ["vina panduwinata", "selamat ulang tahun"] },
+            { soal: "🎵 'Kaulah segalanya, kau yang berarti...' Lagu pop Indonesia tahun 90an. Judulnya?", jawaban: ["kaulah segalanya"] },
+            { soal: "🎵 'Ibu... ibu... kau yang selalu ada untukku...' Lagu ini tentang kasih ibu. Judulnya?", jawaban: ["ibu", "kasih ibu"] },
+            { soal: "🎵 'Aku mencintaimu, dengan sepenuh hati...' Lagu romantis Indonesia. Judulnya?", jawaban: ["aku mencintaimu"] },
+            { soal: "🎵 Lagu anak-anak: 'Balonku ada lima, rupa-rupa warnanya...' Nama lagunya?", jawaban: ["balonku"] },
+            { soal: "🎵 Lagu nasional: 'Indonesia tanah airku, tanah tumpah darahku...' Judulnya?", jawaban: ["indonesia raya"] },
+            { soal: "🎵 'Pelangi, pelangi, alangkah indahmu...' Lagu anak-anak ini judulnya?", jawaban: ["pelangi"] },
+            { soal: "🎵 'Cucak rowo...' Lagu campursari Jawa yang menceritakan tentang burung. Judulnya?", jawaban: ["cucak rowo"] },
+            { soal: "🎵 'Selamat pagi, selamat pagi, matahari telah terbit...' Lagu anak-anak ini judulnya?", jawaban: ["selamat pagi"] },
+            { soal: "🎵 'Manuk dadali, meuni manten...' Lagu daerah dari Jawa Barat tentang burung garuda. Judulnya?", jawaban: ["manuk dadali"] },
+            { soal: "🎵 'Rasa sayange, rasa sayange-sayange...' Lagu daerah dari mana ini?", jawaban: ["maluku", "ambon", "rasa sayange"] },
+            { soal: "🎵 'Ampar ampar pisang, pisangku belum masak...' Lagu daerah ini berasal dari mana?", jawaban: ["kalimantan", "banjar", "kalimantan selatan"] },
+            { soal: "🎵 'O ina ni keke, memanggil memanggil...' Lagu daerah asal Sulawesi. Judulnya?", jawaban: ["o ina ni keke"] },
+            { soal: "🎵 'Gundul gundul pacul, cul, gembelengan...' Lagu daerah ini berasal dari?", jawaban: ["jawa tengah", "jawa", "gundul gundul pacul"] },
+            { soal: "🎵 'Bengawan Solo, riwayatmu ini...' Siapa pencipta lagu legendaris ini?", jawaban: ["gesang", "bengawan solo"] },
+            { soal: "🎵 'Halo-halo Bandung, ibu kota Periangan...' Lagu ini terinspirasi dari kota mana?", jawaban: ["bandung"] },
+            { soal: "🎵 Lagu perjuangan: 'Maju tak gentar, membela yang benar...' Judulnya?", jawaban: ["maju tak gentar"] },
+            { soal: "🎵 'Syukur, ku panjatkan, ku panjatkan pada Mu Tuhan...' Judul lagu ini?", jawaban: ["syukur"] },
+            { soal: "🎵 'Hari merdeka, tujuh belas Agustus...' Lagu ini dinyanyikan saat apa?", jawaban: ["hari kemerdekaan", "17 agustus", "hari merdeka"] },
+            { soal: "🎵 'Yamko rambe yamko, aronawa kombe...' Lagu daerah ini dari mana?", jawaban: ["papua", "irian"] },
+            { soal: "🎵 'Es lilin, es lilin, kang edi mere di lilin...' Lagu daerah dari mana?", jawaban: ["sunda", "jawa barat"] },
+            { soal: "🎵 'Apuse kokon dao, yarabe soren...' Lagu daerah Papua yang terkenal. Judulnya?", jawaban: ["apuse"] },
+            { soal: "🎵 'Angin mamiri, kupasang jua, angin bertiup...' Lagu daerah dari Sulawesi Selatan. Judulnya?", jawaban: ["angin mamiri"] },
+            { soal: "🎵 'Soleram, soleram, soleram anak yang manis...' Lagu daerah ini berasal dari?", jawaban: ["riau", "melayu"] },
+            { soal: "🎵 'Injit-injit semut, siapa sakit, naik ke atas...' Lagu anak-anak ini berasal dari mana?", jawaban: ["melayu", "sumatera"] },
+            { soal: "🎵 'Burung kakak tua, hinggap di jendela...' Lagu ini berasal dari daerah mana?", jawaban: ["maluku", "ambon"] }
+        ];
+
+        // ===========================
+        // TEBAK BUAH - 30 Soal
+        // ===========================
+        const TEBAK_BUAH_LIST = [
+            { soal: "🌳 Buah raja dari Indonesia, berbau tajam, berduri, dan isinya berwarna kuning. Orang bilang baunya menyengat tapi rasanya lezat. Buah apa ini?", jawaban: ["durian"] },
+            { soal: "🍊 Buah citrus berwarna oranye, manis, dan kaya vitamin C. Biasa dimakan segar atau dibuat jus. Buah apa?", jawaban: ["jeruk", "jeruk manis"] },
+            { soal: "🍍 Buah tropis dengan kulit bergerigi dan daging kuning manis asam. Biasa diiris atau dibuat rujak. Buah apa?", jawaban: ["nanas"] },
+            { soal: "🥭 Buah berwarna kuning-oranye saat matang, manis, dan berserabut. Raja buah tropis. Buah apa?", jawaban: ["mangga"] },
+            { soal: "🍌 Buah berbentuk melengkung, berwarna kuning saat matang, kaya karbohidrat. Monyet sangat suka. Buah apa?", jawaban: ["pisang"] },
+            { soal: "🍉 Buah besar berwarna hijau di luar, merah di dalam, banyak biji hitam, sangat menyegarkan. Buah apa?", jawaban: ["semangka"] },
+            { soal: "🍈 Buah bulat, berdaging tebal berwarna jingga, dan memiliki biji di tengahnya. Rasanya manis dan berair. Buah apa?", jawaban: ["melon"] },
+            { soal: "🫐 Buah kecil berwarna ungu kebiruan, rasanya manis asam, sering digunakan dalam pai dan selai. Buah apa?", jawaban: ["blueberry", "anggur"] },
+            { soal: "🥥 Buah berbentuk bulat, berkulit keras berserat, mengandung air dan daging putih di dalamnya. Buah apa?", jawaban: ["kelapa"] },
+            { soal: "🍓 Buah kecil merah berbentuk hati, berbintik biji di permukaannya, rasanya manis asam segar. Buah apa?", jawaban: ["stroberi", "strawberry"] },
+            { soal: "🍒 Buah kecil berwarna merah gelap, rasanya manis asam, biasa ditemukan di atas kue ulang tahun. Buah apa?", jawaban: ["ceri", "cherry"] },
+            { soal: "🍑 Buah berbulu halus, berwarna merah muda-oranye, dagingnya lembut dan manis. Buah apa?", jawaban: ["persik", "peach"] },
+            { soal: "🍇 Buah kecil yang tumbuh berkelompok, bisa berwarna hijau atau ungu, bisa dibuat menjadi minuman fermentasi. Buah apa?", jawaban: ["anggur"] },
+            { soal: "🍎 Buah bulat berwarna merah atau hijau, renyah saat digigit, simbol pengetahuan dalam cerita rakyat. Buah apa?", jawaban: ["apel"] },
+            { soal: "🍐 Buah berbentuk seperti botol, berwarna hijau atau kuning, daging buahnya manis dan bertekstur. Buah apa?", jawaban: ["pear", "pir"] },
+            { soal: "🥝 Buah kecil berbulu cokelat di luar, hijau segar di dalam, kaya vitamin C. Berasal dari Selandia Baru. Buah apa?", jawaban: ["kiwi"] },
+            { soal: "🍋 Buah citrus berwarna kuning cerah, sangat asam, sering digunakan sebagai penyedap masakan. Buah apa?", jawaban: ["lemon", "jeruk lemon"] },
+            { soal: "🥭 Buah tropis dengan aroma harum, kulitnya berduri halus, dagingnya putih berserat. Berasal dari Asia Tenggara. Buah apa?", jawaban: ["rambutan"] },
+            { soal: "🌺 Buah merah besar, dagingnya banyak biji kecil berwarna merah, sangat manis. Biasa dimakan segar atau dibuat jus. Buah apa?", jawaban: ["delima"] },
+            { soal: "🌴 Buah manis berkulit cokelat-hitam saat matang, biasa dimakan langsung atau dijadikan sirup. Buah apa?", jawaban: ["kurma"] },
+            { soal: "🍊 Buah citrus kecil oranye, kulitnya tipis, bisa dimakan beserta kulitnya. Sering dijual di pasar tradisional. Buah apa?", jawaban: ["jeruk mandarin", "mandarin"] },
+            { soal: "🌿 Buah hitam kecil-kecil tumbuh di pohon yang sering dijadikan selai, rasanya manis sedikit asam. Buah apa?", jawaban: ["blackberry", "murbei"] },
+            { soal: "🍈 Buah tropis dengan daging berwarna merah muda, banyak biji kecil, rasanya manis segar. Biasa dibuat rujak. Buah apa?", jawaban: ["jambu biji", "jambu"] },
+            { soal: "🫒 Buah kecil lonjong hijau atau hitam, sering digunakan dalam masakan Italia dan dibuat minyak. Buah apa?", jawaban: ["zaitun", "olive"] },
+            { soal: "🌳 Buah tropis berukuran besar, kulitnya bersisik, dagingnya manis lembut, dan memiliki 'mata' di permukaannya. Buah apa?", jawaban: ["sirsak"] },
+            { soal: "🍊 Buah citrus berwarna hijau, lebih kecil dari lemon, sangat asam, sering digunakan untuk minuman segar. Buah apa?", jawaban: ["jeruk nipis", "lime"] },
+            { soal: "🌺 Buah dengan kulit luar berwarna merah terang dan daging berwarna putih, rasanya manis segar. Buah apa?", jawaban: ["salak", "manggis"] },
+            { soal: "🌿 Buah bulat kecil, kulit tipis berwarna ungu gelap, dagingnya putih bening manis. Khas Asia Tenggara. Buah apa?", jawaban: ["manggis"] },
+            { soal: "🍊 Buah besar berwarna kuning-hijau, dagingnya merah atau kuning, manis, sering dimakan saat lebaran. Buah apa?", jawaban: ["pepaya"] },
+            { soal: "🌴 Buah tropis berbentuk bulat, berwarna hijau atau merah saat matang, dagingnya manis berair dan ada biji besar. Buah apa?", jawaban: ["leci", "lengkeng"] }
+        ];
+
+        // ===========================
+        // TEBAK BENDERA - 30 Soal
+        // ===========================
+        const TEBAK_BENDERA_LIST = [
+            { soal: "🇮🇩 Bendera ini berwarna merah di atas dan putih di bawah. Negara mana ini?", jawaban: ["indonesia"] },
+            { soal: "🇲🇾 Bendera ini memiliki garis-garis merah putih dan bulan sabit bintang. Negara mana ini?", jawaban: ["malaysia"] },
+            { soal: "🇸🇬 Bendera ini berwarna merah di atas, putih di bawah, dan ada bulan sabit serta bintang putih. Negara mana ini?", jawaban: ["singapura", "singapore"] },
+            { soal: "🇹🇭 Bendera ini memiliki garis biru, putih, merah, putih, biru. Negara mana ini?", jawaban: ["thailand"] },
+            { soal: "🇻🇳 Bendera ini berwarna merah dengan bintang kuning di tengah. Negara mana ini?", jawaban: ["vietnam"] },
+            { soal: "🇵🇭 Bendera ini memiliki warna biru, merah, dan putih dengan matahari dan bintang. Negara mana ini?", jawaban: ["filipina", "philippines"] },
+            { soal: "🇧🇳 Bendera ini berwarna kuning dengan garis diagonal hitam dan putih serta lambang kerajaan. Negara mana ini?", jawaban: ["brunei"] },
+            { soal: "🇲🇲 Bendera ini berwarna kuning, hijau, merah dengan bintang putih. Negara mana ini?", jawaban: ["myanmar", "burma"] },
+            { soal: "🇰🇭 Bendera ini berwarna biru dan merah dengan gambar kuil Angkor Wat di tengah. Negara mana ini?", jawaban: ["kamboja", "cambodia"] },
+            { soal: "🇯🇵 Bendera ini berwarna putih dengan lingkaran merah di tengah. Negara mana ini?", jawaban: ["jepang", "japan"] },
+            { soal: "🇨🇳 Bendera ini berwarna merah dengan bintang kuning besar dan 4 bintang kecil. Negara mana ini?", jawaban: ["cina", "china", "tiongkok"] },
+            { soal: "🇰🇷 Bendera ini berwarna putih dengan lambang taegeuk merah-biru dan trigram hitam. Negara mana ini?", jawaban: ["korea selatan", "south korea"] },
+            { soal: "🇮🇳 Bendera ini berwarna oranye, putih, hijau dengan roda dharma biru di tengah. Negara mana ini?", jawaban: ["india"] },
+            { soal: "🇦🇺 Bendera ini berwarna biru dengan union jack dan bintang-bintang. Negara mana ini?", jawaban: ["australia"] },
+            { soal: "🇺🇸 Bendera ini memiliki 50 bintang dan 13 garis merah putih. Negara mana ini?", jawaban: ["amerika serikat", "usa", "america", "united states"] },
+            { soal: "🇬🇧 Bendera ini disebut Union Jack dengan perpaduan warna merah, putih, dan biru. Negara mana ini?", jawaban: ["inggris", "uk", "united kingdom", "britain"] },
+            { soal: "🇫🇷 Bendera ini berwarna biru, putih, merah dalam bentuk tiga kolom vertikal. Negara mana ini?", jawaban: ["perancis", "france"] },
+            { soal: "🇩🇪 Bendera ini memiliki tiga garis horizontal hitam, merah, dan kuning. Negara mana ini?", jawaban: ["jerman", "germany"] },
+            { soal: "🇧🇷 Bendera ini berwarna hijau dengan berlian kuning dan lingkaran biru bertuliskan motto negara. Negara mana ini?", jawaban: ["brazil", "brasil"] },
+            { soal: "🇨🇦 Bendera ini berwarna merah-putih-merah dengan daun mapel merah di tengah. Negara mana ini?", jawaban: ["kanada", "canada"] },
+            { soal: "🇿🇦 Bendera ini memiliki 6 warna: merah, biru, hijau, kuning, hitam, putih dalam pola unik. Negara mana ini?", jawaban: ["afrika selatan", "south africa"] },
+            { soal: "🇦🇷 Bendera ini berwarna biru-putih-biru dengan matahari kuning di tengah. Negara mana ini?", jawaban: ["argentina"] },
+            { soal: "🇷🇺 Bendera ini memiliki tiga garis horizontal putih, biru, merah. Negara mana ini?", jawaban: ["rusia", "russia"] },
+            { soal: "🇮🇹 Bendera ini memiliki tiga kolom vertikal hijau, putih, merah. Negara mana ini?", jawaban: ["italia", "italy"] },
+            { soal: "🇪🇸 Bendera ini berwarna merah-kuning-merah dengan lambang kerajaan di bagian kuning. Negara mana ini?", jawaban: ["spanyol", "spain"] },
+            { soal: "🇸🇦 Bendera ini berwarna hijau dengan tulisan Arab dan pedang. Negara mana ini?", jawaban: ["arab saudi", "saudi arabia"] },
+            { soal: "🇪🇬 Bendera ini berwarna merah, putih, hitam dengan elang emas di tengah. Negara mana ini?", jawaban: ["mesir", "egypt"] },
+            { soal: "🇳🇬 Bendera ini berwarna hijau-putih-hijau, tiga kolom vertikal tanpa gambar. Negara mana ini?", jawaban: ["nigeria"] },
+            { soal: "🇲🇽 Bendera ini berwarna hijau-putih-merah dengan elang dan ular di tengah. Negara mana ini?", jawaban: ["meksiko", "mexico"] },
+            { soal: "🇵🇰 Bendera ini berwarna hijau dengan bulan sabit dan bintang putih, serta garis putih di tepi. Negara mana ini?", jawaban: ["pakistan"] }
+        ];
+
+        // ===========================
+        // GENERIC GAME ENGINE
+        // ===========================
+        const GAME_CONFIG = {
+            makanan: {
+                list: null, // Assigned below
+                icon: '🍜',
+                name: 'Tebak Makanan',
+                activeVar: () => tebakMakananActive,
+                setActive: (v) => { tebakMakananActive = v; }
+            },
+            lagu: {
+                list: null,
+                icon: '🎵',
+                name: 'Tebak Lagu',
+                activeVar: () => tebakLaguActive,
+                setActive: (v) => { tebakLaguActive = v; }
+            },
+            buah: {
+                list: null,
+                icon: '🍎',
+                name: 'Tebak Buah',
+                activeVar: () => tebakBuahActive,
+                setActive: (v) => { tebakBuahActive = v; }
+            },
+            bendera: {
+                list: null,
+                icon: '🏳️',
+                name: 'Tebak Bendera',
+                activeVar: () => tebakBenderaActive,
+                setActive: (v) => { tebakBenderaActive = v; }
+            }
+        };
+
+        // Assign lists
+        GAME_CONFIG.makanan.list = TEBAK_MAKANAN_LIST;
+        GAME_CONFIG.lagu.list = TEBAK_LAGU_LIST;
+        GAME_CONFIG.buah.list = TEBAK_BUAH_LIST;
+        GAME_CONFIG.bendera.list = TEBAK_BENDERA_LIST;
+
+        function isAnyTebakActive(except) {
+            const games = ['makanan','lagu','buah','bendera'];
+            return games.filter(g => g !== except).some(g => GAME_CONFIG[g].activeVar());
+        }
+
+        function startTebakGame(type) {
+            const cfg = GAME_CONFIG[type];
+            if (cfg.activeVar()) {
+                addMessage(`${cfg.icon} Game <b>${cfg.name}</b> sedang berlangsung! Jawab soalnya dulu ya.`, 'system');
+                return;
+            }
+            if (isAnyTebakActive(type) || (typeof tebakKataActive !== 'undefined' && tebakKataActive)) {
+                addMessage(`⚠️ Ada game tebak yang sedang berjalan! Ketik <b>selesai</b> untuk menghentikannya dulu.`, 'system');
+                return;
+            }
+            cfg.setActive(true);
+            const st = tebakGameState[type];
+            st.score = 0;
+            st.queue = shuffleTebakArray(cfg.list);
+            st.index = 0;
+
+            addMessage(`${cfg.icon} <b>GAME ${cfg.name.toUpperCase()} DIMULAI!</b><br>
+<span style="font-size:0.8rem;color:#9d50bb;">Benar = Rp2.500 & 75XP <b>atau</b> Rp1.500 & 50XP (acak)</span><br>
+<span style="font-size:0.78rem;color:#666;">Ketik <b>skip</b> untuk lewati soal · <b>selesai</b> untuk berhenti</span>`, 'system');
+            setTimeout(() => askTebakGame(type), 700);
+        }
+
+        function askTebakGame(type) {
+            const cfg = GAME_CONFIG[type];
+            const st = tebakGameState[type];
+            if (st.index >= st.queue.length) {
+                endTebakGame(type, true);
+                return;
+            }
+            const soal = st.queue[st.index];
+            addMessage(`${cfg.icon} <b>Soal ${st.index + 1}/30</b><br><span style="color:#e0c8ff;">${soal.soal}</span>`, 'system');
+        }
+
+        function checkTebakGeneric(type, input) {
+            const cfg = GAME_CONFIG[type];
+            if (!cfg.activeVar()) return false;
+            const txt = input.trim().toLowerCase();
+            const st = tebakGameState[type];
+
+            if (txt === 'selesai') {
+                endTebakGame(type, false);
+                return true;
+            }
+
+            if (txt === 'skip') {
+                const jwb = st.queue[st.index].jawaban[0];
+                addMessage(`⏩ Dilewati. Jawaban: <b>${jwb}</b>`, 'system');
+                st.index++;
+                if (st.index >= st.queue.length) {
+                    setTimeout(() => endTebakGame(type, true), 400);
+                } else {
+                    setTimeout(() => askTebakGame(type), 600);
+                }
+                return true;
+            }
+
+            const soal = st.queue[st.index];
+            const jawabanList = soal.jawaban.map(j => j.toLowerCase());
+            const benar = jawabanList.some(j => {
+                const tNorm = txt.replace(/[^a-z0-9\s]/g,'');
+                const jNorm = j.replace(/[^a-z0-9\s]/g,'');
+                return tNorm.includes(jNorm) || jNorm.includes(tNorm);
+            });
+
+            if (benar) {
+                const roll = Math.random();
+                const uang = roll < 0.5 ? 2500 : 1500;
+                const xp   = roll < 0.5 ? 75   : 50;
+                userData.balance += uang;
+                addXP(xp, `${cfg.name} benar`);
+                saveData();
+                st.score++;
+                playSound('receive');
+                addMessage(`✅ <b>BENAR!</b> +<b>Rp${uang.toLocaleString('id-ID')}</b> & +<b>${xp} XP</b> 🎉<br><span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`, 'system');
+                st.index++;
+                if (st.index >= st.queue.length) {
+                    setTimeout(() => endTebakGame(type, true), 700);
+                } else {
+                    setTimeout(() => askTebakGame(type), 800);
+                }
+            } else {
+                playSound('send');
+                addMessage(`❌ <b>Salah!</b> Coba lagi atau ketik <b>skip</b> untuk lewati.`, 'system');
+            }
+            return true;
+        }
+
+        function endTebakGame(type, selesaiSemua) {
+            const cfg = GAME_CONFIG[type];
+            cfg.setActive(false);
+            const st = tebakGameState[type];
+            const msg = selesaiSemua
+                ? `🏁 <b>Game ${cfg.name} Selesai!</b><br>Jawaban benar: <b>${st.score}/30 soal</b><br>Saldo sekarang: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`
+                : `🛑 <b>Game ${cfg.name} Dihentikan.</b><br>Total benar: <b>${st.score} soal</b><br>Saldo sekarang: <b>Rp${userData.balance.toLocaleString('id-ID')}</b>`;
+            addMessage(msg, 'system');
+        }
+
+        // Shortcut functions called from menu/events
+        function startTebakMakanan()  { startTebakGame('makanan'); }
+        function startTebakLagu()     { startTebakGame('lagu'); }
+        function startTebakBuah()     { startTebakGame('buah'); }
+        function startTebakBendera()  { startTebakGame('bendera'); }
+
+        // Register new games in ALL_ACTIONS (after ALL_ACTIONS is defined)
+        document.addEventListener('DOMContentLoaded', () => {});
+        // Ensure ALL_ACTIONS has new games (also added above inline)
+    </script>
+
+    <script>
+        // ===========================
+        // TEBAK BUAH BOM GAME
+        // ===========================
+        const BUAH_LIST = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🥭','🍍','🍌','🍉','🥝','🍐','🫐','🍈'];
+        let tbbBomIndex = -1;
+        let tbbRevealed = 0;
+        let tbbGameOver = false;
+        let tbbCellFruits = [];
+
+        function openTebakBuahBom() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('tebakBuahBomModal').classList.add('active');
+            updateTbbBalance();
+            startTebakBuahBom();
+        }
+
+        function closeTebakBuahBom() {
+            document.getElementById('tebakBuahBomModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function updateTbbBalance() {
+            document.getElementById('tbb-balance').textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+        }
+
+        function startTebakBuahBom() {
+            tbbBomIndex = Math.floor(Math.random() * 9);
+            tbbRevealed = 0;
+            tbbGameOver = false;
+
+            // Assign random fruits to each cell (for reveal)
+            tbbCellFruits = [];
+            for (let i = 0; i < 9; i++) {
+                tbbCellFruits.push(BUAH_LIST[Math.floor(Math.random() * BUAH_LIST.length)]);
+            }
+
+            document.getElementById('tbb-status').textContent = 'Pilih petak yang berisi buah! 🍀';
+            document.getElementById('tbb-status').style.color = '#9d50bb';
+            document.getElementById('tbb-result-area').style.display = 'none';
+            document.getElementById('tbb-play-btn').style.display = 'none';
+
+            renderTbbGrid();
+            updateTbbBalance();
+        }
+
+        function renderTbbGrid() {
+            const grid = document.getElementById('tbb-grid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'tbb-cell';
+                cell.textContent = '❓';
+                cell.dataset.index = i;
+                if (!tbbGameOver) {
+                    cell.addEventListener('click', () => tbbClickCell(i, cell));
+                }
+                grid.appendChild(cell);
+            }
+        }
+
+        function tbbClickCell(index, cellEl) {
+            if (tbbGameOver) return;
+
+            if (index === tbbBomIndex) {
+                // Hit bomb!
+                tbbGameOver = true;
+                cellEl.textContent = '💣';
+                cellEl.classList.add('revealed-bomb');
+                playSound('send');
+
+                // Reveal all remaining cells
+                setTimeout(() => {
+                    const cells = document.getElementById('tbb-grid').querySelectorAll('.tbb-cell');
+                    cells.forEach((c, i) => {
+                        if (i !== index) {
+                            c.classList.add('disabled');
+                            if (!c.classList.contains('revealed-fruit')) {
+                                c.textContent = tbbCellFruits[i];
+                            }
+                        }
+                    });
+
+                    document.getElementById('tbb-status').textContent = '💥 Bom! Game Over!';
+                    document.getElementById('tbb-status').style.color = '#f44336';
+
+                    const resultArea = document.getElementById('tbb-result-area');
+                    resultArea.style.display = 'block';
+                    resultArea.style.borderColor = 'rgba(244,67,54,0.4)';
+                    resultArea.style.background = 'rgba(244,67,54,0.08)';
+                    document.getElementById('tbb-result-emoji').textContent = '💣';
+                    document.getElementById('tbb-result-text').textContent = 'Kena Bom! Coba lagi!';
+                    document.getElementById('tbb-result-sub').textContent =
+                        `Berhasil kumpulkan ${tbbRevealed} buah sebelum kena bom.`;
+                    document.getElementById('tbb-play-btn').style.display = 'block';
+                    document.getElementById('tbb-play-btn').textContent = '🔄 Main Lagi';
+                }, 300);
+
+            } else {
+                // Found fruit!
+                tbbRevealed++;
+                cellEl.textContent = tbbCellFruits[index];
+                cellEl.classList.add('revealed-fruit', 'pulse-win');
+                cellEl.style.pointerEvents = 'none';
+
+                userData.balance += 500;
+                addXP(15, 'Tebak Buah Bom');
+                saveData();
+                playSound('receive');
+                updateTbbBalance();
+
+                document.getElementById('tbb-status').textContent =
+                    `🍀 Buah ke-${tbbRevealed}! +Rp500 & +15XP`;
+                document.getElementById('tbb-status').style.color = '#4caf50';
+
+                if (tbbRevealed >= 8) {
+                    // Won! All 8 fruits found
+                    tbbGameOver = true;
+
+                    // Reveal bomb cell
+                    setTimeout(() => {
+                        const cells = document.getElementById('tbb-grid').querySelectorAll('.tbb-cell');
+                        cells[tbbBomIndex].textContent = '💣';
+                        cells[tbbBomIndex].classList.add('revealed-bomb');
+                        cells[tbbBomIndex].style.pointerEvents = 'none';
+
+                        document.getElementById('tbb-status').textContent = '🎉 MENANG! Semua buah ditemukan!';
+                        document.getElementById('tbb-status').style.color = '#ffd700';
+
+                        const resultArea = document.getElementById('tbb-result-area');
+                        resultArea.style.display = 'block';
+                        resultArea.style.borderColor = 'rgba(255,215,0,0.5)';
+                        resultArea.style.background = 'rgba(255,215,0,0.08)';
+                        document.getElementById('tbb-result-emoji').textContent = '🏆';
+                        document.getElementById('tbb-result-text').textContent = 'SEMPURNA! Semua 8 Buah Ditemukan!';
+                        document.getElementById('tbb-result-sub').textContent =
+                            `Total: +Rp4.000 & +120XP! Saldo: Rp${userData.balance.toLocaleString('id-ID')}`;
+                        document.getElementById('tbb-play-btn').style.display = 'block';
+                        document.getElementById('tbb-play-btn').textContent = '🍎 Main Lagi';
+
+                        setTimeout(() => {
+                            addMessage(
+                                `🏆 <b>SEMPURNA!</b> Kamu berhasil menemukan semua 8 buah di game Tebak Buah!<br>` +
+                                `💵 <b>+Rp4.000</b> & ⚡ <b>+120 XP</b> terkumpul!<br>` +
+                                `<span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`,
+                                'system'
+                            );
+                        }, 600);
+                    }, 400);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
