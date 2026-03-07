@@ -864,6 +864,7 @@
                 <div class="sub-menu" id="sub-menu-toko">
                     <div class="sub-menu-item" id="menu-toko-buah"><span>🍎</span> Toko Buah</div>
                     <div class="sub-menu-item" id="menu-toko-umpan"><span>🪱</span> Toko Umpan</div>
+                    <div class="sub-menu-item" id="menu-toko-limit"><span>🧩</span> Toko Limit</div>
                 </div>
             </li>
             <li class="menu-item" id="menu-inventory"><span>🎒</span> Inventory</li>
@@ -1012,6 +1013,51 @@
         </div>
     </div>
 
+    <!-- TOKO LIMIT MODAL -->
+    <div class="modal" id="limitShopModal" style="width:min(340px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">🧩 Toko Limit</h3>
+            <button onclick="closeLimitShop()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:14px;">
+            <div style="font-size:0.78rem;color:#666;margin-bottom:4px;">Saldo kamu</div>
+            <div id="limit-balance" style="font-size:1.2rem;font-weight:800;color:#9d50bb;">Rp0</div>
+            <div style="font-size:0.78rem;color:#888;margin-top:4px;">Limit kamu: <span id="limit-current" style="color:#c07de8;font-weight:700;">0</span> 🧩</div>
+        </div>
+        <p style="font-size:0.78rem;color:#888;margin-bottom:14px;text-align:center;">Beli limit untuk bermain semua games.<br><span style="color:#c07de8;">Setiap 1x bermain = 1 limit</span></p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(157,80,187,0.08);border:1px solid rgba(157,80,187,0.25);border-radius:12px;padding:14px 16px;">
+                <div>
+                    <div style="font-weight:700;font-size:0.95rem;color:#fff;">🧩 15 Limit</div>
+                    <div style="font-size:0.78rem;color:#9d50bb;margin-top:3px;">Rp10.000</div>
+                </div>
+                <button class="fruit-buy-btn" onclick="buyLimit(15,10000)">Beli</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(157,80,187,0.08);border:1px solid rgba(157,80,187,0.25);border-radius:12px;padding:14px 16px;">
+                <div>
+                    <div style="font-weight:700;font-size:0.95rem;color:#fff;">🧩 30 Limit</div>
+                    <div style="font-size:0.78rem;color:#9d50bb;margin-top:3px;">Rp17.000</div>
+                </div>
+                <button class="fruit-buy-btn" onclick="buyLimit(30,17000)">Beli</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(157,80,187,0.08);border:1px solid rgba(157,80,187,0.25);border-radius:12px;padding:14px 16px;">
+                <div>
+                    <div style="font-weight:700;font-size:0.95rem;color:#fff;">🧩 50 Limit</div>
+                    <div style="font-size:0.78rem;color:#9d50bb;margin-top:3px;">Rp25.000</div>
+                </div>
+                <button class="fruit-buy-btn" onclick="buyLimit(50,25000)">Beli</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(157,80,187,0.08);border:1px solid rgba(157,80,187,0.25);border-radius:12px;padding:14px 16px;">
+                <div>
+                    <div style="font-weight:700;font-size:0.95rem;color:#fff;">🧩 100 Limit <span style="font-size:0.7rem;background:rgba(255,215,0,0.2);border:1px solid rgba(255,215,0,0.4);color:#ffd700;padding:2px 7px;border-radius:20px;margin-left:4px;">HEMAT</span></div>
+                    <div style="font-size:0.78rem;color:#9d50bb;margin-top:3px;">Rp40.000</div>
+                </div>
+                <button class="fruit-buy-btn" onclick="buyLimit(100,40000)">Beli</button>
+            </div>
+        </div>
+        <div style="margin-top:14px;font-size:0.72rem;color:#555;text-align:center;">Limit tidak kadaluarsa dan dapat digunakan kapan saja.</div>
+    </div>
+
     <!-- TEBAK BUAH BOM MODAL -->
     <div class="modal" id="tebakBuahBomModal" style="width:min(360px,95vw);max-height:92vh;overflow-y:auto;padding:20px 18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -1156,6 +1202,7 @@
 
         function openTTT() {
             playSound('btn');
+            if (!useLimit('Tic-tac-toe')) return;
             closeAll();
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('tttModal').classList.add('active');
@@ -1449,6 +1496,7 @@
             balance: 0,
             level: 1,
             xp: 0,
+            limit: 0,
             snakeFood: '🍎',
             snakeFoodBonus: 50,
             purchasedFruits: [],
@@ -1477,6 +1525,7 @@
             if (!userData.purchasedFruits) userData.purchasedFruits = [];
             if (!userData.inventory) userData.inventory = [];
             if (!userData.bait) userData.bait = { grasshopper: 0, worm: 0 };
+            if (typeof userData.limit === 'undefined') userData.limit = 0;
 
             // Boot app after data is ready
             bootApp();
@@ -1587,6 +1636,10 @@
                     <div class="profile-row">
                         <span class="label">⚡ XP</span>
                         <span class="value">${userData.xp} XP</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="label">🧩 Limit</span>
+                        <span class="value">${userData.limit}</span>
                     </div>
                 </div>
             `;
@@ -1860,6 +1913,7 @@
             document.getElementById('fishingModal').classList.remove('active');
             document.getElementById('inventoryModal').classList.remove('active');
             document.getElementById('baitShopModal').classList.remove('active');
+            document.getElementById('limitShopModal').classList.remove('active');
             if (typeof stopSnake === 'function') stopSnake();
             document.getElementById('overlay').style.display = 'none';
             cekOpen = false;
@@ -1990,6 +2044,7 @@
         });
         document.getElementById('menu-toko-buah').addEventListener('click', () => { openFruitShop(); trackQuickAction('toko-buah','🍎','Toko Buah'); });
         document.getElementById('menu-toko-umpan').addEventListener('click', () => { openBaitShop(); trackQuickAction('toko-umpan','🪱','Toko Umpan'); });
+        document.getElementById('menu-toko-limit').addEventListener('click', () => { openLimitShop(); trackQuickAction('toko-limit','🧩','Toko Limit'); });
         document.getElementById('menu-inventory').addEventListener('click', () => { openInventory(); trackQuickAction('inventory','🎒','Inventory'); });
 
         messageInput.addEventListener('keypress', (e) => {
@@ -2037,6 +2092,7 @@
             'toko':        { icon: '🛍️',  label: 'Toko',         action: () => {} },
             'toko-buah':   { icon: '🍎',  label: 'Toko Buah',    action: () => openFruitShop() },
             'toko-umpan':  { icon: '🪱',  label: 'Toko Umpan',   action: () => openBaitShop() },
+            'toko-limit':  { icon: '🧩',  label: 'Toko Limit',   action: () => openLimitShop() },
             'inventory':   { icon: '🎒',  label: 'Inventory',    action: () => openInventory() },
             'tebakmakanan':{ icon: '🍜',  label: 'Tebak Makanan',action: () => startTebakMakanan() },
             'tebaklagu':   { icon: '🎵',  label: 'Tebak Lagu',   action: () => startTebakLagu() },
@@ -2372,6 +2428,7 @@
 
         function openSnake() {
             playSound('btn');
+            if (!useLimit('Ular')) return;
             closeAll();
             const canvas = document.getElementById('snakeCanvas');
             canvas.width = COLS * CELL;
@@ -2439,6 +2496,7 @@
 
         function openSlot() {
             playSound('btn');
+            if (!useLimit('Mesin Slot')) return;
             closeAll();
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('slotModal').classList.add('active');
@@ -2819,6 +2877,7 @@
 
         function openFishing() {
             playSound('btn');
+            if (!useLimit('Memancing')) return;
             closeAll();
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('fishingModal').classList.add('active');
@@ -3277,6 +3336,7 @@
                 addMessage('🔤 Game Tebak Kata sedang berlangsung! Jawab soalnya dulu ya.', 'system');
                 return;
             }
+            if (!useLimit('Tebak Kata')) return;
             tebakKataActive = true;
             tebakKataScore = 0;
             tebakKataQueue = shuffleTebakArray(TEBAK_KATA_LIST);
@@ -3579,6 +3639,7 @@
                 addMessage(`⚠️ Ada game tebak yang sedang berjalan! Ketik <b>selesai</b> untuk menghentikannya dulu.`, 'system');
                 return;
             }
+            if (!useLimit(cfg.name)) return;
             cfg.setActive(true);
             const st = tebakGameState[type];
             st.score = 0;
@@ -3679,6 +3740,63 @@
 
     <script>
         // ===========================
+        // TOKO LIMIT
+        // ===========================
+        function openLimitShop() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('limitShopModal').classList.add('active');
+            updateLimitShopUI();
+        }
+
+        function closeLimitShop() {
+            document.getElementById('limitShopModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function updateLimitShopUI() {
+            const balEl = document.getElementById('limit-balance');
+            const curEl = document.getElementById('limit-current');
+            if (balEl) balEl.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+            if (curEl) curEl.textContent = userData.limit || 0;
+        }
+
+        function buyLimit(amount, price) {
+            if (userData.balance < price) {
+                playSound('send');
+                addMessage('❌ Saldo tidak cukup untuk membeli <b>🧩 ' + amount + ' Limit</b>! Butuh Rp' + price.toLocaleString('id-ID') + '. Saldo kamu: Rp' + userData.balance.toLocaleString('id-ID'), 'system');
+                closeLimitShop();
+                return;
+            }
+            userData.balance -= price;
+            userData.limit = (userData.limit || 0) + amount;
+            saveData();
+            playSound('receive');
+            updateLimitShopUI();
+            setTimeout(() => {
+                addMessage('🧩 Berhasil membeli <b>' + amount + ' Limit</b>! Saldo berkurang Rp' + price.toLocaleString('id-ID') + '.<br><span style="font-size:0.8rem;color:#888;">Limit sekarang: ' + userData.limit + ' · Saldo: Rp' + userData.balance.toLocaleString('id-ID') + '</span>', 'system');
+            }, 300);
+        }
+
+        // ===========================
+        // LIMIT CHECK HELPER
+        // ===========================
+        function useLimit(gameName) {
+            if ((userData.limit || 0) <= 0) {
+                playSound('send');
+                closeAll();
+                addMessage('🧩 <b>Limit habis!</b> Kamu butuh minimal <b>1 Limit</b> untuk bermain <b>' + gameName + '</b>.<br><span style="font-size:0.8rem;color:#888;">Beli limit di Menu → Toko → Toko Limit.</span>', 'system');
+                return false;
+            }
+            userData.limit -= 1;
+            saveData();
+            return true;
+        }
+    </script>
+
+    <script>
+        // ===========================
         // TEBAK BUAH BOM GAME
         // ===========================
         const BUAH_LIST = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🥭','🍍','🍌','🍉','🥝','🍐','🫐','🍈'];
@@ -3689,6 +3807,7 @@
 
         function openTebakBuahBom() {
             playSound('btn');
+            if (!useLimit('Tebak Buah Bom')) return;
             closeAll();
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('tebakBuahBomModal').classList.add('active');
