@@ -844,6 +844,7 @@
                     <div class="sub-menu-item" id="menu-tebakbendera"><span>🏳️</span> Tebak Bendera</div>
                     <div class="sub-menu-item" id="menu-tebakmakanan"><span>🍜</span> Tebak Makanan</div>
                     <div class="sub-menu-item" id="menu-tebaklagu"><span>🎵</span> Tebak Lagu</div>
+                    <div class="sub-menu-item" id="menu-gamemat"><span>🧮</span> Games Matematika</div>
                 </div>
             </li>
             <li class="menu-item" id="menu-reg"><span>📝</span> Registrasi Nama</li>
@@ -1355,6 +1356,10 @@
                 tttLosses++;
                 status.textContent = '😢 Bot Menang! Coba lagi!';
                 status.style.color = '#f44336';
+                if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+                setTimeout(() => {
+                    addMessage(`😢 <b>Kamu kalah</b> di Tic-tac-toe! <b>-1 Limit</b>. Limit tersisa: <b>${userData.limit}</b>`, 'system');
+                }, 500);
             } else {
                 tttDraws++;
                 status.textContent = '🤝 Seri!';
@@ -1589,6 +1594,10 @@
             }
             if (typeof tebakBenderaActive !== 'undefined' && tebakBenderaActive) {
                 checkTebakGeneric('bendera', text);
+                return;
+            }
+            if (typeof gamematActive !== 'undefined' && gamematActive) {
+                checkGameMat(text);
                 return;
             }
 
@@ -2315,10 +2324,16 @@
             drawSnake();
             document.getElementById('snake-status').textContent = '💥 Nabrak! Mengulang...';
             document.getElementById('snake-status').style.color = '#f44336';
+            // Kurangi limit saat kalah
+            if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
             // Notify chat if earned something
             if (snakeState.earned > 0) {
                 setTimeout(() => {
-                    addMessage('🐍 Sesi Ular selesai! Kamu mendapat <b>💵 Rp' + snakeState.earned.toLocaleString('id-ID') + '</b>. Saldo sekarang: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+                    addMessage('🐍 Sesi Ular selesai! Kamu mendapat <b>💵 Rp' + snakeState.earned.toLocaleString('id-ID') + '</b>. Saldo sekarang: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b><br><span style="font-size:0.75rem;color:#888;">-1 Limit · Sisa: ' + userData.limit + '</span>', 'system');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    addMessage('🐍 <b>Ular nabrak!</b> <b>-1 Limit</b>. Limit tersisa: <b>' + userData.limit + '</b>', 'system');
                 }, 500);
             }
             // Auto restart
@@ -2644,8 +2659,9 @@
                 resultEl.style.color = '#f44336';
                 resultEl.textContent = resultMsg;
                 playSound('send');
+                if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
                 setTimeout(() => {
-                    addMessage('🎰 Slot: <b>Kalah!</b> Taruhan Rp' + bet.toLocaleString('id-ID') + ' hangus. Saldo: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b>', 'system');
+                    addMessage('🎰 Slot: <b>Kalah!</b> Taruhan Rp' + bet.toLocaleString('id-ID') + ' hangus. Saldo: <b>Rp' + userData.balance.toLocaleString('id-ID') + '</b><br><span style="font-size:0.75rem;color:#888;">-1 Limit · Sisa: ' + userData.limit + '</span>', 'system');
                 }, 500);
             }
 
@@ -3038,11 +3054,12 @@
                     // Miss
                     cell.textContent = '🌊';
                     playSound('send');
+                    if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
 
                     const statusEl = document.getElementById('fishing-status');
                     const attEl = document.getElementById('fishing-attempts');
                     const remaining = getTotalBait();
-                    if (statusEl) { statusEl.textContent = `😢 Tidak ada ikan! Umpan tersisa: ${remaining}`; statusEl.style.color = '#f44336'; }
+                    if (statusEl) { statusEl.textContent = `😢 Tidak ada ikan! Umpan tersisa: ${remaining} · -1 Limit`; statusEl.style.color = '#f44336'; }
                     if (attEl) attEl.textContent = `Umpan: ${getBaitDisplay()}`;
 
                     if (remaining > 0) {
@@ -3797,6 +3814,184 @@
 
     <script>
         // ===========================
+        // GAMES MATEMATIKA
+        // ===========================
+        let gamematActive = false;
+        let gamematCurrentSoal = null;
+
+        const MATEMATIKA_LIST = [
+            {
+                soal: "🧮 Jika log₂(x) + log₂(x²) = 9, berapakah nilai x?",
+                jawaban: ["8"],
+                pembahasan: "log₂(x) + log₂(x²) = log₂(x·x²) = log₂(x³) = 9 → x³ = 2⁹ = 512 → x = 8"
+            },
+            {
+                soal: "📐 Sebuah deret geometri memiliki suku pertama 3 dan rasio 2. Berapakah jumlah 8 suku pertama?",
+                jawaban: ["765"],
+                pembahasan: "Sn = a(rⁿ-1)/(r-1) = 3(2⁸-1)/(2-1) = 3×255 = 765"
+            },
+            {
+                soal: "🔢 Berapa nilai dari ∫₀¹ (3x² + 2x) dx ?",
+                jawaban: ["2"],
+                pembahasan: "∫(3x²+2x)dx = x³+x² | dari 0 ke 1 = (1+1)-(0) = 2"
+            },
+            {
+                soal: "📊 Nilai determinan matriks [[3,1],[2,4]] adalah?",
+                jawaban: ["10"],
+                pembahasan: "det = (3×4) - (1×2) = 12 - 2 = 10"
+            },
+            {
+                soal: "🧩 Jika f(x) = 2x³ - 3x² + x - 5, berapakah f'(2)?",
+                jawaban: ["13"],
+                pembahasan: "f'(x) = 6x² - 6x + 1, f'(2) = 6(4) - 6(2) + 1 = 24 - 12 + 1 = 13"
+            },
+            {
+                soal: "🔣 Berapa banyak bilangan prima antara 50 dan 70?",
+                jawaban: ["4"],
+                pembahasan: "Bilangan prima antara 50-70: 53, 59, 61, 67 → ada 4 bilangan prima."
+            },
+            {
+                soal: "📐 Dalam segitiga ABC, sudut A = 60°, sisi AB = 8, AC = 6. Berapakah panjang BC? (gunakan aturan cosinus, bisa ditulis dalam bentuk desimal 2 angka)",
+                jawaban: ["2√13", "√52", "7.21", "7,21"],
+                pembahasan: "BC² = AB² + AC² - 2·AB·AC·cos(A) = 64 + 36 - 2(8)(6)(0.5) = 100 - 48 = 52 → BC = √52 = 2√13 ≈ 7.21"
+            },
+            {
+                soal: "🧮 Jika x dan y memenuhi sistem: 2x + 3y = 12 dan x - y = 1, berapakah nilai x + y?",
+                jawaban: ["5"],
+                pembahasan: "Dari x-y=1 → x=y+1. Substitusi: 2(y+1)+3y=12 → 5y=10 → y=2, x=3. x+y=5"
+            },
+            {
+                soal: "🔢 Barisan aritmetika: 2, 5, 8, 11, ... Berapakah suku ke-20?",
+                jawaban: ["59"],
+                pembahasan: "a=2, b=3. Un = 2 + (20-1)×3 = 2 + 57 = 59"
+            },
+            {
+                soal: "📊 Jika sin θ = 3/5 dan θ di kuadran I, berapakah nilai tan θ?",
+                jawaban: ["3/4", "0.75"],
+                pembahasan: "cos θ = 4/5 (Pythagoras: 3-4-5). tan θ = sin/cos = (3/5)/(4/5) = 3/4"
+            },
+            {
+                soal: "🧩 Berapa nilai dari C(10, 3) (kombinasi 10 pilih 3)?",
+                jawaban: ["120"],
+                pembahasan: "C(10,3) = 10!/(3!×7!) = (10×9×8)/(3×2×1) = 720/6 = 120"
+            },
+            {
+                soal: "🔣 Sebuah lingkaran memiliki persamaan x² + y² - 6x + 4y - 3 = 0. Berapakah jari-jarinya?",
+                jawaban: ["4"],
+                pembahasan: "(x-3)² + (y+2)² = 9+4+3 = 16 → r = 4"
+            },
+            {
+                soal: "🧮 Jika 5^(2x-1) = 125, berapakah nilai x?",
+                jawaban: ["2"],
+                pembahasan: "125 = 5³ → 2x-1 = 3 → 2x = 4 → x = 2"
+            },
+            {
+                soal: "📐 Luas daerah yang dibatasi y = x² dan y = 4 adalah?",
+                jawaban: ["32/3", "10.67"],
+                pembahasan: "∫₋₂² (4-x²)dx = [4x - x³/3]₋₂² = (8-8/3)-(-8+8/3) = 16-16/3 = 32/3"
+            },
+            {
+                soal: "🔢 Jumlah semua bilangan bulat positif kelipatan 3 yang kurang dari 100 adalah?",
+                jawaban: ["1683"],
+                pembahasan: "3+6+...+99 = 3(1+2+...+33) = 3×(33×34/2) = 3×561 = 1683"
+            },
+            {
+                soal: "📊 Nilai limit: lim(x→2) (x²-4)/(x-2) adalah?",
+                jawaban: ["4"],
+                pembahasan: "(x²-4)/(x-2) = (x+2)(x-2)/(x-2) = x+2 → saat x=2: 4"
+            },
+            {
+                soal: "🧩 Diketahui vektor a=(2,3) dan b=(1,-1). Berapakah a·b (dot product)?",
+                jawaban: ["-1"],
+                pembahasan: "a·b = 2×1 + 3×(-1) = 2 - 3 = -1"
+            },
+            {
+                soal: "🔣 Peluang mendapat angka ganjil saat melempar dadu dua kali adalah?",
+                jawaban: ["1/4", "0.25", "25%"],
+                pembahasan: "P(ganjil) = 3/6 = 1/2. Dua kali: (1/2)×(1/2) = 1/4"
+            },
+            {
+                soal: "🧮 Jika akar-akar persamaan 2x² - 5x + k = 0 adalah p dan q, dan p+q = 5/2 dan p×q = 3, berapakah k?",
+                jawaban: ["6"],
+                pembahasan: "Dari Vieta: p×q = k/2 = 3 → k = 6"
+            },
+            {
+                soal: "📐 Suku ke-n dari barisan geometri adalah 2×3^(n-1). Berapakah rasionya?",
+                jawaban: ["3"],
+                pembahasan: "Un = 2×3^(n-1). U₁=2, U₂=6. Rasio = U₂/U₁ = 6/2 = 3"
+            }
+        ];
+
+        function startGameMat() {
+            if (gamematActive) {
+                addMessage('🧮 Game Matematika sedang berlangsung! Jawab soalnya dulu ya.', 'system');
+                return;
+            }
+            if (!useLimit('Games Matematika')) return;
+            gamematActive = true;
+            const soal = MATEMATIKA_LIST[Math.floor(Math.random() * MATEMATIKA_LIST.length)];
+            gamematCurrentSoal = soal;
+            closeAll();
+            addMessage(`🧮 <b>GAMES MATEMATIKA</b><br>
+<span style="font-size:0.8rem;color:#9d50bb;">Jawab benar = <b>+Rp3.500 & +75 XP</b></span><br>
+<span style="font-size:0.78rem;color:#666;">Ketik <b>skip</b> untuk lewati · <b>selesai</b> untuk berhenti</span>`, 'system');
+            setTimeout(() => {
+                addMessage(`🧮 <b>Soal:</b><br><span style="color:#e0c8ff;">${soal.soal}</span>`, 'system');
+            }, 600);
+        }
+
+        function checkGameMat(input) {
+            if (!gamematActive) return false;
+            const txt = input.trim().toLowerCase();
+
+            if (txt === 'selesai') {
+                gamematActive = false;
+                gamematCurrentSoal = null;
+                addMessage(`🛑 <b>Game Matematika dihentikan.</b>`, 'system');
+                return true;
+            }
+
+            if (txt === 'skip') {
+                const jwb = gamematCurrentSoal.jawaban[0];
+                gamematActive = false;
+                if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+                addMessage(`⏩ Dilewati. Jawaban: <b>${jwb}</b><br><span style="font-size:0.75rem;color:#888;">${gamematCurrentSoal.pembahasan}</span><br><span style="font-size:0.75rem;color:#f44444;">-1 Limit · Sisa: ${userData.limit}</span>`, 'system');
+                gamematCurrentSoal = null;
+                return true;
+            }
+
+            const soal = gamematCurrentSoal;
+            const jawabanList = soal.jawaban.map(j => j.toLowerCase().replace(/\s/g, ''));
+            const txtNorm = txt.replace(/\s/g, '');
+            const benar = jawabanList.some(j => txtNorm === j || txtNorm.includes(j) || j.includes(txtNorm));
+
+            if (benar) {
+                userData.balance += 3500;
+                addXP(75, 'Games Matematika benar');
+                saveData();
+                gamematActive = false;
+                gamematCurrentSoal = null;
+                playSound('receive');
+                addMessage(`✅ <b>BENAR! HEBAT!</b> +<b>Rp3.500</b> & +<b>75 XP</b> 🎉<br><span style="font-size:0.75rem;color:#9d50bb;">${soal.pembahasan}</span><br><span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`, 'system');
+            } else {
+                playSound('send');
+                addMessage(`❌ <b>Salah!</b> Coba lagi atau ketik <b>skip</b> untuk lewati.`, 'system');
+            }
+            return true;
+        }
+
+        document.getElementById('menu-gamemat').addEventListener('click', () => {
+            playSound('btn');
+            closeAll();
+            startGameMat();
+            trackQuickAction('gamemat', '🧮', 'Games Mat');
+        });
+
+        ALL_ACTIONS['gamemat'] = { icon: '🧮', label: 'Games Mat', action: () => startGameMat() };
+    </script>
+
+    <script>
+        // ===========================
         // TEBAK BUAH BOM GAME
         // ===========================
         const BUAH_LIST = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🥭','🍍','🍌','🍉','🥝','🍐','🫐','🍈'];
@@ -3884,6 +4079,8 @@
                     document.getElementById('tbb-status').textContent = '💥 Bom! Game Over!';
                     document.getElementById('tbb-status').style.color = '#f44336';
 
+                    if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+
                     const resultArea = document.getElementById('tbb-result-area');
                     resultArea.style.display = 'block';
                     resultArea.style.borderColor = 'rgba(244,67,54,0.4)';
@@ -3891,7 +4088,7 @@
                     document.getElementById('tbb-result-emoji').textContent = '💣';
                     document.getElementById('tbb-result-text').textContent = 'Kena Bom! Coba lagi!';
                     document.getElementById('tbb-result-sub').textContent =
-                        `Berhasil kumpulkan ${tbbRevealed} buah sebelum kena bom.`;
+                        `Berhasil kumpulkan ${tbbRevealed} buah sebelum kena bom. -1 Limit · Sisa: ${userData.limit}`;
                     document.getElementById('tbb-play-btn').style.display = 'block';
                     document.getElementById('tbb-play-btn').textContent = '🔄 Main Lagi';
                 }, 300);
