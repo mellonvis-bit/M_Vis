@@ -1532,6 +1532,11 @@
             if (!userData.bait) userData.bait = { grasshopper: 0, worm: 0 };
             if (typeof userData.limit === 'undefined') userData.limit = 0;
 
+            // ---- Daily Limit Reset ----
+            // Reset 10 limit setiap hari, HANYA jika limit pemain = 0
+            // Jika limit > 10, tidak direset
+            await checkDailyLimitReset();
+
             // Boot app after data is ready
             bootApp();
         }
@@ -2214,6 +2219,26 @@
                     btn.classList.add('absen-done');
                 }
             }
+        }
+
+        // ===========================
+        // DAILY LIMIT RESET
+        // ===========================
+        async function checkDailyLimitReset() {
+            const todayKey = new Date().toDateString();
+            const lastLimitReset = await idbGet('mvis_limit_reset_date').catch(() => null);
+
+            // Reset limit ke 10 setiap hari, HANYA jika limit pemain = 0
+            // Jika limit > 10 (beli extra), tidak direset
+            if (lastLimitReset !== todayKey) {
+                await idbSet('mvis_limit_reset_date', todayKey).catch(() => {});
+                if ((userData.limit || 0) === 0) {
+                    userData.limit = 10;
+                    saveData();
+                    return true; // limit was reset
+                }
+            }
+            return false; // no reset
         }
 
         // ===========================
@@ -3803,7 +3828,7 @@
             if ((userData.limit || 0) <= 0) {
                 playSound('send');
                 closeAll();
-                addMessage('🧩 <b>Limit habis!</b> Kamu butuh minimal <b>1 Limit</b> untuk bermain <b>' + gameName + '</b>.<br><span style="font-size:0.8rem;color:#888;">Beli limit di Menu → Toko → Toko Limit.</span>', 'system');
+                addMessage('🧩 <b>Limit habis!</b> Kamu butuh minimal <b>1 Limit</b> untuk bermain <b>' + gameName + '</b>.<br><span style="font-size:0.8rem;color:#888;">Limit akan di-reset 10 setiap hari · Atau beli di Menu → Toko → Toko Limit.</span>', 'system');
                 return false;
             }
             userData.limit -= 1;
