@@ -162,6 +162,271 @@
         body.light-mode .fruit-item.owned {
             background: rgba(110,72,170,0.15) !important;
         }
+        /* ===== SPLASH SCREEN ===== */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #splash-content {
+            text-align: center;
+            animation: splashIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes splashIn {
+            from { opacity: 0; transform: scale(0.7) translateY(30px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        #splash-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            background: linear-gradient(135deg, #6e48aa, #9d50bb, #c07de8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: splashGlow 2s ease-in-out infinite alternate;
+            margin-bottom: 12px;
+        }
+        @keyframes splashGlow {
+            from { filter: drop-shadow(0 0 8px rgba(157,80,187,0.4)); }
+            to   { filter: drop-shadow(0 0 24px rgba(157,80,187,0.9)); }
+        }
+        #splash-dev {
+            font-size: 0.95rem;
+            color: #8e82a0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: splashDevIn 0.5s ease 0.6s forwards;
+        }
+        @keyframes splashDevIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        #splash-loading {
+            margin-top: 40px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .splash-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #6e48aa;
+            animation: splashDot 1s ease-in-out infinite;
+        }
+        .splash-dot:nth-child(2) { animation-delay: 0.18s; }
+        .splash-dot:nth-child(3) { animation-delay: 0.36s; }
+        @keyframes splashDot {
+            0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1.2); opacity: 1; background: #c07de8; }
+        }
+
+        /* ===== TUTORIAL OVERLAY ===== */
+        #tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9990;
+            display: none;
+            pointer-events: none;
+        }
+        #tutorial-overlay.active {
+            display: block;
+            pointer-events: all;
+        }
+        .tut-step {
+            position: absolute;
+            inset: 0;
+        }
+        .tut-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.82);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        .tut-bubble {
+            position: absolute;
+            background: linear-gradient(135deg, #120d1a, #1e1030);
+            border: 1.5px solid rgba(157,80,187,0.6);
+            border-radius: 18px;
+            padding: 18px 16px 14px;
+            width: min(290px, 85vw);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(157,80,187,0.2);
+            animation: tutBubbleIn 0.35s cubic-bezier(0.22,1,0.36,1);
+            z-index: 1;
+        }
+        @keyframes tutBubbleIn {
+            from { opacity: 0; transform: scale(0.85) translateY(10px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .tut-icon {
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+        .tut-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .tut-desc {
+            font-size: 0.82rem;
+            color: #c0b8d0;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .tut-step-info {
+            font-size: 0.72rem;
+            color: #6e48aa;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .tut-btn-row {
+            display: flex;
+            gap: 8px;
+        }
+        .tut-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s;
+            min-height: 40px;
+        }
+        .tut-btn:active { opacity: 0.8; }
+        .tut-skip {
+            background: rgba(255,255,255,0.07);
+            color: #888;
+        }
+        .tut-next {
+            background: linear-gradient(135deg, #6e48aa, #9d50bb);
+            color: #fff;
+        }
+        /* Arrow positions */
+        .tut-arrow {
+            position: absolute;
+            z-index: 1;
+        }
+        /* Step 1: menu button top-left */
+        #tut-bubble-1 {
+            top: calc(env(safe-area-inset-top) + 65px);
+            left: 12px;
+        }
+        #tut-arrow-1 {
+            top: calc(env(safe-area-inset-top) + 18px);
+            left: 22px;
+            transform: rotate(180deg) scaleX(-1);
+        }
+        /* Step 2: input bottom center */
+        #tut-bubble-2 {
+            bottom: 160px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #tut-arrow-2 {
+            bottom: 128px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+        }
+        /* Step 3: absen button bottom-left */
+        #tut-bubble-3 {
+            bottom: 160px;
+            left: 12px;
+        }
+        #tut-arrow-3 {
+            bottom: 124px;
+            left: 16px;
+            transform: rotate(180deg);
+        }
+        /* Step 4: quick bar at bottom */
+        #tut-bubble-4 {
+            bottom: 88px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #tut-arrow-4 {
+            bottom: 55px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+        }
+
+        /* Highlight rings for tutorial targets */
+        .tut-highlight-menu {
+            position: absolute;
+            top: calc(env(safe-area-inset-top) + 6px);
+            left: 8px;
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            border: 2.5px solid #9d50bb;
+            box-shadow: 0 0 0 4px rgba(157,80,187,0.25);
+            animation: tutRing 1.2s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .tut-highlight-input {
+            position: absolute;
+            bottom: 98px;
+            left: 60px;
+            right: 60px;
+            height: 44px;
+            border-radius: 22px;
+            border: 2.5px solid #9d50bb;
+            box-shadow: 0 0 0 4px rgba(157,80,187,0.25);
+            animation: tutRing 1.2s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .tut-highlight-absen {
+            position: absolute;
+            bottom: 98px;
+            left: 8px;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 2.5px solid #9d50bb;
+            box-shadow: 0 0 0 4px rgba(157,80,187,0.25);
+            animation: tutRing 1.2s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .tut-highlight-qbar {
+            position: absolute;
+            bottom: 0;
+            left: 0; right: 0;
+            height: 64px;
+            border-top: 2.5px solid #9d50bb;
+            box-shadow: 0 -4px 16px rgba(157,80,187,0.35);
+            animation: tutRing 1.2s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        @keyframes tutRing {
+            0%,100% { box-shadow: 0 0 0 4px rgba(157,80,187,0.25); }
+            50% { box-shadow: 0 0 0 8px rgba(157,80,187,0.5); }
+        }
+
+        /* Light mode compat */
+        body.light-mode .tut-bubble {
+            background: linear-gradient(135deg, #f5eeff, #ede0ff) !important;
+            border-color: #9d50bb !important;
+            color: #2a1a4e !important;
+        }
+        body.light-mode .tut-title { color: #1a0a30 !important; }
+        body.light-mode .tut-desc { color: #5a3a8a !important; }
+
         /* Light mode transition */
         body, header, .sidebar, .msg-me, .msg-system,
         #chat-container, .input-area, .quick-bar,
@@ -219,16 +484,27 @@
             background: none;
             border: none;
             color: var(--accent-color);
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            padding: 6px;
+            padding: 4px 6px;
             border-radius: 8px;
             transition: background 0.2s;
-            min-width: 44px;
+            min-width: 52px;
             min-height: 44px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 1px;
+        }
+        .menu-btn-label {
+            font-size: 0.52rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            line-height: 1;
+            opacity: 0.85;
         }
 
         .menu-btn:active {
@@ -555,6 +831,60 @@
             font-size: 1.6rem;
             margin-bottom: 12px;
             box-shadow: 0 4px 15px rgba(157,80,187,0.4);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* FOTO PROFIL MODAL */
+        #fotoProfilModal .foto-preview-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 12px;
+            border: 3px solid var(--accent-color);
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 4px 18px rgba(157,80,187,0.4);
+        }
+
+        #fotoProfilModal .foto-preview-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #foto-upload-label {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            min-height: 44px;
+            text-align: center;
+            line-height: 1.4;
+            transition: opacity 0.2s;
+        }
+
+        #foto-upload-label:active { opacity: 0.85; }
+
+        body.light-mode #fotoProfilModal {
+            background: #f8f0ff !important;
+            border-color: #9d50bb !important;
         }
 
         .profile-name {
@@ -778,9 +1108,15 @@
 <body>
 
     <header>
-        <button class="menu-btn" id="menu-btn">☰</button>
+        <button class="menu-btn" id="menu-btn">
+            <span>☰</span>
+            <span class="menu-btn-label">Menu</span>
+        </button>
         <div class="logo">M_VIS</div>
-        <button class="menu-btn" id="settings-btn" title="Pengaturan" style="font-size:1.2rem;">۝</button>
+        <button class="menu-btn" id="settings-btn" title="Pengaturan" style="font-size:1.2rem;">
+            <span>۝</span>
+            <span class="menu-btn-label">Pengaturan</span>
+        </button>
     </header>
 
     <!-- SETTINGS DROPDOWN -->
@@ -828,6 +1164,93 @@
 
     <div class="overlay" id="overlay"></div>
 
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splash-screen">
+        <div id="splash-content">
+            <div id="splash-logo">M_VIS</div>
+            <div id="splash-dev">Developer Mellonvis</div>
+            <div id="splash-loading">
+                <span class="splash-dot"></span>
+                <span class="splash-dot"></span>
+                <span class="splash-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TUTORIAL OVERLAY ===== -->
+    <div id="tutorial-overlay">
+        <!-- Step 1: Menu button -->
+        <div class="tut-step" id="tut-step-1">
+            <div class="tut-backdrop"></div>
+            <div class="tut-arrow tut-arrow-top-right" id="tut-arrow-1">
+                <svg width="60" height="60" viewBox="0 0 60 60"><path d="M50 10 Q55 30 40 50" stroke="#a855f7" stroke-width="3" fill="none" stroke-linecap="round"/><polygon points="36,46 44,56 48,44" fill="#a855f7"/></svg>
+            </div>
+            <div class="tut-bubble" id="tut-bubble-1">
+                <div class="tut-icon">☰</div>
+                <div class="tut-title">Buka Menu</div>
+                <div class="tut-desc">Ketuk ikon menu di pojok kiri atas untuk mengakses semua fitur: Games, Registrasi, Profil, dan Toko!</div>
+                <div class="tut-step-info">Langkah 1 / 4</div>
+                <div class="tut-btn-row">
+                    <button class="tut-btn tut-skip" onclick="closeTutorial()">Lewati</button>
+                    <button class="tut-btn tut-next" onclick="tutNext(2)">Lanjut ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Chat input -->
+        <div class="tut-step" id="tut-step-2" style="display:none">
+            <div class="tut-backdrop"></div>
+            <div class="tut-arrow tut-arrow-bottom-center" id="tut-arrow-2">
+                <svg width="60" height="60" viewBox="0 0 60 60"><path d="M30 10 Q30 35 30 50" stroke="#a855f7" stroke-width="3" fill="none" stroke-linecap="round"/><polygon points="22,44 30,56 38,44" fill="#a855f7"/></svg>
+            </div>
+            <div class="tut-bubble" id="tut-bubble-2">
+                <div class="tut-icon">⌨️</div>
+                <div class="tut-title">Kolom Chat</div>
+                <div class="tut-desc">Ketik pesan di sini! Ketik <b>registrasi</b> untuk daftar, atau <b>.me</b> untuk lihat profil kamu.</div>
+                <div class="tut-step-info">Langkah 2 / 4</div>
+                <div class="tut-btn-row">
+                    <button class="tut-btn tut-skip" onclick="closeTutorial()">Lewati</button>
+                    <button class="tut-btn tut-next" onclick="tutNext(3)">Lanjut ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Absen button -->
+        <div class="tut-step" id="tut-step-3" style="display:none">
+            <div class="tut-backdrop"></div>
+            <div class="tut-arrow tut-arrow-bottom-left" id="tut-arrow-3">
+                <svg width="60" height="60" viewBox="0 0 60 60"><path d="M40 10 Q20 20 15 50" stroke="#a855f7" stroke-width="3" fill="none" stroke-linecap="round"/><polygon points="8,44 18,54 22,42" fill="#a855f7"/></svg>
+            </div>
+            <div class="tut-bubble" id="tut-bubble-3">
+                <div class="tut-icon">☐</div>
+                <div class="tut-title">Absen Harian</div>
+                <div class="tut-desc">Ketuk tombol ini setiap hari untuk dapat hadiah uang virtual! Hadiah bervariasi setiap harinya.</div>
+                <div class="tut-step-info">Langkah 3 / 4</div>
+                <div class="tut-btn-row">
+                    <button class="tut-btn tut-skip" onclick="closeTutorial()">Lewati</button>
+                    <button class="tut-btn tut-next" onclick="tutNext(4)">Lanjut ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Quick bar -->
+        <div class="tut-step" id="tut-step-4" style="display:none">
+            <div class="tut-backdrop"></div>
+            <div class="tut-arrow tut-arrow-bottom-center2" id="tut-arrow-4">
+                <svg width="60" height="60" viewBox="0 0 60 60"><path d="M30 10 Q30 35 30 50" stroke="#a855f7" stroke-width="3" fill="none" stroke-linecap="round"/><polygon points="22,44 30,56 38,44" fill="#a855f7"/></svg>
+            </div>
+            <div class="tut-bubble" id="tut-bubble-4">
+                <div class="tut-icon">⚡</div>
+                <div class="tut-title">Aksi Cepat</div>
+                <div class="tut-desc">Tombol pintasan games & fitur favorit! Otomatis diperbarui sesuai aktivitasmu. Mulai dengan ketik <b>registrasi</b>!</div>
+                <div class="tut-step-info">Langkah 4 / 4</div>
+                <div class="tut-btn-row">
+                    <button class="tut-btn tut-next" style="width:100%" onclick="closeTutorial()">✅ Mulai Bermain!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="sidebar" id="sidebar">
         <h2>Menu</h2>
         <ul style="list-style:none">
@@ -845,9 +1268,11 @@
                     <div class="sub-menu-item" id="menu-tebakmakanan"><span>🍜</span> Tebak Makanan</div>
                     <div class="sub-menu-item" id="menu-tebaklagu"><span>🎵</span> Tebak Lagu</div>
                     <div class="sub-menu-item" id="menu-gamemat"><span>🧮</span> Games Matematika</div>
+                    <div class="sub-menu-item" id="menu-menambang"><span>⛏️</span> Menambang</div>
                 </div>
             </li>
             <li class="menu-item" id="menu-reg"><span>📝</span> Registrasi Nama</li>
+            <li class="menu-item" id="menu-foto-profil"><span>📷</span> Tambah Foto Profil</li>
             <li class="menu-item" id="menu-cek">
                 <span>🔍</span> Cek
                 <span class="cek-arrow" id="cek-arrow">▼</span>
@@ -871,6 +1296,26 @@
             <li class="menu-item" id="menu-inventory"><span>🎒</span> Inventory</li>
             <li class="menu-item" id="menu-download"><span>⬇️</span> Download</li>
         </ul>
+    </div>
+
+    <!-- FOTO PROFIL MODAL -->
+    <div class="modal" id="fotoProfilModal" style="width:min(340px,95vw);max-height:90vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:1rem;">📷 Foto Profil</h3>
+            <button onclick="closeFotoProfilModal()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:16px;">
+            <div class="foto-preview-circle" id="foto-preview-circle">
+                <img id="foto-preview-img" src="" style="display:none;width:100%;height:100%;object-fit:cover;" />
+                <span id="foto-preview-emoji">👤</span>
+            </div>
+            <p style="font-size:0.8rem;color:#888;margin-bottom:14px;">Pilih foto dari galeri untuk dijadikan foto profil kamu.</p>
+            <label for="foto-file-input" id="foto-upload-label">📁 Pilih Foto dari Galeri</label>
+            <input type="file" id="foto-file-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(this)">
+        </div>
+        <div id="foto-hapus-wrap" style="display:none;margin-top:4px;">
+            <button onclick="hapusFotoProfil()" style="width:100%;padding:11px;background:rgba(244,67,54,0.12);border:1px solid rgba(244,67,54,0.35);border-radius:10px;color:#f44336;font-weight:bold;font-size:0.9rem;cursor:pointer;min-height:44px;transition:opacity 0.2s;">🗑️ Hapus Foto Profil</button>
+        </div>
     </div>
 
     <div class="modal" id="regModal">
@@ -1124,6 +1569,132 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.12); border-color: #4caf50; box-shadow: 0 0 14px rgba(76,175,80,0.5); }
             100% { transform: scale(1); }
+        }
+    </style>
+
+
+    <!-- MENAMBANG MODAL -->
+    <div class="modal" id="menambangModal" style="width:min(360px,95vw);max-height:92vh;overflow-y:auto;padding:20px 18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <h3 style="font-size:1rem;">⛏️ Menambang</h3>
+            <button onclick="closeMenambang()" style="background:none;border:none;color:#888;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+        <div style="text-align:center;margin-bottom:8px;">
+            <div style="font-size:0.78rem;color:#666;margin-bottom:4px;">Saldo kamu</div>
+            <div id="tambang-balance" style="font-size:1.2rem;font-weight:800;color:#9d50bb;">Rp0</div>
+        </div>
+        <p style="font-size:0.8rem;color:#888;text-align:center;margin-bottom:12px;">
+            Tap blok <b>15×</b> untuk menghancurkannya.<br>
+            <span style="font-size:0.75rem;color:#666;">Hadiah: <b style="color:#9d50bb;">Rp50–Rp500</b> atau <b style="color:#4caf50;">+1–2 Limit</b></span>
+        </p>
+        <div id="tambang-status" style="text-align:center;font-size:0.85rem;font-weight:700;color:#9d50bb;min-height:22px;margin-bottom:10px;"></div>
+        <!-- Progress bar -->
+        <div style="background:#1a1a1a;border-radius:8px;height:10px;margin-bottom:14px;overflow:hidden;border:1px solid #333;">
+            <div id="tambang-progress" style="height:100%;width:0%;background:linear-gradient(90deg,#6e48aa,#9d50bb);border-radius:8px;transition:width 0.15s ease;"></div>
+        </div>
+        <!-- Block area -->
+        <div id="tambang-block-wrap" style="display:flex;justify-content:center;align-items:center;margin-bottom:16px;min-height:160px;">
+            <div id="tambang-block" class="tambang-block">
+                <div class="tambang-block-inner">
+                    <span id="tambang-block-icon">🪨</span>
+                    <div class="tambang-cracks" id="tambang-cracks"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Tap count -->
+        <div id="tambang-tap-count" style="text-align:center;font-size:0.8rem;color:#666;margin-bottom:14px;">Tap: 0 / 15</div>
+        <!-- Result area -->
+        <div id="tambang-result-area" style="display:none;text-align:center;padding:14px;border-radius:12px;border:1px solid rgba(157,80,187,0.3);background:rgba(157,80,187,0.08);margin-bottom:14px;">
+            <div id="tambang-result-emoji" style="font-size:2rem;margin-bottom:6px;"></div>
+            <div id="tambang-result-text" style="font-size:0.95rem;font-weight:700;color:#fff;"></div>
+            <div id="tambang-result-sub" style="font-size:0.78rem;color:#888;margin-top:4px;"></div>
+        </div>
+        <button class="modal-btn" id="tambang-next-btn" onclick="nextTambangBlock()" style="display:none;font-size:0.95rem;">⛏️ Blok Berikutnya</button>
+    </div>
+
+    <style>
+        /* ===== MENAMBANG BLOCK ===== */
+        .tambang-block {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tambang-block-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2a2020, #3d2a2a);
+            border: 3px solid #5a3a3a;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 -4px 8px rgba(0,0,0,0.4);
+            transition: background 0.3s, border-color 0.3s, transform 0.08s;
+        }
+        .tambang-block.tap-shake .tambang-block-inner {
+            animation: tambangShake 0.12s ease;
+        }
+        @keyframes tambangShake {
+            0%,100% { transform: translate(0,0) rotate(0deg); }
+            25% { transform: translate(-3px,2px) rotate(-1deg); }
+            75% { transform: translate(3px,-2px) rotate(1deg); }
+        }
+        /* Block tiers by damage */
+        .tambang-block[data-tier="0"] .tambang-block-inner { background:linear-gradient(135deg,#2a2020,#3d2a2a); border-color:#5a3a3a; }
+        .tambang-block[data-tier="1"] .tambang-block-inner { background:linear-gradient(135deg,#2a1f1f,#4a2a20); border-color:#7a4a30; }
+        .tambang-block[data-tier="2"] .tambang-block-inner { background:linear-gradient(135deg,#1f2a1f,#2a3d1f); border-color:#4a7a30; }
+        .tambang-block[data-tier="3"] .tambang-block-inner { background:linear-gradient(135deg,#1f1f2a,#2a204a); border-color:#3a5aaa; }
+        /* Crack layers */
+        .tambang-cracks {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .crack-line {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            border-radius: 2px;
+            transform-origin: center;
+        }
+        /* Explosion particles */
+        .tambang-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            pointer-events: none;
+            animation: tambangParticle 0.55s ease-out forwards;
+        }
+        @keyframes tambangParticle {
+            0%   { opacity: 1; transform: translate(0,0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0.2) rotate(var(--pr)); }
+        }
+        /* Block destroy animation */
+        .tambang-block.destroying .tambang-block-inner {
+            animation: tambangDestroy 0.4s ease forwards;
+        }
+        @keyframes tambangDestroy {
+            0%   { transform: scale(1); opacity: 1; }
+            30%  { transform: scale(1.12); }
+            100% { transform: scale(0) rotate(15deg); opacity: 0; }
+        }
+        /* New block appear */
+        .tambang-block.appearing .tambang-block-inner {
+            animation: tambangAppear 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        @keyframes tambangAppear {
+            0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        /* Light mode */
+        body.light-mode .tambang-block-inner {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 -4px 8px rgba(0,0,0,0.15) !important;
         }
     </style>
 
@@ -1509,6 +2080,9 @@
             bait: { grasshopper: 0, worm: 0 }
         };
 
+        // Profile photo stored separately in IDB (base64 string)
+        let profilePhotoData = null;
+
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
 
@@ -1531,6 +2105,10 @@
             if (!userData.inventory) userData.inventory = [];
             if (!userData.bait) userData.bait = { grasshopper: 0, worm: 0 };
             if (typeof userData.limit === 'undefined') userData.limit = 0;
+
+            // Load profile photo
+            const savedPhoto = await idbGet('mvis_profile_photo').catch(() => null);
+            if (savedPhoto) profilePhotoData = savedPhoto;
 
             // ---- Daily Limit Reset ----
             // Reset 10 limit setiap hari, HANYA jika limit pemain = 0
@@ -1615,6 +2193,8 @@
                 }, 700);
             } else if (cmd === "registrasi") {
                 setTimeout(openRegModal, 400);
+            } else if (cmd === "ganti pp" || cmd === "gantiPP" || cmd === "gantipp") {
+                setTimeout(openFotoProfilModal, 300);
             } else if (cmd === "tebak kata" || cmd === "tebakkata") {
                 setTimeout(() => startTebakKata(), 400);
             } else {
@@ -1632,10 +2212,13 @@
                 return;
             }
             const xpPct = Math.min(100, Math.round((userData.xp / (userData.level * 100)) * 100));
+            const avatarHTML = profilePhotoData
+                ? `<div class="profile-avatar"><img src="${profilePhotoData}" alt="Foto Profil" /></div>`
+                : `<div class="profile-avatar">👤</div>`;
             const profileHTML = `
                 <b>「 USER PROFILE 」</b>
                 <div class="profile-card-wrap">
-                    <div class="profile-avatar">👤</div>
+                    ${avatarHTML}
                     <div class="profile-name">${userData.name}</div>
                     <div class="profile-id">🆔 ${userData.id}</div>
                     <div class="profile-divider"></div>
@@ -1920,6 +2503,7 @@
         function closeAll() {
             document.getElementById('sidebar').classList.remove('active');
             document.getElementById('regModal').classList.remove('active');
+            document.getElementById('fotoProfilModal').classList.remove('active');
             document.getElementById('tttModal').classList.remove('active');
             document.getElementById('snakeModal').classList.remove('active');
             document.getElementById('slotModal').classList.remove('active');
@@ -1990,6 +2574,95 @@
         }
 
         // ===========================
+        // FOTO PROFIL
+        // ===========================
+        function openFotoProfilModal() {
+            playSound('btn');
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            const modal = document.getElementById('fotoProfilModal');
+            modal.classList.add('active');
+            // Update preview based on current photo
+            refreshFotoPreview();
+        }
+
+        function closeFotoProfilModal() {
+            document.getElementById('fotoProfilModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+            // Reset file input so user can re-select same file
+            const inp = document.getElementById('foto-file-input');
+            if (inp) inp.value = '';
+        }
+
+        function refreshFotoPreview() {
+            const img = document.getElementById('foto-preview-img');
+            const emoji = document.getElementById('foto-preview-emoji');
+            const hapusWrap = document.getElementById('foto-hapus-wrap');
+            if (profilePhotoData) {
+                img.src = profilePhotoData;
+                img.style.display = 'block';
+                emoji.style.display = 'none';
+                if (hapusWrap) hapusWrap.style.display = 'block';
+            } else {
+                img.src = '';
+                img.style.display = 'none';
+                emoji.style.display = 'inline';
+                if (hapusWrap) hapusWrap.style.display = 'none';
+            }
+        }
+
+        function handlePhotoUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                addMessage('❌ File harus berupa gambar (JPG, PNG, dll).', 'system');
+                closeFotoProfilModal();
+                return;
+            }
+            // Max 5MB
+            if (file.size > 5 * 1024 * 1024) {
+                addMessage('❌ Ukuran foto terlalu besar (maks 5MB).', 'system');
+                closeFotoProfilModal();
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Compress/resize via canvas
+                const imgEl = new Image();
+                imgEl.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX = 300;
+                    let w = imgEl.width, h = imgEl.height;
+                    if (w > MAX || h > MAX) {
+                        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                        else { w = Math.round(w * MAX / h); h = MAX; }
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx2 = canvas.getContext('2d');
+                    ctx2.drawImage(imgEl, 0, 0, w, h);
+                    const dataURL = canvas.toDataURL('image/jpeg', 0.75);
+                    profilePhotoData = dataURL;
+                    idbSet('mvis_profile_photo', dataURL).catch(e => console.error('Gagal simpan foto:', e));
+                    refreshFotoPreview();
+                    playSound('receive');
+                };
+                imgEl.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function hapusFotoProfil() {
+            profilePhotoData = null;
+            idbSet('mvis_profile_photo', null).catch(() => {});
+            refreshFotoPreview();
+            playSound('btn');
+            closeFotoProfilModal();
+            addMessage('🗑️ Foto profil berhasil dihapus.', 'system');
+        }
+
+        // ===========================
         // EVENT LISTENERS
         // ===========================
         document.getElementById('menu-btn').addEventListener('click', toggleMenu);
@@ -2015,6 +2688,7 @@
         document.getElementById('menu-snake').addEventListener('click', () => { openSnake(); trackQuickAction('snake','🐍','Ular'); });
         document.getElementById('menu-slot').addEventListener('click', () => { openSlot(); trackQuickAction('slot','🎰','Slot'); });
         document.getElementById('menu-reg').addEventListener('click', () => { openRegModal(); trackQuickAction('reg','📝','Registrasi'); });
+        document.getElementById('menu-foto-profil').addEventListener('click', () => { openFotoProfilModal(); });
         document.getElementById('menu-tebakkata').addEventListener('click', () => { closeAll(); startTebakKata(); trackQuickAction('tebakkata','🔤','Tebak Kata'); });
         document.getElementById('menu-tebakmakanan').addEventListener('click', () => { closeAll(); startTebakMakanan(); trackQuickAction('tebakmakanan','🍜','Tebak Makanan'); });
         document.getElementById('menu-tebaklagu').addEventListener('click', () => { closeAll(); startTebakLagu(); trackQuickAction('tebaklagu','🎵','Tebak Lagu'); });
@@ -2254,13 +2928,7 @@
             initAbsenState();
         }
 
-        window.addEventListener('load', () => {
-            initAppData().catch(e => {
-                console.error('initAppData error:', e);
-                // Fallback: boot with default userData
-                bootApp();
-            });
-        });
+        // window.load is handled in the startup sequence script block below
     </script>
 
     <script>
@@ -4017,6 +4685,253 @@
 
     <script>
         // ===========================
+        // MENAMBANG GAME
+        // ===========================
+        const TAMBANG_BLOCKS = [
+            { icon: '🪨', name: 'Batu Biasa',   tapLimit: 15, color: '#5a3a3a' },
+            { icon: '🟫', name: 'Batu Coklat',  tapLimit: 15, color: '#7a4a30' },
+            { icon: '🟩', name: 'Batu Hijau',   tapLimit: 15, color: '#4a7a30' },
+            { icon: '💠', name: 'Batu Biru',    tapLimit: 15, color: '#3a5aaa' },
+        ];
+        const TAMBANG_REWARDS = [
+            { type: 'money', value: 50,   weight: 35, label: '+Rp50',    color: '#9d50bb' },
+            { type: 'money', value: 100,  weight: 28, label: '+Rp100',   color: '#9d50bb' },
+            { type: 'money', value: 200,  weight: 18, label: '+Rp200',   color: '#c07de8' },
+            { type: 'money', value: 350,  weight: 9,  label: '+Rp350',   color: '#f0c040' },
+            { type: 'money', value: 500,  weight: 4,  label: '+Rp500 🎉', color: '#ffd700' },
+            { type: 'limit', value: 1,   weight: 4,  label: '+1 Limit',  color: '#4caf50' },
+            { type: 'limit', value: 2,   weight: 2,  label: '+2 Limit 🎉', color: '#66bb6a' },
+        ];
+        const TOTAL_WEIGHT = TAMBANG_REWARDS.reduce((a, r) => a + r.weight, 0);
+
+        let tambangTaps = 0;
+        let tambangBlockIdx = 0;
+        let tambangShaking = false;
+        let tambangDestroyed = false;
+
+        function openMenambang() {
+            playSound('btn');
+            if (!useLimit('Menambang')) return;
+            closeAll();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('menambangModal').classList.add('active');
+            resetTambangBlock(false);
+            updateTambangBalance();
+        }
+
+        function closeMenambang() {
+            document.getElementById('menambangModal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function updateTambangBalance() {
+            const el = document.getElementById('tambang-balance');
+            if (el) el.textContent = 'Rp' + userData.balance.toLocaleString('id-ID');
+        }
+
+        function pickTambangReward() {
+            let roll = Math.random() * TOTAL_WEIGHT;
+            for (const r of TAMBANG_REWARDS) {
+                roll -= r.weight;
+                if (roll <= 0) return r;
+            }
+            return TAMBANG_REWARDS[0];
+        }
+
+        function resetTambangBlock(animate) {
+            tambangTaps = 0;
+            tambangDestroyed = false;
+            tambangBlockIdx = Math.floor(Math.random() * TAMBANG_BLOCKS.length);
+            const blk = TAMBANG_BLOCKS[tambangBlockIdx];
+
+            // Reset UI
+            document.getElementById('tambang-status').textContent = 'Tap blok untuk menambang!';
+            document.getElementById('tambang-status').style.color = '#9d50bb';
+            document.getElementById('tambang-tap-count').textContent = 'Tap: 0 / 15';
+            document.getElementById('tambang-progress').style.width = '0%';
+            document.getElementById('tambang-result-area').style.display = 'none';
+            document.getElementById('tambang-next-btn').style.display = 'none';
+
+            const blockEl = document.getElementById('tambang-block');
+            blockEl.dataset.tier = '0';
+            blockEl.classList.remove('destroying', 'appearing');
+            document.getElementById('tambang-block-icon').textContent = blk.icon;
+            document.getElementById('tambang-cracks').innerHTML = '';
+
+            // Re-enable tap
+            blockEl.onclick = onTambangTap;
+
+            if (animate) {
+                blockEl.classList.add('appearing');
+                setTimeout(() => blockEl.classList.remove('appearing'), 400);
+            }
+        }
+
+        function onTambangTap() {
+            if (tambangDestroyed || tambangShaking) return;
+            tambangTaps++;
+            const maxTaps = 15;
+            const pct = Math.round((tambangTaps / maxTaps) * 100);
+            const tier = Math.min(3, Math.floor(tambangTaps / 4));
+
+            // Update progress bar
+            document.getElementById('tambang-progress').style.width = pct + '%';
+            document.getElementById('tambang-tap-count').textContent = `Tap: ${tambangTaps} / ${maxTaps}`;
+
+            // Update tier (changes block color)
+            const blockEl = document.getElementById('tambang-block');
+            blockEl.dataset.tier = tier;
+
+            // Add cracks
+            addTambangCrack(tambangTaps);
+
+            // Shake animation
+            tambangShaking = true;
+            blockEl.classList.add('tap-shake');
+            setTimeout(() => { blockEl.classList.remove('tap-shake'); tambangShaking = false; }, 130);
+
+            // Update status text
+            const remaining = maxTaps - tambangTaps;
+            if (remaining > 0) {
+                playSound('btn');
+                const msgs = ['Terus tap!', 'Hampir!', 'Kuat terus!', 'Jangan berhenti!'];
+                if (remaining <= 3) {
+                    document.getElementById('tambang-status').textContent = `Hampir hancur! Sisa ${remaining}× lagi!`;
+                    document.getElementById('tambang-status').style.color = '#f0c040';
+                } else {
+                    document.getElementById('tambang-status').textContent = `Sisa ${remaining}× tap lagi...`;
+                    document.getElementById('tambang-status').style.color = '#888';
+                }
+            } else {
+                // Block destroyed!
+                tambangDestroyed = true;
+                blockEl.onclick = null;
+                destroyTambangBlock();
+            }
+        }
+
+        function addTambangCrack(tapNum) {
+            const cracksEl = document.getElementById('tambang-cracks');
+            // Add 1-2 crack lines per tap (progressively more)
+            const numCracks = tapNum <= 5 ? 1 : tapNum <= 10 ? 2 : 3;
+            for (let i = 0; i < numCracks; i++) {
+                const crack = document.createElement('div');
+                crack.className = 'crack-line';
+                const angle = Math.random() * 180;
+                const length = 20 + Math.random() * 50;
+                const width = 1 + Math.random() * 2;
+                const top = 15 + Math.random() * 70;
+                const left = 10 + Math.random() * 80;
+                const opacity = 0.4 + (tapNum / 15) * 0.5;
+                crack.style.cssText = `
+                    width:${length}px;height:${width}px;
+                    top:${top}%;left:${left}%;
+                    transform:rotate(${angle}deg);
+                    opacity:${opacity};
+                    background:rgba(0,0,0,${0.5 + (tapNum/15)*0.4});
+                `;
+                cracksEl.appendChild(crack);
+            }
+        }
+
+        function spawnTambangParticles() {
+            const wrap = document.getElementById('tambang-block-wrap');
+            const colors = ['#7a5040','#5a4030','#4a3020','#9d7050','#6e4828','#bb9966'];
+            for (let i = 0; i < 16; i++) {
+                const p = document.createElement('div');
+                p.className = 'tambang-particle';
+                const angle = (i / 16) * 360 + (Math.random() - 0.5) * 30;
+                const dist = 50 + Math.random() * 70;
+                const rad = angle * Math.PI / 180;
+                const px = Math.cos(rad) * dist;
+                const py = Math.sin(rad) * dist;
+                const rotation = (Math.random() - 0.5) * 720;
+                p.style.cssText = `
+                    background:${colors[Math.floor(Math.random()*colors.length)]};
+                    left:calc(50% - 5px);top:calc(50% - 5px);
+                    position:absolute;
+                    --px:${px}px;--py:${py}px;--pr:${rotation}deg;
+                `;
+                wrap.appendChild(p);
+                setTimeout(() => p.remove(), 600);
+            }
+        }
+
+        function destroyTambangBlock() {
+            playSound('receive');
+            spawnTambangParticles();
+
+            const blockEl = document.getElementById('tambang-block');
+            blockEl.classList.add('destroying');
+
+            setTimeout(() => {
+                // Pick reward
+                const reward = pickTambangReward();
+                let resultEmoji = '💰';
+                let resultText = '';
+                let resultSub = '';
+
+                if (reward.type === 'money') {
+                    userData.balance += reward.value;
+                    addXP(10 + Math.floor(reward.value / 50), 'Menambang');
+                    saveData();
+                    resultEmoji = reward.value >= 500 ? '💎' : reward.value >= 300 ? '🏆' : '💰';
+                    resultText = `${reward.label} ditemukan!`;
+                    resultSub = `Saldo: Rp${userData.balance.toLocaleString('id-ID')}`;
+                } else {
+                    userData.limit = (userData.limit || 0) + reward.value;
+                    saveData();
+                    resultEmoji = reward.value >= 2 ? '🎉' : '🧩';
+                    resultText = `${reward.label} didapat!`;
+                    resultSub = `Total Limit: ${userData.limit}`;
+                }
+
+                updateTambangBalance();
+
+                // Show result
+                const resultArea = document.getElementById('tambang-result-area');
+                resultArea.style.display = 'block';
+                resultArea.style.borderColor = `rgba(${reward.type==='limit'?'76,175,80':'157,80,187'},0.4)`;
+                resultArea.style.background = `rgba(${reward.type==='limit'?'76,175,80':'157,80,187'},0.08)`;
+                document.getElementById('tambang-result-emoji').textContent = resultEmoji;
+                document.getElementById('tambang-result-text').textContent = resultText;
+                document.getElementById('tambang-result-sub').textContent = resultSub;
+                document.getElementById('tambang-status').textContent = '✅ Blok hancur!';
+                document.getElementById('tambang-status').style.color = '#4caf50';
+                document.getElementById('tambang-next-btn').style.display = 'block';
+                document.getElementById('tambang-tap-count').textContent = 'Tap: 15 / 15 ✓';
+
+                // Add chat notification for big reward
+                if (reward.value >= 350 || reward.type === 'limit') {
+                    setTimeout(() => {
+                        addMessage(
+                            `⛏️ Menambang berhasil! ${resultText}<br>` +
+                            `<span style="font-size:0.78rem;color:#888;">${resultSub}</span>`,
+                            'system'
+                        );
+                    }, 500);
+                }
+            }, 420);
+        }
+
+        function nextTambangBlock() {
+            playSound('btn');
+            resetTambangBlock(true);
+        }
+
+        document.getElementById('menu-menambang').addEventListener('click', () => {
+            playSound('btn');
+            closeAll();
+            openMenambang();
+            trackQuickAction('menambang', '⛏️', 'Menambang');
+        });
+
+        ALL_ACTIONS['menambang'] = { icon: '⛏️', label: 'Menambang', action: () => openMenambang() };
+    </script>
+
+
+    <script>
+        // ===========================
         // TEBAK BUAH BOM GAME
         // ===========================
         const BUAH_LIST = ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🥭','🍍','🍌','🍉','🥝','🍐','🫐','🍈'];
@@ -4173,6 +5088,111 @@
             }
         }
     </script>
+    <script>
+        // ===========================
+        // SPLASH SCREEN
+        // ===========================
+        const TUTORIAL_KEY = 'mvis_tutorial_done';
 
+        function hideSplash(callback) {
+            const splash = document.getElementById('splash-screen');
+            splash.classList.add('fade-out');
+            setTimeout(() => {
+                splash.style.display = 'none';
+                if (callback) callback();
+            }, 650);
+        }
+
+        // ===========================
+        // TUTORIAL SYSTEM
+        // ===========================
+        let tutorialActive = false;
+
+        function showTutorial() {
+            tutorialActive = true;
+            const overlay = document.getElementById('tutorial-overlay');
+            overlay.classList.add('active');
+            tutShowStep(1);
+        }
+
+        function tutShowStep(n) {
+            // Hide all steps
+            document.querySelectorAll('.tut-step').forEach(s => s.style.display = 'none');
+            // Remove existing highlights
+            document.querySelectorAll('.tut-highlight-menu, .tut-highlight-input, .tut-highlight-absen, .tut-highlight-qbar').forEach(h => h.remove());
+
+            const step = document.getElementById('tut-step-' + n);
+            if (!step) return;
+            step.style.display = 'block';
+
+            // Add highlight ring
+            const overlay = document.getElementById('tutorial-overlay');
+            const hl = document.createElement('div');
+            if (n === 1) {
+                hl.className = 'tut-highlight-menu';
+            } else if (n === 2) {
+                hl.className = 'tut-highlight-input';
+            } else if (n === 3) {
+                hl.className = 'tut-highlight-absen';
+            } else if (n === 4) {
+                hl.className = 'tut-highlight-qbar';
+            }
+            overlay.appendChild(hl);
+        }
+
+        function tutNext(n) {
+            tutShowStep(n);
+        }
+
+        function closeTutorial() {
+            tutorialActive = false;
+            const overlay = document.getElementById('tutorial-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.4s ease';
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                overlay.style.opacity = '';
+                overlay.style.transition = '';
+            }, 400);
+            // Save to IndexedDB so tutorial never shows again
+            idbSet(TUTORIAL_KEY, true).catch(() => {});
+        }
+
+        // ===========================
+        // STARTUP SEQUENCE
+        // ===========================
+        // Override window.load to run splash first
+        window.addEventListener('load', async () => {
+            // Run splash for minimum 2s
+            const splashStart = Date.now();
+
+            // Init app data in parallel
+            let initDone = false;
+            let initError = null;
+            try {
+                await initAppData();
+                initDone = true;
+            } catch(e) {
+                initError = e;
+                console.error('initAppData error:', e);
+            }
+
+            // Ensure splash shows for at least 2200ms
+            const elapsed = Date.now() - splashStart;
+            const delay = Math.max(0, 2200 - elapsed);
+
+            setTimeout(() => {
+                hideSplash(async () => {
+                    if (!initDone) bootApp();
+
+                    // Check if tutorial should show
+                    const tutDone = await idbGet(TUTORIAL_KEY).catch(() => null);
+                    if (!tutDone && !userData.name) {
+                        setTimeout(() => showTutorial(), 400);
+                    }
+                });
+            }, delay);
+        }, { once: true });
+    </script>
 </body>
 </html>
