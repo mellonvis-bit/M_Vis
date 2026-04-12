@@ -163,6 +163,68 @@
         body.light-mode .fruit-item.owned {
             background: rgba(74,85,104,0.15) !important;
         }
+        /* ===== LIGHT MODE — PROFILE CARD FIX ===== */
+        body.light-mode .profile-card-wrap {
+            background: linear-gradient(145deg, #ddeaf8, #c8dced) !important;
+            border-color: #9ab8d0 !important;
+            box-shadow: 0 8px 24px rgba(74,85,104,0.15) !important;
+        }
+        body.light-mode .profile-banner-empty {
+            background: linear-gradient(135deg, #b8ccde, #a0bcd2, #8aaec4) !important;
+            color: rgba(0,0,0,0.25) !important;
+        }
+        body.light-mode .profile-avatar {
+            border-color: #ddeaf8 !important;
+        }
+        body.light-mode .profile-name {
+            color: #0a1828 !important;
+        }
+        body.light-mode .profile-id {
+            color: #5a7080 !important;
+        }
+        body.light-mode .profile-stat-box {
+            background: rgba(74,85,104,0.1) !important;
+            border-color: rgba(74,85,104,0.2) !important;
+        }
+        body.light-mode .profile-stat-val {
+            color: #0a1828 !important;
+        }
+        body.light-mode .profile-stat-label {
+            color: #5a7080 !important;
+        }
+        body.light-mode .profile-badge {
+            background: rgba(74,85,104,0.15) !important;
+            border-color: rgba(74,85,104,0.35) !important;
+            color: #3a5568 !important;
+        }
+        body.light-mode .profile-divider {
+            background: #a8c0d4 !important;
+        }
+        body.light-mode .cek-card {
+            background: linear-gradient(135deg, #e8f2fa, #ddeaf8) !important;
+            border-color: #9ab8d0 !important;
+        }
+        body.light-mode .cek-title {
+            color: #0a1828 !important;
+        }
+        body.light-mode .cek-bar-wrap {
+            background: #c8dced !important;
+            border-color: #9ab8d0 !important;
+        }
+        body.light-mode .cek-note {
+            color: #5a7080 !important;
+        }
+        body.light-mode .tut-bubble {
+            background: linear-gradient(135deg, #eef4fa, #e4ecf4) !important;
+            border-color: #8a9bb0 !important;
+        }
+        body.light-mode .tut-title { color: #0a1828 !important; }
+        body.light-mode .tut-desc { color: #3a5070 !important; }
+        body.light-mode .hd-badge {
+            background: linear-gradient(135deg, #4a5568, #6a7e94) !important;
+            color: #fff !important;
+        }
+
         /* ===== SPLASH SCREEN ===== */
         #splash-screen {
             position: fixed;
@@ -1530,6 +1592,95 @@
                 transparent 100%
             ) !important;
         }
+
+        /* ===== CONTEXT MENU (tekan lama chat) ===== */
+        #chat-context-menu {
+            position: fixed;
+            background: #1c2535;
+            border: 1px solid #2d3a4d;
+            border-radius: 12px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+            z-index: 9000;
+            min-width: 150px;
+            overflow: hidden;
+            animation: ctxMenuIn 0.15s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes ctxMenuIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        body.light-mode #chat-context-menu {
+            background: #e8eef6 !important;
+            border-color: #b0c4d8 !important;
+            box-shadow: 0 8px 24px rgba(74,85,104,0.25) !important;
+        }
+        .ctx-menu-item {
+            padding: 12px 18px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e0eaf5;
+            transition: background 0.15s;
+            min-height: 44px;
+        }
+        .ctx-menu-item:active, .ctx-menu-item:hover {
+            background: rgba(138,155,176,0.15);
+        }
+        .ctx-menu-item.ctx-danger { color: #f87171; }
+        .ctx-menu-item + .ctx-menu-item { border-top: 1px solid #2d3a4d; }
+        body.light-mode .ctx-menu-item { color: #1e2d3e !important; }
+        body.light-mode .ctx-menu-item + .ctx-menu-item { border-top-color: #b0c4d8 !important; }
+        body.light-mode .ctx-menu-item:hover { background: rgba(74,85,104,0.12) !important; }
+        body.light-mode .ctx-menu-item.ctx-danger { color: #dc3545 !important; }
+
+        /* Kalkulator bubble result */
+        .kalk-result-bubble {
+            background: linear-gradient(135deg, #1a2535, #253045);
+            border: 1px solid #2d3a4d;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-top: 6px;
+            display: inline-block;
+            min-width: 120px;
+        }
+        .kalk-expr { font-size: 0.78rem; color: #8a9bb0; margin-bottom: 4px; }
+        .kalk-val  { font-size: 1.6rem; font-weight: 800; color: #e0eaf5; }
+        body.light-mode .kalk-result-bubble {
+            background: linear-gradient(135deg, #ddeaf8, #c8dced) !important;
+            border-color: #9ab8d0 !important;
+        }
+        body.light-mode .kalk-expr { color: #5a7080 !important; }
+        body.light-mode .kalk-val  { color: #0a1828 !important; }
+
+        /* ===== KALKULATOR ACTIVE INDICATOR ===== */
+        #menu-kalkulator .kalk-status-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #555;
+            margin-left: auto;
+            transition: background 0.25s, box-shadow 0.25s;
+            flex-shrink: 0;
+        }
+        #menu-kalkulator.kalk-on .kalk-status-dot {
+            background: #4caf50;
+            box-shadow: 0 0 6px rgba(76,175,80,0.8);
+        }
+        #menu-kalkulator .kalk-badge {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: #555;
+            transition: color 0.25s;
+        }
+        #menu-kalkulator.kalk-on .kalk-badge {
+            color: #4caf50;
+        }
+        body.light-mode #menu-kalkulator .kalk-status-dot { background: #aaa !important; }
+        body.light-mode #menu-kalkulator.kalk-on .kalk-status-dot { background: #2e7d32 !important; box-shadow: 0 0 6px rgba(46,125,50,0.7) !important; }
+        body.light-mode #menu-kalkulator.kalk-on .kalk-badge { color: #2e7d32 !important; }
     </style>
 </head>
 <body>
@@ -1607,6 +1758,12 @@
     </div>
 
     <div class="overlay" id="overlay"></div>
+
+    <!-- CONTEXT MENU -->
+    <div id="chat-context-menu" style="display:none;">
+        <div class="ctx-menu-item" id="ctx-copy">📋 Salin</div>
+        <div class="ctx-menu-item ctx-danger" id="ctx-delete">🗑️ Hapus Chat</div>
+    </div>
 
     <!-- ===== IMAGE LIGHTBOX ===== -->
     <div id="img-lightbox" onclick="closeLightbox()">
@@ -1745,6 +1902,7 @@
             </li>
             <li class="menu-item" id="menu-inventory"><span>🎒</span> Inventory</li>
             <li class="menu-item" id="menu-hd-foto"><span>✨</span> HD Foto</li>
+            <li class="menu-item" id="menu-kalkulator"><span>🔢</span> Kalkulator <span class="kalk-badge" id="kalk-badge">OFF</span><span class="kalk-status-dot"></span></li>
             <li class="menu-item" id="menu-wallpaper"><span>🖼️</span> Wallpaper</li>
             <li class="menu-item" id="menu-buat-baner"><span>🎨</span> Buat Baner</li>
             <li class="menu-item" id="menu-download"><span>⬇️</span> Download</li>
@@ -2812,6 +2970,16 @@
                 setTimeout(openFotoProfilModal, 300);
             } else if (cmd === "tebak kata" || cmd === "tebakkata") {
                 setTimeout(() => startTebakKata(), 400);
+            } else if (kalkulatorActive) {
+                // Coba parse sebagai ekspresi matematika
+                const handled = tryKalkulasi(text);
+                if (!handled) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addMessage('⚠️ Tidak bisa menghitung itu. Coba: <b>10 + 5</b> atau <b>100 ÷ 4</b>', 'system');
+                    }, 400);
+                }
             }
             // Pesan bebas - tidak ada respons bot untuk teks biasa
         }
@@ -3567,7 +3735,26 @@
                 if (userData.name) {
                     addMessage(`Selamat datang kembali, <b>${userData.name}</b>! 👋`, 'system');
                 } else {
-                    addMessage("Selamat datang di <b>M_Vis</b>! 🌟<br>Ketik <b>registrasi</b> atau buka menu untuk mendaftar.", 'system');
+                    // First-time: show prominent registration guide
+                    addMessage(
+                        '👋 <b>Selamat datang di M_Vis!</b><br>' +
+                        '<div style="margin-top:10px;padding:12px;background:rgba(138,155,176,0.12);border:1px solid rgba(138,155,176,0.3);border-radius:12px;">' +
+                        '<div style="font-size:0.9rem;font-weight:700;color:#e0eaf5;margin-bottom:8px;">📝 Langkah Pertama</div>' +
+                        '<div style="font-size:0.82rem;color:#b0c0d0;line-height:1.6;">' +
+                        'Sebelum bermain, kamu perlu <b>registrasi nama</b> dulu.<br>' +
+                        'Ada 2 cara:<br>' +
+                        '<span style="display:inline-block;margin-top:4px;">1️⃣ Ketik <b style=\"color:#e0eaf5;">registrasi</b> di kolom chat<br>' +
+                        '2️⃣ Buka <b style=\"color:#e0eaf5;">☰ Menu</b> → Registrasi Nama</span>' +
+                        '</div></div>',
+                        'system'
+                    );
+                    // Delayed second tip
+                    setTimeout(() => {
+                        addMessage(
+                            '💡 <b>Tips:</b> Setelah registrasi kamu bisa bermain games, cek saldo, absen harian, dan banyak fitur lainnya!',
+                            'system'
+                        );
+                    }, 1200);
                 }
             }
             renderQuickBar();
@@ -4110,20 +4297,15 @@
         document.getElementById('settings-hapus-btn').addEventListener('click', () => {
             settingsDropdown.style.display = 'none';
             playSound('btn');
-            const confirmed = confirm('Apakah kamu ingin hapus semua data games dan memulai semua dari awal?');
+            const confirmed = confirm('Hapus semua data dan mulai dari awal?');
             if (confirmed) {
                 chatHistory = [];
                 openDB().then(db => {
                     const tx = db.transaction(STORE_NAME, 'readwrite');
                     tx.objectStore(STORE_NAME).clear();
-                    tx.oncomplete = () => {
-                        addMessage('🗑️ Semua data telah dihapus. Halaman akan dimuat ulang...', 'system');
-                        setTimeout(() => location.reload(), 1500);
-                    };
-                }).catch(() => {
-                    addMessage('🗑️ Semua data telah dihapus. Halaman akan dimuat ulang...', 'system');
-                    setTimeout(() => location.reload(), 1500);
-                });
+                    tx.oncomplete = () => location.reload();
+                    tx.onerror   = () => location.reload();
+                }).catch(() => location.reload());
             }
         });
 
@@ -4510,6 +4692,250 @@
         // Event listeners for new menu items
         document.getElementById('menu-wallpaper').addEventListener('click', () => { openWallpaperModal(); });
         document.getElementById('menu-buat-baner').addEventListener('click', () => { openBanerModal(); });
+
+
+        // ===========================
+        // KALKULATOR
+        // ===========================
+        let kalkulatorActive = false;
+
+        function setKalkulatorState(on) {
+            kalkulatorActive = on;
+            const menuEl = document.getElementById('menu-kalkulator');
+            const badgeEl = document.getElementById('kalk-badge');
+            if (menuEl) menuEl.classList.toggle('kalk-on', on);
+            if (badgeEl) badgeEl.textContent = on ? 'ON' : 'OFF';
+        }
+
+        document.getElementById('menu-kalkulator').addEventListener('click', () => {
+            playSound('btn');
+            if (kalkulatorActive) {
+                // Toggle OFF
+                setKalkulatorState(false);
+                closeAll();
+                addMessage('🔢 <b>Kalkulator</b> dinonaktifkan.', 'system');
+            } else {
+                // Toggle ON
+                setKalkulatorState(true);
+                closeAll();
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(
+                        '🔢 <b>Kalkulator AKTIF!</b> Tombol menu sekarang berwarna hijau.<br>' +
+                        '<span style="font-size:0.8rem;color:#8a9bb0;">Ketik perhitungan langsung di chat.<br>' +
+                        'Contoh: <b>1 + 1</b> &nbsp;|&nbsp; <b>25 × 4</b> &nbsp;|&nbsp; <b>100 ÷ 5</b> &nbsp;|&nbsp; <b>8 - 3</b><br>' +
+                        'Simbol: <b>+ - × ÷ * /</b> &nbsp;|&nbsp; Klik <b>Kalkulator</b> lagi untuk nonaktifkan.</span>',
+                        'system'
+                    );
+                }, 400);
+            }
+        });
+
+        function tryKalkulasi(text) {
+            // Normalize symbols to JS operators
+            let expr = text
+                .replace(/×/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/[^0-9+\-*/().% ]/g, '');  // allow only safe chars
+
+            // Must contain at least one operator after cleanup
+            if (!/[+\-*/%]/.test(expr)) return false;
+            // Must contain at least one digit
+            if (!/[0-9]/.test(expr)) return false;
+
+            try {
+                // Safe evaluate — no Function constructor tricks, use a restricted sandbox
+                const result = safeEval(expr.trim());
+                if (result === null || result === undefined || !isFinite(result)) return false;
+
+                // Format result
+                let displayResult;
+                if (Number.isInteger(result)) {
+                    displayResult = result.toLocaleString('id-ID');
+                } else {
+                    // Round to max 8 decimal places, trim trailing zeros
+                    displayResult = parseFloat(result.toFixed(8)).toLocaleString('id-ID', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 8
+                    });
+                }
+
+                // Rebuild display expression using original symbols
+                const displayExpr = text
+                    .replace(/\*/g, '×')
+                    .replace(/\//g, '÷');
+
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(
+                        '<div class="kalk-result-bubble">' +
+                        '<div class="kalk-expr">🔢 ' + displayExpr + '</div>' +
+                        '<div class="kalk-val">= ' + displayResult + '</div>' +
+                        '</div>',
+                        'system'
+                    );
+                }, 350);
+                return true;
+            } catch(e) {
+                return false;
+            }
+        }
+
+        function safeEval(expr) {
+            // Manual recursive descent parser — no eval, no Function()
+            // Supports: + - * / () unary minus, integer & decimal numbers
+            let pos = 0;
+            const s = expr.replace(/\s+/g, '');
+
+            function peek() { return s[pos]; }
+            function consume() { return s[pos++]; }
+
+            function parseNumber() {
+                let num = '';
+                if (peek() === '-') { num += consume(); }
+                while (pos < s.length && /[0-9.]/.test(peek())) { num += consume(); }
+                if (num === '' || num === '-') throw new Error('no number');
+                return parseFloat(num);
+            }
+
+            function parseFactor() {
+                if (peek() === '(') {
+                    consume(); // (
+                    const val = parseExpr();
+                    if (peek() === ')') consume(); // )
+                    return val;
+                }
+                // Unary minus
+                if (peek() === '-') {
+                    consume();
+                    return -parseFactor();
+                }
+                return parseNumber();
+            }
+
+            function parseTerm() {
+                let left = parseFactor();
+                while (pos < s.length && (peek() === '*' || peek() === '/')) {
+                    const op = consume();
+                    const right = parseFactor();
+                    if (op === '*') left *= right;
+                    else {
+                        if (right === 0) throw new Error('div/0');
+                        left /= right;
+                    }
+                }
+                return left;
+            }
+
+            function parseExpr() {
+                let left = parseTerm();
+                while (pos < s.length && (peek() === '+' || peek() === '-')) {
+                    const op = consume();
+                    const right = parseTerm();
+                    if (op === '+') left += right;
+                    else left -= right;
+                }
+                return left;
+            }
+
+            const result = parseExpr();
+            if (pos !== s.length) throw new Error('unexpected char: ' + s[pos]);
+            return result;
+        }
+
+        // ===========================
+        // CONTEXT MENU (tekan lama chat bubble)
+        // ===========================
+        let _ctxTarget = null;  // the message element being acted on
+        let _ctxLongTimer = null;
+
+        const ctxMenu = document.getElementById('chat-context-menu');
+
+        function showContextMenu(e, msgEl) {
+            _ctxTarget = msgEl;
+            ctxMenu.style.display = 'block';
+
+            // Position near touch/click point, keep inside viewport
+            const vw = window.innerWidth, vh = window.innerHeight;
+            const mw = 160, mh = 100;
+            let x = (e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : vw/2)) + 6;
+            let y = (e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : vh/2)) + 6;
+            if (x + mw > vw) x = vw - mw - 8;
+            if (y + mh > vh) y = vh - mh - 8;
+            ctxMenu.style.left = x + 'px';
+            ctxMenu.style.top  = y + 'px';
+            e.preventDefault();
+        }
+
+        function hideContextMenu() {
+            ctxMenu.style.display = 'none';
+            _ctxTarget = null;
+        }
+
+        // Hide menu on tap/click outside
+        document.addEventListener('click', (e) => {
+            if (!ctxMenu.contains(e.target)) hideContextMenu();
+        });
+        document.addEventListener('touchstart', (e) => {
+            if (!ctxMenu.contains(e.target)) hideContextMenu();
+        }, { passive: true });
+
+        // Salin
+        document.getElementById('ctx-copy').addEventListener('click', () => {
+            if (!_ctxTarget) return;
+            // Get plain text from message (excluding the .time span)
+            const clone = _ctxTarget.cloneNode(true);
+            const timeEl = clone.querySelector('.time');
+            if (timeEl) timeEl.remove();
+            const text = clone.innerText || clone.textContent || '';
+            try {
+                navigator.clipboard.writeText(text.trim()).then(() => {
+                    addMessage('📋 Pesan disalin!', 'system');
+                }).catch(() => {
+                    addMessage('⚠️ Gagal menyalin teks.', 'system');
+                });
+            } catch(e) {
+                addMessage('⚠️ Fitur salin tidak tersedia di browser ini.', 'system');
+            }
+            hideContextMenu();
+        });
+
+        // Hapus Chat
+        document.getElementById('ctx-delete').addEventListener('click', () => {
+            if (!_ctxTarget) { hideContextMenu(); return; }
+            const el = _ctxTarget;
+            el.style.transition = 'opacity 0.2s, transform 0.2s';
+            el.style.opacity = '0';
+            el.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                el.remove();
+                // Sync chatHistory
+                const allMsgs = [...chatContainer.querySelectorAll('.message')];
+                chatHistory = allMsgs.map(m => ({ innerHTML: m.innerHTML, type: m.className.replace('message msg-','') }));
+                scheduleChatHistorySave();
+            }, 200);
+            hideContextMenu();
+            playSound('btn');
+        });
+
+        // Attach long-press on dynamically created messages via event delegation
+        chatContainer.addEventListener('mousedown', (e) => {
+            const msgEl = e.target.closest('.message');
+            if (!msgEl || e.target.closest('.chat-img-save-btn') || e.target.closest('.chat-img-bubble')) return;
+            _ctxLongTimer = setTimeout(() => { showContextMenu(e, msgEl); playSound('btn'); }, 600);
+        });
+        chatContainer.addEventListener('mouseup', () => clearTimeout(_ctxLongTimer));
+        chatContainer.addEventListener('mouseleave', () => clearTimeout(_ctxLongTimer));
+
+        chatContainer.addEventListener('touchstart', (e) => {
+            const msgEl = e.target.closest('.message');
+            if (!msgEl || e.target.closest('.chat-img-save-btn') || e.target.closest('.chat-img-bubble')) return;
+            _ctxLongTimer = setTimeout(() => { showContextMenu(e, msgEl); playSound('btn'); }, 600);
+        }, { passive: false });
+        chatContainer.addEventListener('touchend', () => clearTimeout(_ctxLongTimer));
+        chatContainer.addEventListener('touchmove', () => clearTimeout(_ctxLongTimer));
 
         // ===========================
         // DOWNLOAD MENU
@@ -5039,7 +5465,7 @@
             tebakKataIndex = 0;
 
             addMessage(`🔤 <b>GAME TEBAK KATA DIMULAI!</b><br>
-<span style="font-size:0.8rem;color:#8a9bb0;">Benar = Rp2.500 & 75XP <b>atau</b> Rp1.500 & 50XP (acak)</span><br>
+<span style="font-size:0.8rem;color:#8a9bb0;">Benar = Rp1.000 & 75XP <b>atau</b> Rp500 & 50XP (acak)</span><br>
 <span style="font-size:0.78rem;color:#666;">Ketik <b>skip</b> untuk lewati soal · <b>selesai</b> untuk berhenti</span>`, 'system');
             setTimeout(() => askTebakKata(), 700);
         }
@@ -5086,7 +5512,7 @@
 
             if (benar) {
                 const roll = Math.random();
-                const uang = roll < 0.5 ? 2500 : 1500;
+                const uang = roll < 0.5 ? 1000 : 500;
                 const xp   = roll < 0.5 ? 75   : 50;
 
                 userData.balance += uang;
@@ -5104,7 +5530,8 @@
                 }
             } else {
                 playSound('send');
-                addMessage(`❌ <b>Salah!</b> Coba lagi atau ketik <b>skip</b> untuk lewati.`, 'system');
+                if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+                addMessage(`❌ <b>Salah!</b> -1 Limit · Sisa: <b>${userData.limit}</b><br><span style="font-size:0.75rem;color:#888;">Coba lagi atau ketik <b>skip</b> untuk lewati.</span>`, 'system');
             }
 
             return true;
@@ -5343,7 +5770,7 @@
             st.index = 0;
 
             addMessage(`${cfg.icon} <b>GAME ${cfg.name.toUpperCase()} DIMULAI!</b><br>
-<span style="font-size:0.8rem;color:#8a9bb0;">Benar = Rp2.500 & 75XP <b>atau</b> Rp1.500 & 50XP (acak)</span><br>
+<span style="font-size:0.8rem;color:#8a9bb0;">Benar = Rp1.000 & 75XP <b>atau</b> Rp500 & 50XP (acak)</span><br>
 <span style="font-size:0.78rem;color:#666;">Ketik <b>skip</b> untuk lewati soal · <b>selesai</b> untuk berhenti</span>`, 'system');
             setTimeout(() => askTebakGame(type), 700);
         }
@@ -5392,7 +5819,7 @@
 
             if (benar) {
                 const roll = Math.random();
-                const uang = roll < 0.5 ? 2500 : 1500;
+                const uang = roll < 0.5 ? 1000 : 500;
                 const xp   = roll < 0.5 ? 75   : 50;
                 userData.balance += uang;
                 addXP(xp, `${cfg.name} benar`);
@@ -5408,7 +5835,8 @@
                 }
             } else {
                 playSound('send');
-                addMessage(`❌ <b>Salah!</b> Coba lagi atau ketik <b>skip</b> untuk lewati.`, 'system');
+                if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+                addMessage(`❌ <b>Salah!</b> -1 Limit · Sisa: <b>${userData.limit}</b><br><span style="font-size:0.75rem;color:#888;">Coba lagi atau ketik <b>skip</b> untuk lewati.</span>`, 'system');
             }
             return true;
         }
@@ -5654,7 +6082,8 @@
                 addMessage(`✅ <b>BENAR! HEBAT!</b> +<b>Rp3.500</b> & +<b>75 XP</b> 🎉<br><span style="font-size:0.75rem;color:#8a9bb0;">${soal.pembahasan}</span><br><span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`, 'system');
             } else {
                 playSound('send');
-                addMessage(`❌ <b>Salah!</b> Coba lagi atau ketik <b>skip</b> untuk lewati.`, 'system');
+                if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+                addMessage(`❌ <b>Salah!</b> -1 Limit · Sisa: <b>${userData.limit}</b><br><span style="font-size:0.75rem;color:#888;">Coba lagi atau ketik <b>skip</b> untuk lewati.</span>`, 'system');
             }
             return true;
         }
