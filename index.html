@@ -1356,6 +1356,180 @@
             background: rgba(138,155,176,0.35);
             transform: scale(0.9);
         }
+
+        /* ===== TOMBOL KIRIM FOTO ===== */
+        #chat-photo-btn {
+            background: rgba(138,155,176,0.1);
+            border: 1.5px solid rgba(138,155,176,0.35);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #a0b4c8;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.15s;
+            line-height: 1;
+        }
+        #chat-photo-btn:active {
+            background: rgba(138,155,176,0.3);
+            transform: scale(0.88);
+        }
+        body.light-mode #chat-photo-btn {
+            background: rgba(74,85,104,0.1) !important;
+            border-color: rgba(74,85,104,0.35) !important;
+            color: #5a6e82 !important;
+        }
+        /* Chat image bubble */
+        .chat-img-bubble {
+            max-width: 100%;
+            max-height: 260px;
+            border-radius: 10px;
+            display: block;
+            object-fit: contain;
+            margin: 2px 0;
+        }
+        .hd-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4a5568, #8a9bb0);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            vertical-align: middle;
+        }
+
+        /* ===== TOMBOL SAVE FOTO ===== */
+        .chat-img-save-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(138,155,176,0.18);
+            border: 1px solid rgba(138,155,176,0.4);
+            border-radius: 8px;
+            color: #a0b4c8;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s, transform 0.15s;
+            letter-spacing: 0.3px;
+        }
+        .chat-img-save-btn:active {
+            background: rgba(138,155,176,0.35);
+            transform: scale(0.94);
+        }
+        body.light-mode .chat-img-save-btn {
+            background: rgba(74,85,104,0.12) !important;
+            border-color: rgba(74,85,104,0.4) !important;
+            color: #5a6e82 !important;
+        }
+
+        /* ===== IMAGE LIGHTBOX ===== */
+        #img-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 9800;
+            background: rgba(0,0,0,0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            animation: lightboxIn 0.22s ease;
+        }
+        #img-lightbox.active {
+            display: flex;
+        }
+        @keyframes lightboxIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        #img-lightbox img {
+            max-width: 94vw;
+            max-height: 88vh;
+            border-radius: 14px;
+            object-fit: contain;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.7);
+            animation: lightboxImgIn 0.25s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes lightboxImgIn {
+            from { transform: scale(0.82); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        #img-lightbox-close {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            top: calc(18px + env(safe-area-inset-top));
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            color: #fff;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 9801;
+            transition: background 0.2s;
+            line-height: 1;
+        }
+        #img-lightbox-close:active { background: rgba(255,255,255,0.28); }
+
+        /* Foto di chat bisa diklik */
+        .chat-img-bubble {
+            cursor: zoom-in;
+        }
+
+        /* ===== PROFILE CARD SHIMMER / KILAU ===== */
+        .profile-card-wrap {
+            overflow: hidden;
+        }
+        .profile-card-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                105deg,
+                transparent 0%,
+                rgba(255,255,255,0.04) 40%,
+                rgba(138,155,176,0.18) 50%,
+                rgba(255,255,255,0.04) 60%,
+                transparent 100%
+            );
+            transform: skewX(-18deg);
+            animation: profileCardShimmer 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+        @keyframes profileCardShimmer {
+            0%   { left: -120%; }
+            30%  { left: 120%; }
+            100% { left: 120%; }
+        }
+        body.light-mode .profile-card-wrap::after {
+            background: linear-gradient(
+                105deg,
+                transparent 0%,
+                rgba(74,85,104,0.04) 40%,
+                rgba(74,85,104,0.12) 50%,
+                rgba(74,85,104,0.04) 60%,
+                transparent 100%
+            ) !important;
+        }
     </style>
 </head>
 <body>
@@ -1403,6 +1577,12 @@
                 <button class="font-size-btn" id="font-btn-large" onclick="setFontSize('large')">Besar</button>
             </div>
         </div>
+        <div id="settings-hapus-chat-btn" style="
+            padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:10px;
+            font-size:0.9rem;color:#e0a870;transition:background 0.2s;border-bottom:1px solid #222;
+        ">
+            <span>💬</span> Hapus Riwayat Chat
+        </div>
         <div id="settings-hapus-btn" style="
             padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:10px;
             font-size:0.9rem;color:#f44336;transition:background 0.2s;
@@ -1414,6 +1594,8 @@
     <div id="chat-container"></div>
 
     <div class="input-area">
+        <input type="file" id="chat-photo-input" accept="image/*" style="display:none">
+        <button id="chat-photo-btn" title="Kirim Foto">❐</button>
         <button id="absen-btn" title="Absen Harian">☐</button>
         <input type="text" id="message-input" placeholder="Tulis pesan..." autocomplete="off" inputmode="text">
         <button id="send-btn">➣</button>
@@ -1425,6 +1607,12 @@
     </div>
 
     <div class="overlay" id="overlay"></div>
+
+    <!-- ===== IMAGE LIGHTBOX ===== -->
+    <div id="img-lightbox" onclick="closeLightbox()">
+        <div id="img-lightbox-close" onclick="closeLightbox()">✕</div>
+        <img id="img-lightbox-img" src="" alt="foto" onclick="event.stopPropagation()">
+    </div>
 
     <!-- ===== SPLASH SCREEN ===== -->
     <div id="splash-screen">
@@ -1556,6 +1744,7 @@
                 </div>
             </li>
             <li class="menu-item" id="menu-inventory"><span>🎒</span> Inventory</li>
+            <li class="menu-item" id="menu-hd-foto"><span>✨</span> HD Foto</li>
             <li class="menu-item" id="menu-wallpaper"><span>🖼️</span> Wallpaper</li>
             <li class="menu-item" id="menu-buat-baner"><span>🎨</span> Buat Baner</li>
             <li class="menu-item" id="menu-download"><span>⬇️</span> Download</li>
@@ -2394,6 +2583,23 @@
         let profilePhotoData = null;
         let bannerPhotoData = null;
 
+        // ---- Chat History ----
+        const MAX_CHAT_HISTORY = 150;
+        let chatHistory = [];
+        let _chatHistorySaveTimer = null;
+
+        function scheduleChatHistorySave() {
+            clearTimeout(_chatHistorySaveTimer);
+            _chatHistorySaveTimer = setTimeout(() => {
+                const toSave = chatHistory.slice(-MAX_CHAT_HISTORY);
+                idbSet('mvis_chat_history', toSave).catch(() => {});
+            }, 600);
+        }
+
+        // HD Foto waiting flag
+        let hdFotoWaiting = false;
+
+
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
 
@@ -2457,6 +2663,11 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             if (type === 'system') playSound('receive');
+
+            // Save to persistent history
+            chatHistory.push({ innerHTML: msgDiv.innerHTML, type });
+            if (chatHistory.length > MAX_CHAT_HISTORY) chatHistory.shift();
+            scheduleChatHistorySave();
         }
 
         function showTypingIndicator() {
@@ -2471,6 +2682,87 @@
         function removeTypingIndicator() {
             const el = document.getElementById('typing-indicator');
             if (el) el.remove();
+        }
+
+        // ===========================
+        // FOTO CHAT - dengan Save & Lightbox
+        // ===========================
+        function addChatPhotoMessage(src, type, isHD) {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message msg-${type}`;
+
+            const hdBadge = isHD ? `<span class='hd-badge'>✨ HD</span><br>` : '';
+            const saveLabel = isHD ? '⬇ Save HD' : '⬇ Save';
+
+            msgDiv.innerHTML = `${hdBadge}<img src='${src}' class='chat-img-bubble' alt='foto'><br><button class='chat-img-save-btn' data-src='${src}'>${saveLabel}</button><span class='time'>${timeStr}</span>`;
+
+            // Klik foto → lightbox
+            const imgEl = msgDiv.querySelector('.chat-img-bubble');
+            imgEl.addEventListener('click', () => openLightbox(src));
+
+            // Tombol Save → unduh
+            const saveBtn = msgDiv.querySelector('.chat-img-save-btn');
+            saveBtn.addEventListener('click', () => downloadChatImage(src, isHD));
+
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            if (type === 'system') playSound('receive');
+
+            // Simpan ke history — simpan sebagai teks biasa tanpa event listener
+            chatHistory.push({ innerHTML: msgDiv.innerHTML, type });
+            if (chatHistory.length > MAX_CHAT_HISTORY) chatHistory.shift();
+            scheduleChatHistorySave();
+        }
+
+        function downloadChatImage(src, isHD) {
+            try {
+                const a = document.createElement('a');
+                a.href = src;
+                a.download = isHD ? 'foto_HD_mvis.jpg' : 'foto_mvis.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                playSound('btn');
+            } catch(e) {
+                addMessage('⚠️ Gagal mengunduh foto.', 'system');
+            }
+        }
+
+        function openLightbox(src) {
+            const lb = document.getElementById('img-lightbox');
+            const lbImg = document.getElementById('img-lightbox-img');
+            lbImg.src = src;
+            lb.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('img-lightbox');
+            lb.classList.remove('active');
+            document.getElementById('img-lightbox-img').src = '';
+            document.body.style.overflow = '';
+        }
+
+        // Attach lightbox & save ke foto-foto yang di-render dari chat history
+        function attachChatImageHandlers() {
+            chatContainer.querySelectorAll('.chat-img-bubble').forEach(img => {
+                if (!img.dataset.lbBound) {
+                    img.dataset.lbBound = '1';
+                    img.addEventListener('click', () => openLightbox(img.src));
+                }
+            });
+            chatContainer.querySelectorAll('.chat-img-save-btn').forEach(btn => {
+                if (!btn.dataset.saveBound) {
+                    btn.dataset.saveBound = '1';
+                    const src = btn.dataset.src || '';
+                    const isHD = btn.textContent.includes('HD');
+                    btn.addEventListener('click', () => downloadChatImage(src, isHD));
+                }
+            });
         }
 
         function sendMessage() {
@@ -2520,13 +2812,8 @@
                 setTimeout(openFotoProfilModal, 300);
             } else if (cmd === "tebak kata" || cmd === "tebakkata") {
                 setTimeout(() => startTebakKata(), 400);
-            } else {
-                showTypingIndicator();
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addMessage(`Perintah tidak dikenali. Ketik <b>.me</b> untuk profil atau <b>registrasi</b> untuk daftar.`, 'system');
-                }, 800);
             }
+            // Pesan bebas - tidak ada respons bot untuk teks biasa
         }
 
         function showBotProfile() {
@@ -3255,11 +3542,33 @@
         // ===========================
         // INIT
         // ===========================
-        function bootApp() {
-            if (userData.name) {
-                addMessage(`Selamat datang kembali, <b>${userData.name}</b>! 👋`, 'system');
+        async function bootApp() {
+            // Restore chat history from IndexedDB
+            const savedHistory = await idbGet('mvis_chat_history').catch(() => null);
+            if (savedHistory && Array.isArray(savedHistory) && savedHistory.length > 0) {
+                chatHistory = savedHistory;
+                savedHistory.forEach(msg => {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `message msg-${msg.type}`;
+                    msgDiv.innerHTML = msg.innerHTML;
+                    chatContainer.appendChild(msgDiv);
+                });
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                // Session separator
+                const sep = document.createElement('div');
+                sep.style.cssText = 'text-align:center;font-size:0.62rem;color:#555;padding:7px 0;letter-spacing:0.8px;';
+                sep.textContent = '• • • sesi baru • • •';
+                chatContainer.appendChild(sep);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                // Attach handlers untuk foto dari history
+                attachChatImageHandlers();
             } else {
-                addMessage("Selamat datang di <b>M_Vis</b>! 🌟<br>Ketik <b>registrasi</b> atau buka menu untuk mendaftar.", 'system');
+                // First open or empty history – show welcome
+                if (userData.name) {
+                    addMessage(`Selamat datang kembali, <b>${userData.name}</b>! 👋`, 'system');
+                } else {
+                    addMessage("Selamat datang di <b>M_Vis</b>! 🌟<br>Ketik <b>registrasi</b> atau buka menu untuk mendaftar.", 'system');
+                }
             }
             renderQuickBar();
             initAbsenState();
@@ -3803,6 +4112,7 @@
             playSound('btn');
             const confirmed = confirm('Apakah kamu ingin hapus semua data games dan memulai semua dari awal?');
             if (confirmed) {
+                chatHistory = [];
                 openDB().then(db => {
                     const tx = db.transaction(STORE_NAME, 'readwrite');
                     tx.objectStore(STORE_NAME).clear();
@@ -3860,6 +4170,140 @@
             playSound('btn');
             const modeLabel = isLightMode ? 'Mode Terang' : 'Mode Gelap';
             addMessage(`${isLightMode ? '☀️' : '🌙'} <b>${modeLabel}</b> diaktifkan!`, 'system');
+        });
+
+        // Hapus riwayat chat
+        document.getElementById('settings-hapus-chat-btn').addEventListener('click', () => {
+            settingsDropdown.style.display = 'none';
+            playSound('btn');
+            const confirmed = confirm('Hapus semua riwayat chat? Pesan yang sudah ada akan hilang.');
+            if (confirmed) {
+                chatHistory = [];
+                idbSet('mvis_chat_history', []).catch(() => {});
+                // Remove all messages from DOM
+                const msgs = chatContainer.querySelectorAll('.message');
+                msgs.forEach(m => m.remove());
+                // Remove session separators
+                chatContainer.innerHTML = '';
+                addMessage('💬 Riwayat chat berhasil dihapus.', 'system');
+            }
+        });
+
+        // ===========================
+        // HD FOTO
+        // ===========================
+        function applySharpening(ctx, w, h) {
+            const imageData = ctx.getImageData(0, 0, w, h);
+            const data = imageData.data;
+            const newData = new Uint8ClampedArray(data);
+            // Sharpen kernel
+            const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+            for (let y = 1; y < h - 1; y++) {
+                for (let x = 1; x < w - 1; x++) {
+                    for (let c = 0; c < 3; c++) {
+                        let sum = 0;
+                        for (let ky = -1; ky <= 1; ky++) {
+                            for (let kx = -1; kx <= 1; kx++) {
+                                const idx = ((y + ky) * w + (x + kx)) * 4 + c;
+                                sum += data[idx] * kernel[(ky + 1) * 3 + (kx + 1)];
+                            }
+                        }
+                        newData[(y * w + x) * 4 + c] = Math.min(255, Math.max(0, sum));
+                    }
+                    newData[(y * w + x) * 4 + 3] = data[(y * w + x) * 4 + 3];
+                }
+            }
+            ctx.putImageData(new ImageData(newData, w, h), 0, 0);
+        }
+
+        function processHDImage(imgEl) {
+            // Scale so max dimension ≤ 1500px, then upscale 1.4×, sharpen, encode high quality
+            const MAX_DIM = 1500;
+            let baseW = imgEl.naturalWidth || imgEl.width;
+            let baseH = imgEl.naturalHeight || imgEl.height;
+            const bigger = Math.max(baseW, baseH);
+            if (bigger > MAX_DIM) {
+                const ratio = MAX_DIM / bigger;
+                baseW = Math.round(baseW * ratio);
+                baseH = Math.round(baseH * ratio);
+            }
+            // Draw at slightly larger canvas (1.2×) for sharpening then return
+            const scale = Math.min(1.4, 1800 / Math.max(baseW, baseH));
+            const w = Math.round(baseW * scale);
+            const h = Math.round(baseH * scale);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(imgEl, 0, 0, w, h);
+            // Brightness/contrast boost
+            ctx.globalCompositeOperation = 'multiply';
+            ctx.globalAlpha = 0.05;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = 1;
+            // Sharpening only on reasonably-sized canvas (skip if too big = slow)
+            if (w * h < 2000000) applySharpening(ctx, w, h);
+            return canvas.toDataURL('image/jpeg', 0.95);
+        }
+
+        document.getElementById('menu-hd-foto').addEventListener('click', () => {
+            playSound('btn');
+            closeAll();
+            hdFotoWaiting = true;
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage('✨ <b>HD Foto</b> siap! Silahkan kirim foto Anda untuk dibuat HD. Tekan tombol <b>❐</b> untuk pilih foto.', 'system');
+            }, 500);
+        });
+
+        // ===========================
+        // TOMBOL KIRIM FOTO (❐)
+        // ===========================
+        document.getElementById('chat-photo-btn').addEventListener('click', () => {
+            document.getElementById('chat-photo-input').click();
+        });
+
+        document.getElementById('chat-photo-input').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                addMessage('❌ Hanya bisa mengirim file foto atau gambar.', 'system');
+                this.value = ''; return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imgEl = new Image();
+                imgEl.onload = () => {
+                    playSound('send');
+                    if (hdFotoWaiting) {
+                        hdFotoWaiting = false;
+                        // Show original in chat
+                        const origSrc = e.target.result;
+                        addChatPhotoMessage(origSrc, 'me', false);
+                        // Process HD after 1 second
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            removeTypingIndicator();
+                            try {
+                                const hdData = processHDImage(imgEl);
+                                addChatPhotoMessage(hdData, 'system', true);
+                            } catch(err) {
+                                addMessage('⚠️ Gagal memproses HD. Coba foto yang lebih kecil.', 'system');
+                            }
+                        }, 1000);
+                    } else {
+                        // Normal photo send
+                        addChatPhotoMessage(e.target.result, 'me', false);
+                    }
+                };
+                imgEl.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            this.value = '';
         });
 
 
