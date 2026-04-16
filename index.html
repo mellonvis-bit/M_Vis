@@ -34,9 +34,9 @@
             background-color: #f0f4f8 !important;
         }
         body.light-mode header {
-            background-color: #e4ecf4 !important;
-            border-bottom-color: #b0c4d8 !important;
-            box-shadow: 0 4px 15px rgba(74,85,104,0.15) !important;
+            background-color: transparent !important;
+            border-bottom-color: transparent !important;
+            box-shadow: none !important;
         }
         body.light-mode .sidebar {
             background-color: #e8eef6 !important;
@@ -522,15 +522,17 @@
 
         /* HEADER */
         header {
-            background-color: #0a0a0a;
+            background-color: transparent;
             padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #1a1a1a;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            border-bottom: none;
+            box-shadow: none;
             flex-shrink: 0;
             padding-top: calc(12px + env(safe-area-inset-top));
+            position: relative;
+            z-index: 10;
         }
 
         .logo {
@@ -544,7 +546,7 @@
         }
 
         .menu-btn {
-            background: none;
+            background: transparent !important;
             border: none;
             color: var(--accent-color);
             font-size: 1.4rem;
@@ -571,7 +573,7 @@
         }
 
         .menu-btn:active {
-            background: rgba(157, 80, 187, 0.2);
+            background: transparent !important;
         }
 
         /* CHAT AREA - Pure Black Background */
@@ -1690,7 +1692,7 @@
             <span>☰</span>
             <span class="menu-btn-label">Menu</span>
         </button>
-        <div class="logo">M_VIS</div>
+        <div class="logo" style="opacity:0;pointer-events:none;user-select:none;"></div>
         <button class="menu-btn" id="settings-btn" title="Pengaturan" style="font-size:1.2rem;">
             <span>۝</span>
             <span class="menu-btn-label">Pengaturan</span>
@@ -1869,6 +1871,7 @@
                     <div class="sub-menu-item" id="menu-slot"><span>🎰</span> Slot</div>
                     <div class="sub-menu-item" id="menu-fishing"><span>🎣</span> Memancing</div>
                     <div class="sub-menu-item" id="menu-tebakkata"><span>🔤</span> Tebak Kata</div>
+                    <div class="sub-menu-item" id="menu-tekatekata"><span>🔡</span> Teka-teki Kata</div>
                     <div class="sub-menu-item" id="menu-tebakbuah"><span>🍎</span> Tebak Buah</div>
                     <div class="sub-menu-item" id="menu-tebakbuahbom"><span>💣</span> Tebak Buah (Bom)</div>
                     <div class="sub-menu-item" id="menu-tebakbendera"><span>🏳️</span> Tebak Bendera</div>
@@ -1898,6 +1901,8 @@
                     <div class="sub-menu-item" id="menu-toko-buah"><span>🍎</span> Toko Buah</div>
                     <div class="sub-menu-item" id="menu-toko-umpan"><span>🪱</span> Toko Umpan</div>
                     <div class="sub-menu-item" id="menu-toko-limit"><span>🧩</span> Toko Limit</div>
+                    <div class="sub-menu-item" id="menu-toko-kartu-profil"><span>🃏</span> Beli Kartu Profil</div>
+                    <div class="sub-menu-item" id="menu-toko-gelembung"><span>💬</span> Gelembung Chat</div>
                 </div>
             </li>
             <li class="menu-item" id="menu-inventory"><span>🎒</span> Inventory</li>
@@ -2780,6 +2785,8 @@
             if (!userData.inventory) userData.inventory = [];
             if (!userData.bait) userData.bait = { grasshopper: 0, worm: 0 };
             if (typeof userData.limit === 'undefined') userData.limit = 0;
+            if (!userData.purchasedGelembung) userData.purchasedGelembung = [];
+            if (!userData.activeGelembung) userData.activeGelembung = 'gelembung-default';
 
             // Load profile photo
             const savedPhoto = await idbGet('mvis_profile_photo').catch(() => null);
@@ -2936,6 +2943,10 @@
                 checkTebakKata(text);
                 return;
             }
+            if (typeof ttkActive !== 'undefined' && ttkActive) {
+                checkTekaTekiKata(text);
+                return;
+            }
             if (typeof tebakMakananActive !== 'undefined' && tebakMakananActive) {
                 checkTebakGeneric('makanan', text);
                 return;
@@ -2970,6 +2981,8 @@
                 setTimeout(openFotoProfilModal, 300);
             } else if (cmd === "tebak kata" || cmd === "tebakkata") {
                 setTimeout(() => startTebakKata(), 400);
+            } else if (cmd === "teka kata" || cmd === "tekakata") {
+                setTimeout(() => startTekaTekiKata(), 400);
             } else if (kalkulatorActive) {
                 // Coba parse sebagai ekspresi matematika
                 const handled = tryKalkulasi(text);
@@ -3487,6 +3500,7 @@
         document.getElementById('menu-tebakbuah').addEventListener('click', () => { closeAll(); startTebakBuah(); trackQuickAction('tebakbuah','🍎','Tebak Buah'); });
         document.getElementById('menu-tebakbuahbom').addEventListener('click', () => { openTebakBuahBom(); trackQuickAction('tebakbuahbom','💣','Tebak Buah Bom'); });
         document.getElementById('menu-tebakbendera').addEventListener('click', () => { closeAll(); startTebakBendera(); trackQuickAction('tebakbendera','🏳️','Tebak Bendera'); });
+        document.getElementById('menu-tekatekata').addEventListener('click', () => { closeAll(); startTekaTekiKata(); trackQuickAction('tekatekata','🔡','Teka-teki Kata'); });
 
         // CEK toggle submenu
         document.getElementById('menu-cek').addEventListener('click', () => {
@@ -3525,6 +3539,8 @@
         document.getElementById('menu-toko-buah').addEventListener('click', () => { openFruitShop(); trackQuickAction('toko-buah','🍎','Toko Buah'); });
         document.getElementById('menu-toko-umpan').addEventListener('click', () => { openBaitShop(); trackQuickAction('toko-umpan','🪱','Toko Umpan'); });
         document.getElementById('menu-toko-limit').addEventListener('click', () => { openLimitShop(); trackQuickAction('toko-limit','🧩','Toko Limit'); });
+        document.getElementById('menu-toko-kartu-profil').addEventListener('click', () => { openKartuProfilShop(); trackQuickAction('toko-kartu-profil','🃏','Kartu Profil'); });
+        document.getElementById('menu-toko-gelembung').addEventListener('click', () => { openGelembungShop(); trackQuickAction('toko-gelembung','💬','Gelembung Chat'); });
         document.getElementById('menu-inventory').addEventListener('click', () => { openInventory(); trackQuickAction('inventory','🎒','Inventory'); });
 
         messageInput.addEventListener('keypress', (e) => {
@@ -3577,8 +3593,12 @@
             'tebakmakanan':{ icon: '🍜',  label: 'Tebak Makanan',action: () => startTebakMakanan() },
             'tebaklagu':   { icon: '🎵',  label: 'Tebak Lagu',   action: () => startTebakLagu() },
             'tebakbuah':   { icon: '🍎',  label: 'Tebak Buah',   action: () => startTebakBuah() },
+            'tebakkata':   { icon: '🔤',  label: 'Tebak Kata',   action: () => startTebakKata() },
             'tebakbuahbom':{ icon: '💣',  label: 'Tebak Buah Bom',action: () => openTebakBuahBom() },
-            'tebakbendera':{ icon: '🏳️', label: 'Tebak Bendera',action: () => startTebakBendera() }
+            'tebakbendera':{ icon: '🏳️', label: 'Tebak Bendera',action: () => startTebakBendera() },
+            'tekatekata':  { icon: '🔡',  label: 'Teka-teki Kata',action: () => startTekaTekiKata() },
+            'toko-gelembung':{ icon: '💬', label: 'Gelembung Chat',action: () => openGelembungShop() },
+            'toko-kartu-profil':{ icon: '🃏', label: 'Kartu Profil', action: () => openKartuProfilShop() }
         };
 
         async function trackQuickAction(id, icon, label) {
@@ -3730,10 +3750,30 @@
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 // Attach handlers untuk foto dari history
                 attachChatImageHandlers();
+                // Greeting saat sesi baru jika sudah registrasi
+                if (userData.name) {
+                    const greetHour = new Date().getHours();
+                    let greetWord;
+                    if (greetHour >= 5 && greetHour < 11) greetWord = 'pagi';
+                    else if (greetHour >= 11 && greetHour < 15) greetWord = 'siang';
+                    else if (greetHour >= 15 && greetHour < 19) greetWord = 'sore';
+                    else greetWord = 'malam';
+                    const greetCap = greetWord.charAt(0).toUpperCase() + greetWord.slice(1);
+                    setTimeout(() => {
+                        addMessage(`Selamat ${greetCap}, <b>${userData.name}</b>! 👋`, 'system');
+                    }, 300);
+                }
             } else {
                 // First open or empty history – show welcome
                 if (userData.name) {
-                    addMessage(`Selamat datang kembali, <b>${userData.name}</b>! 👋`, 'system');
+                    const greetHour = new Date().getHours();
+                    let greetWord;
+                    if (greetHour >= 5 && greetHour < 11) greetWord = 'pagi';
+                    else if (greetHour >= 11 && greetHour < 15) greetWord = 'siang';
+                    else if (greetHour >= 15 && greetHour < 19) greetWord = 'sore';
+                    else greetWord = 'malam';
+                    const greetCap = greetWord.charAt(0).toUpperCase() + greetWord.slice(1);
+                    addMessage(`Selamat ${greetCap}, <b>${userData.name}</b>! 👋`, 'system');
                 } else {
                     // First-time: show prominent registration guide
                     addMessage(
@@ -3759,9 +3799,189 @@
             }
             renderQuickBar();
             initAbsenState();
+            // Apply saved gelembung theme
+            if (typeof applyGelembung === 'function') {
+                applyGelembung(userData.activeGelembung || 'gelembung-default');
+            }
         }
 
         // window.load is handled in the startup sequence script block below
+
+        // ===========================
+        // TOKO KARTU PROFIL
+        // ===========================
+        const KARTU_PROFIL_OPTIONS = [
+            {
+                id: 'kartu-merah',
+                nama: 'Merah Elegan',
+                emoji: '❤️',
+                desc: 'Deep Crimson — Mewah & Berani',
+                bg: 'linear-gradient(145deg, #2d0a0a, #5c1a1a, #8b2020)',
+                border: '#c0392b',
+                textColor: '#ffd6d6',
+                harga: 50000
+            },
+            {
+                id: 'kartu-hijau',
+                nama: 'Hijau Elegan',
+                emoji: '💚',
+                desc: 'Emerald Forest — Segar & Berkelas',
+                bg: 'linear-gradient(145deg, #062010, #0d3d1f, #1a6635)',
+                border: '#27ae60',
+                textColor: '#c8f5d8',
+                harga: 50000
+            },
+            {
+                id: 'kartu-putih',
+                nama: 'Putih Elegan',
+                emoji: '🤍',
+                desc: 'Pearl White — Bersih & Prestisius',
+                bg: 'linear-gradient(145deg, #e8e8f0, #f5f5ff, #ffffff)',
+                border: '#c0c8e0',
+                textColor: '#1a1a2e',
+                harga: 50000
+            },
+            {
+                id: 'kartu-hitam',
+                nama: 'Hitam Elegan',
+                emoji: '🖤',
+                desc: 'Obsidian Black — Misterius & Powerful',
+                bg: 'linear-gradient(145deg, #000000, #0d0d0d, #1a1a1a)',
+                border: '#444',
+                textColor: '#e0e0e0',
+                harga: 50000
+            },
+            {
+                id: 'kartu-biru',
+                nama: 'Biru Elegan',
+                emoji: '💙',
+                desc: 'Midnight Ocean — Tenang & Elegan',
+                bg: 'linear-gradient(145deg, #030d1a, #082040, #0d3560)',
+                border: '#1565c0',
+                textColor: '#c8e0ff',
+                harga: 50000
+            },
+            {
+                id: 'kartu-pink',
+                nama: 'Pink Elegan',
+                emoji: '🩷',
+                desc: 'Rose Gold — Manis & Glamour',
+                bg: 'linear-gradient(145deg, #2d0a1a, #5c1a35, #8b2050)',
+                border: '#c2185b',
+                textColor: '#ffd6e8',
+                harga: 50000
+            }
+        ];
+
+        function openKartuProfilShop() {
+            playSound('btn');
+            closeAll();
+
+            if (!userData.name) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage('❌ Silahkan registrasi terlebih dahulu sebelum membeli kartu profil.', 'system');
+                }, 600);
+                return;
+            }
+
+            const purchased = userData.purchasedKartu || [];
+
+            let cardsHTML = KARTU_PROFIL_OPTIONS.map(k => {
+                const isOwned = purchased.includes(k.id);
+                const isActive = userData.activeKartu === k.id;
+                const btnLabel = isActive ? '✅ Aktif' : isOwned ? '🎨 Pakai' : `Rp${k.harga.toLocaleString('id-ID')}`;
+                const btnStyle = isActive
+                    ? 'background:rgba(76,175,80,0.25);border:1px solid #4caf50;color:#81c784;cursor:default;'
+                    : isOwned
+                        ? `background:${k.border}22;border:1px solid ${k.border};color:${k.border};cursor:pointer;`
+                        : `background:var(--accent-gradient);border:none;color:#fff;cursor:pointer;`;
+
+                return `
+                <div style="
+                    display:flex;align-items:center;gap:12px;
+                    padding:12px 14px;border-radius:14px;margin-bottom:10px;
+                    background:${k.bg};
+                    border:1.5px solid ${k.border};
+                    box-shadow:0 4px 16px rgba(0,0,0,0.4);
+                ">
+                    <div style="font-size:1.8rem;flex-shrink:0;">${k.emoji}</div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:800;font-size:0.88rem;color:${k.textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${k.nama}</div>
+                        <div style="font-size:0.72rem;color:${k.textColor};opacity:0.75;margin-top:2px;">${k.desc}</div>
+                        <div style="font-size:0.72rem;color:${k.textColor};opacity:0.6;margin-top:1px;">Rp50.000</div>
+                    </div>
+                    <button onclick="beliKartuProfil('${k.id}')"
+                        style="padding:8px 12px;border-radius:9px;font-size:0.78rem;font-weight:700;min-width:68px;min-height:34px;flex-shrink:0;transition:opacity 0.2s;${btnStyle}"
+                        ${isActive ? 'disabled' : ''}>${btnLabel}</button>
+                </div>`;
+            }).join('');
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage(
+                    `🃏 <b>「 TOKO KARTU PROFIL 」</b><br>
+                    <div style="margin-top:8px;padding:4px 0 2px;">
+                        <div style="font-size:0.8rem;color:#888;margin-bottom:10px;">Pilih warna kartu profil yang kamu suka. Semua kartu seharga <b style="color:#e0c070;">Rp50.000</b>.<br>Saldo kamu: <b>Rp${userData.balance.toLocaleString('id-ID')}</b></div>
+                        ${cardsHTML}
+                        <div style="font-size:0.72rem;color:#555;text-align:center;margin-top:4px;">Kartu yang dibeli akan tampil saat kamu lihat profil</div>
+                    </div>`,
+                    'system'
+                );
+            }, 700);
+        }
+
+        function beliKartuProfil(kartuId) {
+            playSound('btn');
+            if (!userData.name) {
+                addMessage('❌ Registrasi terlebih dahulu.', 'system');
+                return;
+            }
+            if (!userData.purchasedKartu) userData.purchasedKartu = [];
+
+            const kartu = KARTU_PROFIL_OPTIONS.find(k => k.id === kartuId);
+            if (!kartu) return;
+
+            // Jika sudah punya → langsung aktifkan
+            if (userData.purchasedKartu.includes(kartuId)) {
+                userData.activeKartu = kartuId;
+                saveData();
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`🎨 Kartu profil <b>${kartu.emoji} ${kartu.nama}</b> sekarang aktif!`, 'system');
+                }, 500);
+                return;
+            }
+
+            // Cek saldo
+            if (userData.balance < kartu.harga) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`❌ Saldo tidak cukup! Kamu perlu <b>Rp${kartu.harga.toLocaleString('id-ID')}</b> tapi saldo kamu hanya <b>Rp${userData.balance.toLocaleString('id-ID')}</b>.`, 'system');
+                }, 500);
+                return;
+            }
+
+            // Beli
+            userData.balance -= kartu.harga;
+            userData.purchasedKartu.push(kartuId);
+            userData.activeKartu = kartuId;
+            saveData();
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage(
+                    `✅ Berhasil membeli & mengaktifkan kartu profil <b>${kartu.emoji} ${kartu.nama}</b>!<br>` +
+                    `<span style="font-size:0.8rem;color:#888;">-Rp${kartu.harga.toLocaleString('id-ID')} · Saldo tersisa: Rp${userData.balance.toLocaleString('id-ID')}</span>`,
+                    'system'
+                );
+            }, 600);
+        }
     </script>
 
     <script>
@@ -6503,6 +6723,402 @@
             }
         }
     </script>
+    <script>
+        // ===========================
+        // TEKA-TEKI KATA GAME
+        // ===========================
+        // 20 kata tersembunyi — huruf vokal disembunyikan acak
+        const TEKA_KATA_BANK = [
+            { kata: 'APEL',      hint: '🍎 Buah berwarna merah atau hijau' },
+            { kata: 'MATAHARI',  hint: '☀️ Bintang pusat tata surya kita' },
+            { kata: 'KUCING',    hint: '🐱 Hewan peliharaan yang sering mengeong' },
+            { kata: 'LAUTAN',    hint: '🌊 Hamparan air asin yang luas' },
+            { kata: 'BINTANG',   hint: '⭐ Terlihat bersinar di langit malam' },
+            { kata: 'PISANG',    hint: '🍌 Buah kuning berbentuk melengkung' },
+            { kata: 'GUNUNG',    hint: '⛰️ Daratan tinggi berbentuk kerucut' },
+            { kata: 'NAGA',      hint: '🐉 Makhluk legendaris bisa menyemburkan api' },
+            { kata: 'PELANGI',   hint: '🌈 Muncul setelah hujan, tujuh warna' },
+            { kata: 'KUDA',      hint: '🐴 Hewan tunggangan yang berlari kencang' },
+            { kata: 'BURUNG',    hint: '🐦 Hewan bersayap yang bisa terbang' },
+            { kata: 'GAJAH',     hint: '🐘 Mamalia terbesar di darat berbelalai panjang' },
+            { kata: 'MANGGA',    hint: '🥭 Buah tropis berwarna kuning-orange' },
+            { kata: 'BULAN',     hint: '🌙 Satelit alami bumi' },
+            { kata: 'HARIMAU',   hint: '🐯 Kucing besar bercorak loreng' },
+            { kata: 'SEMANGKA',  hint: '🍉 Buah besar merah di dalam, hijau di luar' },
+            { kata: 'ULAR',      hint: '🐍 Reptil tak berkaki bergerak meliuk' },
+            { kata: 'JERUK',     hint: '🍊 Buah bulat berwarna oranye, terasa asam manis' },
+            { kata: 'DOLPHIN',   hint: '🐬 Mamalia laut sangat cerdas' },
+            { kata: 'KAMBING',   hint: '🐐 Hewan ternak yang suka rerumputan' }
+        ];
+
+        let ttkActive = false;
+        let ttkKata = '';
+        let ttkTampil = [];
+        let ttkSalahCount = 0;
+        let ttkMaxSalah = 6;
+        let ttkTerpakai = [];
+
+        function startTekaTekiKata() {
+            if (!userData.name) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage('❌ Silahkan registrasi terlebih dahulu.', 'system');
+                }, 500);
+                return;
+            }
+            if ((userData.limit || 0) <= 0) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage('⚠️ <b>Limit habis!</b> Beli limit di <b>Toko → Toko Limit</b> atau tunggu reset besok.', 'system');
+                }, 500);
+                return;
+            }
+
+            // Pilih kata yang belum pernah dipakai sesi ini
+            const tersisa = TEKA_KATA_BANK.filter((_, i) => !ttkTerpakai.includes(i));
+            if (tersisa.length === 0) ttkTerpakai = [];
+            const pool = TEKA_KATA_BANK.filter((_, i) => !ttkTerpakai.includes(i));
+            const idx = Math.floor(Math.random() * pool.length);
+            const realIdx = TEKA_KATA_BANK.indexOf(pool[idx]);
+            ttkTerpakai.push(realIdx);
+
+            const pilihan = pool[idx];
+            ttkKata = pilihan.kata;
+            ttkSalahCount = 0;
+            ttkActive = true;
+
+            // Sembunyikan huruf — tampilkan 30–50% huruf secara acak
+            const hurufArr = ttkKata.split('');
+            const jumlahTampil = Math.max(1, Math.floor(hurufArr.length * 0.4));
+            const indeksTampil = [];
+            while (indeksTampil.length < jumlahTampil) {
+                const r = Math.floor(Math.random() * hurufArr.length);
+                if (!indeksTampil.includes(r)) indeksTampil.push(r);
+            }
+            ttkTampil = hurufArr.map((h, i) => indeksTampil.includes(i) ? h : '_');
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage(
+                    `🔡 <b>「 TEKA-TEKI KATA 」</b><br>
+                    <div style="margin-top:8px;padding:12px;background:rgba(138,155,176,0.1);border:1px solid rgba(138,155,176,0.25);border-radius:12px;">
+                        <div style="font-size:0.8rem;color:#8a9bb0;margin-bottom:8px;">Petunjuk: ${pilihan.hint}</div>
+                        <div id="ttk-tampil" style="font-size:1.6rem;font-weight:800;letter-spacing:8px;text-align:center;color:#e0eaf5;margin:10px 0;">${ttkTampil.join(' ')}</div>
+                        <div style="font-size:0.75rem;color:#666;text-align:center;">${ttkKata.length} huruf · Salah tersisa: <span id="ttk-salah">${ttkMaxSalah - ttkSalahCount}</span> · Ketik 1 huruf atau kata lengkap</div>
+                    </div>`,
+                    'system'
+                );
+            }, 600);
+        }
+
+        function checkTekaTekiKata(input) {
+            if (!ttkActive) return;
+            const tebakan = input.trim().toUpperCase();
+
+            // Tebak kata lengkap
+            if (tebakan === ttkKata) {
+                ttkActive = false;
+                const reward = 1000;
+                userData.balance += reward;
+                addXP(30, 'Teka-teki Kata');
+                saveData();
+                addMessage(
+                    `✅ <b>BENAR!</b> Kata yang dimaksud adalah <b>${ttkKata}</b>!<br>
+                    💵 <b>+Rp${reward.toLocaleString('id-ID')}</b> & ⚡ <b>+30 XP</b><br>
+                    <span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`,
+                    'system'
+                );
+                setTimeout(() => {
+                    addMessage('▶️ Ketik <b>teka kata</b> untuk ronde baru!', 'system');
+                }, 800);
+                return;
+            }
+
+            // Tebak satu huruf
+            if (tebakan.length === 1 && /^[A-Z]$/.test(tebakan)) {
+                let ditemukan = false;
+                const hurufArr = ttkKata.split('');
+                hurufArr.forEach((h, i) => {
+                    if (h === tebakan && ttkTampil[i] === '_') {
+                        ttkTampil[i] = h;
+                        ditemukan = true;
+                    }
+                });
+
+                if (!ditemukan) {
+                    ttkSalahCount++;
+                    const sisaSalah = ttkMaxSalah - ttkSalahCount;
+                    if (sisaSalah <= 0) {
+                        ttkActive = false;
+                        if ((userData.limit || 0) > 0) { userData.limit--; saveData(); }
+                        addMessage(
+                            `💀 <b>Salah terus!</b> Kata yang benar adalah <b>${ttkKata}</b>.<br>
+                            <b>-1 Limit</b> · Sisa: ${userData.limit}`,
+                            'system'
+                        );
+                        setTimeout(() => addMessage('▶️ Ketik <b>teka kata</b> untuk coba lagi!', 'system'), 700);
+                        return;
+                    }
+                    addMessage(`❌ Huruf <b>${tebakan}</b> tidak ada! Salah tersisa: <b>${sisaSalah}</b>`, 'system');
+                } else {
+                    // Cek apakah sudah semua terbuka
+                    const selesai = !ttkTampil.includes('_');
+                    if (selesai) {
+                        ttkActive = false;
+                        const reward = 750;
+                        userData.balance += reward;
+                        addXP(20, 'Teka-teki Kata');
+                        saveData();
+                        addMessage(
+                            `🎉 <b>BERHASIL!</b> Kata lengkap: <b>${ttkKata}</b>!<br>
+                            💵 <b>+Rp${reward.toLocaleString('id-ID')}</b> & ⚡ <b>+20 XP</b><br>
+                            <span style="font-size:0.75rem;color:#888;">Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`,
+                            'system'
+                        );
+                        setTimeout(() => addMessage('▶️ Ketik <b>teka kata</b> untuk ronde baru!', 'system'), 800);
+                    } else {
+                        addMessage(
+                            `✅ Ada huruf <b>${tebakan}</b>!<br>
+                            <div style="font-size:1.5rem;font-weight:800;letter-spacing:8px;text-align:center;color:#e0eaf5;margin:8px 0;">${ttkTampil.join(' ')}</div>
+                            <span style="font-size:0.75rem;color:#888;">Salah tersisa: ${ttkMaxSalah - ttkSalahCount}</span>`,
+                            'system'
+                        );
+                    }
+                }
+                return;
+            }
+
+            // Input tidak valid
+            addMessage(`⚠️ Ketik 1 huruf (contoh: <b>A</b>) atau kata lengkap!`, 'system');
+        }
+    </script>
+
+    <script>
+        // ===========================
+        // TOKO GELEMBUNG CHAT
+        // ===========================
+        const GELEMBUNG_OPTIONS = [
+            {
+                id: 'gelembung-default',
+                nama: 'Default',
+                emoji: '🔵',
+                desc: 'Bawaan — Biru Abu Gelap',
+                previewMe: 'rgba(30,37,51,0.95)',
+                previewSys: 'rgba(22,22,22,0.95)',
+                borderMe: '#2d3a4d',
+                borderSys: 'rgba(138,155,176,0.6)',
+                cssMe: '',
+                cssSys: '',
+                harga: 0
+            },
+            {
+                id: 'gelembung-hijau',
+                nama: 'Hijau Segar',
+                emoji: '💚',
+                desc: 'Warna chat ala messenger hijau',
+                previewMe: '#1a3a1a',
+                previewSys: '#0d2010',
+                borderMe: '#2e7d32',
+                borderSys: '#27ae60',
+                cssMe: 'background-color:#1a3a1a!important;border-color:#2e7d32!important;',
+                cssSys: 'background-color:#0d2010!important;border-left-color:#27ae60!important;',
+                harga: 25000
+            },
+            {
+                id: 'gelembung-pink',
+                nama: 'Pink Manis',
+                emoji: '🩷',
+                desc: 'Nuansa pink lembut & girly',
+                previewMe: '#3a1a2a',
+                previewSys: '#200d18',
+                borderMe: '#c2185b',
+                borderSys: '#e91e8a',
+                cssMe: 'background-color:#3a1a2a!important;border-color:#c2185b!important;',
+                cssSys: 'background-color:#200d18!important;border-left-color:#e91e8a!important;',
+                harga: 25000
+            },
+            {
+                id: 'gelembung-ungu',
+                nama: 'Ungu Royal',
+                emoji: '💜',
+                desc: 'Elegan dengan sentuhan ungu',
+                previewMe: '#1e1030',
+                previewSys: '#120a20',
+                borderMe: '#7b1fa2',
+                borderSys: '#9c27b0',
+                cssMe: 'background-color:#1e1030!important;border-color:#7b1fa2!important;',
+                cssSys: 'background-color:#120a20!important;border-left-color:#9c27b0!important;',
+                harga: 25000
+            },
+            {
+                id: 'gelembung-emas',
+                nama: 'Emas Mewah',
+                emoji: '✨',
+                desc: 'Tampilan premium bernuansa emas',
+                previewMe: '#2a2010',
+                previewSys: '#1a1508',
+                borderMe: '#f9a825',
+                borderSys: '#ffd600',
+                cssMe: 'background-color:#2a2010!important;border-color:#f9a825!important;',
+                cssSys: 'background-color:#1a1508!important;border-left-color:#ffd600!important;',
+                harga: 25000
+            },
+            {
+                id: 'gelembung-merah',
+                nama: 'Merah Berani',
+                emoji: '❤️',
+                desc: 'Bold dan percaya diri',
+                previewMe: '#3a0a0a',
+                previewSys: '#200505',
+                borderMe: '#c62828',
+                borderSys: '#ef5350',
+                cssMe: 'background-color:#3a0a0a!important;border-color:#c62828!important;',
+                cssSys: 'background-color:#200505!important;border-left-color:#ef5350!important;',
+                harga: 25000
+            }
+        ];
+
+        function openGelembungShop() {
+            playSound('btn');
+            closeAll();
+
+            if (!userData.name) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage('❌ Silahkan registrasi terlebih dahulu.', 'system');
+                }, 600);
+                return;
+            }
+
+            if (!userData.purchasedGelembung) userData.purchasedGelembung = [];
+
+            const cardsHTML = GELEMBUNG_OPTIONS.map(g => {
+                const isOwned = g.id === 'gelembung-default' || userData.purchasedGelembung.includes(g.id);
+                const isActive = (userData.activeGelembung || 'gelembung-default') === g.id;
+                const btnLabel = isActive ? '✅ Aktif' : isOwned ? '🎨 Pakai' : `Rp${g.harga.toLocaleString('id-ID')}`;
+                const btnStyle = isActive
+                    ? 'background:rgba(76,175,80,0.2);border:1px solid #4caf50;color:#81c784;cursor:default;'
+                    : isOwned
+                        ? `background:${g.borderMe}22;border:1px solid ${g.borderMe};color:${g.borderMe};cursor:pointer;`
+                        : 'background:linear-gradient(135deg,#4a5568,#8a9bb0);border:none;color:#fff;cursor:pointer;';
+
+                return `
+                <div style="padding:12px 14px;border-radius:14px;margin-bottom:10px;background:#0d1520;border:1.5px solid ${g.borderMe};box-shadow:0 3px 12px rgba(0,0,0,0.4);">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <span style="font-size:1.5rem;">${g.emoji}</span>
+                        <div style="flex:1;">
+                            <div style="font-weight:800;font-size:0.88rem;color:#e0eaf5;">${g.nama}</div>
+                            <div style="font-size:0.72rem;color:#8a9bb0;margin-top:1px;">${g.desc}</div>
+                        </div>
+                        <button onclick="beliGelembung('${g.id}')"
+                            style="padding:7px 12px;border-radius:9px;font-size:0.75rem;font-weight:700;min-width:60px;min-height:32px;flex-shrink:0;transition:opacity 0.2s;${btnStyle}"
+                            ${isActive ? 'disabled' : ''}>${btnLabel}</button>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <div style="flex:1;padding:8px 10px;border-radius:10px;background:${g.previewMe};border:1px solid ${g.borderMe};font-size:0.72rem;color:#c8d8e8;text-align:right;">Pesan kamu ✓</div>
+                        <div style="flex:1;padding:8px 10px;border-radius:10px;background:${g.previewSys};border-left:3px solid ${g.borderSys};font-size:0.72rem;color:#c8d8e8;">Balasan sistem</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage(
+                    `💬 <b>「 TOKO GELEMBUNG CHAT 」</b><br>
+                    <div style="margin-top:8px;">
+                        <div style="font-size:0.8rem;color:#888;margin-bottom:10px;">Ubah tampilan gelembung chatmu. Harga <b style="color:#e0c070;">Rp25.000</b> per tema.<br>Saldo: <b>Rp${userData.balance.toLocaleString('id-ID')}</b></div>
+                        ${cardsHTML}
+                        <div style="font-size:0.72rem;color:#555;text-align:center;margin-top:4px;">Tema aktif berlaku langsung pada chat baru</div>
+                    </div>`,
+                    'system'
+                );
+            }, 700);
+        }
+
+        function beliGelembung(id) {
+            playSound('btn');
+            if (!userData.name) { addMessage('❌ Registrasi terlebih dahulu.', 'system'); return; }
+            if (!userData.purchasedGelembung) userData.purchasedGelembung = [];
+
+            const g = GELEMBUNG_OPTIONS.find(x => x.id === id);
+            if (!g) return;
+
+            // Default gratis
+            if (g.id === 'gelembung-default') {
+                userData.activeGelembung = 'gelembung-default';
+                applyGelembung('gelembung-default');
+                saveData();
+                addMessage('🎨 Gelembung chat direset ke <b>Default</b>!', 'system');
+                return;
+            }
+
+            // Sudah punya → pakai
+            if (userData.purchasedGelembung.includes(id)) {
+                userData.activeGelembung = id;
+                applyGelembung(id);
+                saveData();
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`🎨 Gelembung <b>${g.emoji} ${g.nama}</b> sekarang aktif!`, 'system');
+                }, 400);
+                return;
+            }
+
+            // Cek saldo
+            if (userData.balance < g.harga) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessage(`❌ Saldo tidak cukup! Butuh <b>Rp${g.harga.toLocaleString('id-ID')}</b>, saldo kamu <b>Rp${userData.balance.toLocaleString('id-ID')}</b>.`, 'system');
+                }, 400);
+                return;
+            }
+
+            // Beli
+            userData.balance -= g.harga;
+            userData.purchasedGelembung.push(id);
+            userData.activeGelembung = id;
+            applyGelembung(id);
+            addXP(10, 'Beli Gelembung Chat');
+            saveData();
+
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                addMessage(
+                    `✅ Berhasil membeli <b>${g.emoji} ${g.nama}</b>!<br>
+                    <span style="font-size:0.8rem;color:#888;">-Rp${g.harga.toLocaleString('id-ID')} · Saldo: Rp${userData.balance.toLocaleString('id-ID')}</span>`,
+                    'system'
+                );
+            }, 600);
+        }
+
+        function applyGelembung(id) {
+            const g = GELEMBUNG_OPTIONS.find(x => x.id === id) || GELEMBUNG_OPTIONS[0];
+            // Hapus style lama
+            let styleEl = document.getElementById('gelembung-style');
+            if (!styleEl) {
+                styleEl = document.createElement('style');
+                styleEl.id = 'gelembung-style';
+                document.head.appendChild(styleEl);
+            }
+            if (id === 'gelembung-default' || !g.cssMe) {
+                styleEl.textContent = '';
+            } else {
+                styleEl.textContent = `
+                    .msg-me { ${g.cssMe} }
+                    .msg-system { ${g.cssSys} }
+                `;
+            }
+        }
+    </script>
+
     <script>
         // ===========================
         // SPLASH SCREEN
